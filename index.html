@@ -3533,6 +3533,19 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
         <p>Configura NEXA CRM según tu forma de trabajar. Todos los cambios se guardan automáticamente por usuario.</p>
       </div>
 
+      <!-- ══════════ PWA INSTALAR — siempre visible ══════════ -->
+      <div class="settings-section" id="pwaPermanentSection">
+        <div class="settings-section-title">📱 Instalar NEXA CRM como app</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:10px">
+          <div>
+            <div class="settings-label">Añadir a pantalla de inicio</div>
+            <div class="settings-desc">Sin App Store. Accede como app nativa desde tu móvil o escritorio.</div>
+          </div>
+          <button id="pwaPermanentBtn" onclick="nexaPwaInstall()" style="padding:10px 22px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#C8A84B,#8B6E2A);border:none;color:#000;font-family:var(--sans);white-space:nowrap;min-height:44px">📱 Ver instrucciones</button>
+        </div>
+        <div id="nexaPwaSteps" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;font-size:12px;line-height:1.8;color:var(--t2)"></div>
+      </div>
+
       <!-- ══════════ V45 INTEGRACIONES (directo en HTML) ══════════ -->
       <div class="settings-section" id="v45IntSection">
         <div class="settings-section-title">🔌 Integraciones</div>
@@ -4656,7 +4669,27 @@ async function doLogin(n){
   // ── Tour ──
   const tourDone=localStorage.getItem("nexa_tour_done_"+n);
   const tourAuto=localStorage.getItem("nexa_stg_tourAuto_"+n);
-  if(!tourDone&&tourAuto!=="0"){setTimeout(()=>{try{startTour();}catch(e){}},800);}
+  if(!tourDone&&tourAuto!=="0"){
+    // Esperar a que se cierre el briefing (buenas noches/días) antes de iniciar el tour
+    setTimeout(()=>{
+      try{
+        const briefing = document.getElementById('briefingOverlay');
+        if(briefing && document.body.contains(briefing)){
+          // Briefing visible — esperar a que desaparezca
+          const _waitB = setInterval(()=>{
+            const b = document.getElementById('briefingOverlay');
+            if(!b || !document.body.contains(b)){
+              clearInterval(_waitB);
+              setTimeout(()=>{try{startTour();}catch(e){}}, 400);
+            }
+          }, 250);
+          setTimeout(()=>clearInterval(_waitB), 60000);
+        } else {
+          startTour();
+        }
+      }catch(e){}
+    },3500);
+  }
   // ── Realtime: sync automático cuando otro usuario cambia datos ──
   // v43: llamar via window para que scripts externos puedan interceptar (v26 RT, etc.)
   (window._startRealtime || _startRealtime)();
@@ -18262,7 +18295,7 @@ window.nexaAITab = function(tab) {
 .mob-nav-fab:active .mob-fab-inner { transform: scale(0.93); box-shadow: 0 2px 8px rgba(200,168,75,.3); }
 
 @media (max-width: 768px) {
-  #mobileNav { display: flex !important; flex-direction: column; }
+  #mobileNav { display: none !important; } /* v40 handles this */
   
   /* Hide desktop header nav on mobile */
   .hdr-nav, .hdr-right, .hdr-logo { display: none !important; }
@@ -21367,7 +21400,7 @@ const V36_TOUR = [
   { view:'leads', target:'nexaAIBtn', pos:'left', title:'🤖 NEXA Assistant — IA Copiloto', desc:'Bot de lenguaje natural. Pregunta sin comandos: "¿cuántas ventas hoy?", "calcula 2 webs", "cuál es el profit de este mes". Aprende de tu CRM en tiempo real.' },
   { view:'leads', target:'nexaAIBtn', pos:'left', title:'💬 Conversación natural con el bot', desc:'Sin slash commands. Di "resumen", "precios", "si vendo esto cuánto gano", "sprint". El bot entiende contexto y te responde con datos reales del CRM.' },
   { view:'leads', target:'nexaAIBtn', pos:'left', title:'💰 Calculadora integrada en el bot', desc:'Di "calcula 2 web estándar + 1 bot avanzado" y te da precio, IVA y profit estimado. Funciona con todos los servicios del catálogo NEXA Digital.' },
-  { view:'ajustes', target:'qaResultPanel', pos:'top', title:'🩺 QA Enterprise — Diagnóstico', desc:'40+ checks automáticos: Supabase, botones funcionales, checkboxes, sincronización E2E. Debe dar 0 dead buttons. Se auto-repara antes de mostrar resultados.' },
+  { view:'ajustes', target:'ajustesBackBtn', pos:'bottom', title:'🩺 QA Enterprise — Diagnóstico', desc:'40+ checks automáticos: Supabase, botones funcionales, checkboxes, sincronización E2E. Debe dar 0 dead buttons. Se auto-repara antes de mostrar resultados.' },
   { view:'ajustes', target:'viewAjustes', pos:'bottom', title:'⚙️ Configuración del sistema', desc:'Temas (6 disponibles), tour automático, permisos por rol, exportar/importar datos, reiniciar tour. Los cambios se guardan por usuario en localStorage.' },
   { view:'leads', target:'hdrNav', pos:'bottom', title:'🎉 ¡NEXA CRM v36 listo!', desc:'Flujo completo: Leads → seleccionar → Call Center → registrar → Analytics → Bot para análisis. Pregúntale al bot cualquier cosa, entiende lenguaje natural.' },
 ];
@@ -23108,6 +23141,9 @@ function _buildMoreMenu() {
     { icon:'🗺️', lbl:'Guía', sub:'Ayuda y tutoriales', view:'guia' },
     { icon:'⚙️', lbl:'Ajustes', sub:'Config. del sistema', view:'ajustes' },
     { icon:'🤖', lbl:'Bot IA', sub:'NEXA Assistant', fn: function() { _v40MoreClose(); if(typeof window.nexaAIToggle==='function') window.nexaAIToggle(); } },
+    { icon:'📊', lbl:'Informe', sub:'Informe semanal KPIs', fn: function() { _v40MoreClose(); if(typeof window.v45OpenReport==='function') window.v45OpenReport(); } },
+    { icon:'🔌', lbl:'Integrar', sub:'Zapier, Slack, Gmail...', fn: function() { _v40MoreClose(); window.navTo('ajustes'); setTimeout(function(){ var el=document.getElementById('v45IntSection'); if(el) el.scrollIntoView({behavior:'smooth'}); },500); } },
+    { icon:'📱', lbl:'Instalar', sub:'Añadir a pantalla inicio', fn: function() { _v40MoreClose(); if(typeof window.v45ShowPwaInstall==='function') window.v45ShowPwaInstall(); } },
     { icon:'🎯', lbl:'Tour', sub:'Tour guiado', fn: function() { _v40MoreClose(); if(typeof startTour==='function') startTour(); } },
   ];
   var gridHtml = items.map(function(it) {
@@ -24296,7 +24332,7 @@ console.log('%c[NEXA v43] Presencia + Audit RT cargados', 'background:#22c55e;co
   .modal-box,.modal-card{margin:0!important;border-radius:20px 20px 0 0!important;position:fixed!important;bottom:0!important;left:0!important;right:0!important;max-height:88vh!important;overflow-y:auto!important}
   .modal-bg{align-items:flex-end!important}
   #toast{bottom:70px!important;left:10px!important;right:10px!important;transform:none!important;min-width:0!important;max-width:100%!important}
-  #nexaAI{width:100%!important}
+  #nexaAI{width:100%!important;top:0!important;bottom:calc(56px + env(safe-area-inset-bottom))!important;height:auto!important}
   #nexaAIBtn{bottom:68px!important;right:14px!important}
   .cc-form-row,.fg2,.cc-ficha-grid{grid-template-columns:1fr!important}
   button,.btn-gold,.nav-tab,.ls-user-btn{min-height:44px!important}
@@ -24305,7 +24341,8 @@ console.log('%c[NEXA v43] Presencia + Audit RT cargados', 'background:#22c55e;co
   .ra button,.ra a{min-height:38px!important;padding:7px 10px!important;font-size:11px!important}
   .exec-grid-2,.exec-grid-3,.briefing-kpi-row{grid-template-columns:1fr!important}
   .pipeline-kanban{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important}
-  #mobileNav{display:flex!important}
+  #mobileNav{display:none!important} /* v40 handles mobile nav */
+  #v40MobNav{display:flex!important}
   #appShell{padding-bottom:calc(56px + env(safe-area-inset-bottom))!important}
   .panel-body{padding-bottom:80px!important}
   #loginScreen .ls-left{display:none!important}
@@ -25378,9 +25415,8 @@ console.log('%c[NEXA v45] Enterprise loaded','background:linear-gradient(135deg,
    NEXA v45 — INTEGRACIONES COMPLETAS
    Se ejecuta independiente, sin depender de ningún IIFE
 ═══════════════════════════════════════════════════════════ */
-(function() {
-
-var INTS = {
+// Integraciones — scope global para onclick handlers
+window.INTS = {
   zapier: {
     name: 'Zapier',
     icon: '⚡',
@@ -25770,7 +25806,6 @@ window.v45FireWebhook = function(eventType, leadData) {
   }
   setTimeout(_patchSaveAll, 1000);
   document.addEventListener('nexa:login', function(){ setTimeout(_patchSaveAll, 800); });
-})();
 
 // Gmail button in ficha — inject email button alongside WhatsApp
 window.v45OpenGmail = function(id) {
@@ -25926,6 +25961,494 @@ console.log('%c[NEXA v46] Integraciones cargadas — 9 servicios', 'color:#C8A84
 
   console.log('%c[NEXA v47] Fixes aplicados', 'color:#C8A84B;font-weight:700');
 })();
+</script>
+
+
+<script>
+/* ══════════════════════════════════════════════════════
+   NEXA v46 — PWA + IA PROACTIVA + FORECAST + GDPR + SETUP
+══════════════════════════════════════════════════════ */
+
+/* ── 1. PWA install — funciona en cualquier dispositivo ── */
+window.nexaPwaInstall = function() {
+  var ua = navigator.userAgent || '';
+  var isIOS     = /iphone|ipad|ipod/i.test(ua);
+  var isAndroid = /android/i.test(ua);
+  var isSafari  = /safari/i.test(ua) && !/chrome|chromium/i.test(ua);
+  var isChrome  = /chrome|chromium/i.test(ua);
+  var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+  var btn  = document.getElementById('pwaPermanentBtn');
+  var box  = document.getElementById('nexaPwaSteps');
+  if (!box) return;
+
+  if (isStandalone) {
+    box.innerHTML = '<strong style="color:#22c55e">✅ NEXA CRM ya está instalada en este dispositivo.</strong>';
+    box.style.display = 'block';
+    if (btn) { btn.textContent = '✅ Instalada'; btn.style.background = '#22c55e'; }
+    return;
+  }
+
+  // Chrome/Edge — native prompt
+  if (window._deferredPWAPrompt) {
+    window._deferredPWAPrompt.prompt();
+    window._deferredPWAPrompt.userChoice.then(function(r) {
+      if (r.outcome === 'accepted') {
+        if (typeof toast === 'function') toast('✅ App instalada', 'Busca NEXA en tu pantalla de inicio', '📱', 5000);
+        if (btn) { btn.textContent = '✅ Instalada'; btn.style.background = '#22c55e'; }
+      }
+      window._deferredPWAPrompt = null;
+    });
+    return;
+  }
+
+  var steps, title, color;
+  if (isIOS && isSafari) {
+    color = '#007AFF';
+    title = '📱 iPhone / iPad — Safari';
+    steps = [
+      '1. Pulsa el icono <strong>Compartir</strong> en la barra inferior de Safari (cuadrado con flecha ↑)',
+      '2. Desliza hacia abajo en el menú y pulsa <strong>"Añadir a pantalla de inicio"</strong>',
+      '3. Cambia el nombre si quieres y pulsa <strong>Añadir</strong>',
+      '4. El icono de NEXA CRM aparecerá en tu pantalla de inicio ✅',
+      '<em style="color:var(--t4)">⚠ Solo funciona desde Safari. Si usas Chrome en iPhone, abre esta página en Safari primero.</em>'
+    ];
+  } else if (isIOS && !isSafari) {
+    color = '#007AFF';
+    title = '📱 iPhone — Chrome / Otro navegador';
+    steps = [
+      '⚠ <strong>Chrome en iPhone no permite instalar PWAs.</strong>',
+      '1. Copia esta URL: <code style="background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px">' + window.location.href + '</code>',
+      '2. Abre <strong>Safari</strong> y pega la URL',
+      '3. Pulsa Compartir ↑ → <strong>"Añadir a pantalla de inicio"</strong>'
+    ];
+  } else if (isAndroid) {
+    color = '#34A853';
+    title = '📱 Android — Chrome';
+    steps = [
+      '1. Pulsa el menú <strong>⋮</strong> (tres puntos) arriba a la derecha en Chrome',
+      '2. Pulsa <strong>"Añadir a pantalla de inicio"</strong> o <strong>"Instalar aplicación"</strong>',
+      '3. Confirma pulsando <strong>Añadir / Instalar</strong>',
+      '4. El icono aparecerá en tu pantalla de inicio ✅',
+      '<em style="color:var(--t4)">💡 Si no ves la opción, recarga la página e inténtalo de nuevo.</em>'
+    ];
+  } else {
+    color = '#C8A84B';
+    title = '💻 Escritorio — Chrome / Edge';
+    steps = [
+      '<strong>Chrome:</strong> Busca el icono ⊞ al final de la barra de direcciones y pulsa "Instalar NEXA CRM"',
+      '<strong>Edge:</strong> Menú ⋯ → <strong>Aplicaciones → Instalar este sitio como aplicación</strong>',
+      'NEXA se abrirá como ventana independiente, sin barra del navegador',
+      '<em style="color:var(--t4)">💡 Si no ves el icono todavía, espera unos segundos — el navegador lo muestra cuando la página carga completamente.</em>'
+    ];
+  }
+
+  box.innerHTML =
+    '<div style="font-size:11px;font-weight:800;color:' + color + ';letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px">' + title + '</div>' +
+    steps.map(function(s) { return '<div style="margin-bottom:6px;padding-left:4px">' + s + '</div>'; }).join('');
+  box.style.display = 'block';
+  if (btn) btn.textContent = '📱 Ocultar instrucciones';
+  btn && (btn.onclick = function() {
+    if (box.style.display === 'none') { box.style.display = 'block'; btn.textContent = '📱 Ocultar instrucciones'; }
+    else { box.style.display = 'none'; btn.textContent = '📱 Ver instrucciones'; }
+  });
+};
+
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  window._deferredPWAPrompt = e;
+  var btn = document.getElementById('pwaPermanentBtn');
+  if (btn) btn.textContent = '📱 Instalar ahora';
+});
+
+
+/* ── 2. IA PROACTIVA — alertas de leads en riesgo ── */
+function _v46CheckRisks() {
+  if (!window.leads || !window.leads.length || !window.currentUser) return;
+  var today = new Date();
+  var ignored = ['CLIENTE ACTIVO','NO CONTACTAR','PERDIDO / DESCARTADO'];
+  var risks = [];
+
+  (window.leads||[]).forEach(function(l) {
+    if (ignored.includes(l.state)) return;
+    var lastContact = l.last_call_at || l.updated_at || l.created_at;
+    if (!lastContact) return;
+    var days = Math.floor((today - new Date(lastContact)) / 86400000);
+    if (days >= 14) risks.push({ type:'sin_contacto', lead:l, days:days,
+      label:(l.name||l.empresa||'Lead') + ' · ' + days + 'd sin contacto' });
+  });
+
+  (window.leads||[]).forEach(function(l) {
+    if (!['PROPUESTA ENVIADA','PROPUESTA'].includes(l.state)) return;
+    var last = l.last_call_at || l.updated_at;
+    if (!last) return;
+    var days = Math.floor((today - new Date(last)) / 86400000);
+    if (days >= 7) risks.push({ type:'propuesta_fria', lead:l, days:days,
+      label:'📋 ' + (l.name||l.empresa||'Lead') + ' · propuesta fría ' + days + 'd' });
+  });
+
+  (window.leads||[]).forEach(function(l) {
+    if (l.priority !== 'A' || ignored.includes(l.state)) return;
+    var weekAgo = new Date(today - 7*86400000).toISOString().slice(0,10);
+    var last = l.last_call_at ? l.last_call_at.slice(0,10) : null;
+    if (!last || last < weekAgo) risks.push({ type:'prioridad_a', lead:l, days:0,
+      label:'⭐ ' + (l.name||l.empresa||'Lead') + ' · prioridad A sin llamar' });
+  });
+
+  if (!risks.length) return;
+
+  var old = document.getElementById('v46RiskBanner');
+  if (old) old.remove();
+
+  var b = document.createElement('div');
+  b.id = 'v46RiskBanner';
+  b.style.cssText = 'position:fixed;top:50px;left:0;right:0;z-index:8000;background:linear-gradient(135deg,rgba(12,12,20,.97),rgba(8,8,14,.97));border-bottom:2px solid rgba(200,168,75,.35);padding:9px 14px;font-family:var(--sans);backdrop-filter:blur(12px)';
+  b.innerHTML =
+    '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+    '<span style="font-size:10px;font-weight:900;color:var(--gold2);letter-spacing:.06em;text-transform:uppercase;flex-shrink:0">⚠ IA · ' + risks.length + ' alertas</span>' +
+    risks.slice(0,3).map(function(r) {
+      var id = r.lead.lead_id || r.lead.id || '';
+      return '<span onclick="v46OpenRiskLead(\'' + id + '\',\'' + r.type + '\')" ' +
+        'style="padding:4px 10px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.2);border-radius:20px;cursor:pointer;font-size:11px;color:var(--t2);white-space:nowrap;transition:.15s" ' +
+        'onmouseover="this.style.background=\'rgba(200,168,75,.18)\'" onmouseout="this.style.background=\'rgba(200,168,75,.08)\'">' +
+        r.label + '</span>';
+    }).join('') +
+    (risks.length > 3 ? '<span style="font-size:11px;color:var(--t4)">+' + (risks.length-3) + ' más</span>' : '') +
+    '<button onclick="document.getElementById(\'v46RiskBanner\').remove()" ' +
+      'style="margin-left:auto;background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer;padding:2px 8px;min-width:30px">✕</button>' +
+    '</div>';
+
+  var shell = document.getElementById('appShell') || document.body;
+  shell.insertAdjacentElement('afterbegin', b);
+}
+
+window.v46OpenRiskLead = function(id, type) {
+  var el = document.getElementById('v46RiskBanner');
+  if (el) el.remove();
+  if (typeof window.navTo === 'function') window.navTo('leads');
+  setTimeout(function() {
+    if (typeof window.selectLead === 'function') window.selectLead(id);
+    window.selId = id;
+    if (window.innerWidth <= 768) {
+      var fp = document.getElementById('fichaPanel');
+      if (fp) fp.classList.add('mob-open');
+    }
+    setTimeout(function() { _v46ShowAISuggestion(id, type); }, 400);
+  }, 300);
+};
+
+function _v46ShowAISuggestion(id, type) {
+  var lead = (window.leads||[]).find(function(l){ return l.lead_id===id||l.id===id; }) || {};
+  var name = ((lead.name||lead.empresa||'el cliente') + '').split(' ')[0];
+  var agent = window.currentUser || 'el equipo';
+  var msgs = {
+    sin_contacto: 'Hola ' + name + ' \uD83D\uDC4B Han pasado unos días y quería saber si tuviste oportunidad de pensar en lo que comentamos. ¿Tienes 5 minutos esta semana? Soy ' + agent + ' de Nexa Digital \uD83D\uDE0A',
+    propuesta_fria: 'Hola ' + name + ', soy ' + agent + ' de Nexa Digital. Te escribo sobre la propuesta que te enviamos. ¿Tuviste oportunidad de revisarla? Si tienes dudas o quieres ajustar algo, estoy disponible \uD83D\uDE42',
+    prioridad_a: 'Hola ' + name + ' \uD83D\uDC4B Soy ' + agent + ' de Nexa Digital. He visto que ' + (lead.empresa||'tu empresa') + ' tiene potencial para crecer online. ¿Tienes unos minutos para contarte cómo ayudamos a negocios como el tuyo?'
+  };
+  var msg = msgs[type] || msgs.sin_contacto;
+  var phone = ((lead.phone||lead.tel||lead.telefono||'') + '').replace(/[^0-9+]/g, '');
+
+  var old = document.getElementById('v46SuggModal');
+  if (old) old.remove();
+
+  var m = document.createElement('div');
+  m.id = 'v46SuggModal';
+  m.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--sans)';
+  m.innerHTML =
+    '<div style="background:linear-gradient(145deg,#0e0e1c,#090912);border:1px solid rgba(200,168,75,.25);border-radius:20px;padding:24px;max-width:460px;width:100%;box-shadow:0 32px 80px rgba(0,0,0,.85)">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">' +
+        '<div style="width:36px;height:36px;border-radius:10px;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">\uD83E\uDD16</div>' +
+        '<div style="flex:1"><div style="font-size:15px;font-weight:900;color:var(--t1)">IA sugiere · ' + (lead.name||lead.empresa||'Lead') + '</div>' +
+        '<div style="font-size:11px;color:var(--t3)">Mensaje generado — edítalo si quieres</div></div>' +
+        '<button onclick="document.getElementById(\'v46SuggModal\').remove()" style="background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;min-width:32px;padding:4px">✕</button>' +
+      '</div>' +
+      '<textarea id="v46SuggTxt" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:12px;color:var(--t1);font-size:13px;font-family:var(--sans);outline:none;resize:vertical;min-height:110px;line-height:1.6;box-sizing:border-box">' + msg + '</textarea>' +
+      '<div style="display:flex;gap:8px;margin-top:12px">' +
+        (phone ?
+          '<button onclick="_v46SendWA(\'' + id + '\')" style="flex:1;padding:11px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;background:#25D366;border:none;color:#000;font-family:var(--sans);min-height:44px">\uD83D\uDCAC Enviar WhatsApp</button>' :
+          '<div style="flex:1;font-size:11px;color:var(--t4);padding:10px;background:rgba(255,255,255,.03);border-radius:9px">Sin teléfono — añádelo en la ficha</div>') +
+        '<button onclick="if(navigator.clipboard){navigator.clipboard.writeText(document.getElementById(\'v46SuggTxt\').value)}if(typeof toast===\'function\')toast(\'Copiado\',\'\',\'📋\',2000)" style="padding:11px 14px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--t2);font-family:var(--sans);min-height:44px">\uD83D\uDCCB Copiar</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(m);
+  m.addEventListener('click', function(e) { if (e.target === m) m.remove(); });
+}
+
+window._v46SendWA = function(id) {
+  var lead = (window.leads||[]).find(function(l){ return l.lead_id===id||l.id===id; }) || {};
+  var phone = ((lead.phone||lead.tel||lead.telefono||'') + '').replace(/[^0-9]/g, '');
+  var txt = (document.getElementById('v46SuggTxt')||{}).value || '';
+  if (!phone || !txt) return;
+  window.open('https://wa.me/' + (phone.startsWith('34') ? phone : '34' + phone) + '?text=' + encodeURIComponent(txt), '_blank');
+  var m = document.getElementById('v46SuggModal'); if (m) m.remove();
+  if (typeof toast === 'function') toast('WhatsApp abierto', 'Mensaje listo para enviar', '\uD83D\uDCAC', 3000);
+};
+
+document.addEventListener('nexa:login', function() {
+  setTimeout(_v46CheckRisks, 4500);
+});
+
+
+/* ── 3. FORECAST pipeline con probabilidades ── */
+var _STAGE_PROB = {
+  'POTENCIAL':0.05, 'CONTACTADA':0.10, 'INTERESADA':0.30,
+  'INTERESADA / DEMO':0.40, 'PROPUESTA ENVIADA':0.60,
+  'PROPUESTA':0.60, 'CLIENTE ACTIVO':1.0,
+  'PERDIDO / DESCARTADO':0, 'NO CONTACTAR':0
+};
+
+window.v46GetForecast = function() {
+  var leads = window.leads || [];
+  var today = new Date();
+  var byStage = {}, totalExp = 0, atRisk = [];
+  leads.forEach(function(l) {
+    var s = l.state || 'POTENCIAL';
+    var prob = _STAGE_PROB[s] !== undefined ? _STAGE_PROB[s] : 0.05;
+    var val = parseFloat(l.price || l.valor || 2500);
+    if (!byStage[s]) byStage[s] = { count:0, expected:0, prob:prob };
+    byStage[s].count++;
+    byStage[s].expected += val * prob;
+    totalExp += val * prob;
+    if (['PROPUESTA ENVIADA','PROPUESTA','INTERESADA / DEMO'].includes(s)) {
+      var last = l.last_call_at || l.updated_at;
+      if (last) {
+        var days = Math.floor((today - new Date(last)) / 86400000);
+        if (days >= 7) atRisk.push({ lead:l, days:days });
+      }
+    }
+  });
+  return { byStage:byStage, totalExp:totalExp, atRisk:atRisk };
+};
+
+function _v46RenderForecast() {
+  var exec = document.getElementById('viewExecutive');
+  if (!exec) return;
+  var old = document.getElementById('v46ForecastCard');
+  if (old) old.remove();
+
+  var data = window.v46GetForecast();
+  var fmt = function(n) { return '\u20AC' + Math.round(n).toLocaleString('es-ES'); };
+
+  var rows = Object.entries(data.byStage)
+    .filter(function(e){ return e[1].count > 0 && e[1].prob > 0; })
+    .sort(function(a,b){ return b[1].prob - a[1].prob; })
+    .map(function(e) {
+      var pct = Math.round(e[1].prob * 100);
+      var barW = Math.round(e[1].prob * 100);
+      return '<div style="display:grid;grid-template-columns:1fr 50px 36px 72px;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)">' +
+        '<div style="font-size:11px;color:var(--t2)">' + e[0] + ' <span style="color:var(--t4)">(' + e[1].count + ')</span></div>' +
+        '<div style="background:rgba(255,255,255,.06);border-radius:3px;height:4px;overflow:hidden"><div style="width:' + barW + '%;height:100%;background:var(--gold2);border-radius:3px"></div></div>' +
+        '<div style="font-size:10px;color:var(--t3);text-align:right">' + pct + '%</div>' +
+        '<div style="font-size:12px;font-weight:700;color:var(--gold2);text-align:right">' + fmt(e[1].expected) + '</div>' +
+      '</div>';
+    }).join('');
+
+  var riskHtml = data.atRisk.length ?
+    '<div style="margin-top:14px;padding:10px 12px;background:rgba(244,63,94,.07);border:1px solid rgba(244,63,94,.18);border-radius:9px">' +
+    '<div style="font-size:10px;font-weight:800;color:#fda4af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">\u26A0 ' + data.atRisk.length + ' deals en riesgo — sin movimiento</div>' +
+    data.atRisk.slice(0,3).map(function(r){
+      return '<div onclick="v46OpenRiskLead(\'' + (r.lead.lead_id||r.lead.id) + '\',\'propuesta_fria\')" ' +
+        'style="font-size:11px;color:var(--t3);cursor:pointer;padding:2px 0">' +
+        '\u2192 ' + (r.lead.name||r.lead.empresa||'Lead') + ' · ' + r.days + 'd sin contacto</div>';
+    }).join('') + '</div>' : '';
+
+  var card = document.createElement('div');
+  card.id = 'v46ForecastCard';
+  card.style.cssText = 'margin:0 0 16px;font-family:var(--sans)';
+  card.innerHTML =
+    '<div style="background:linear-gradient(145deg,rgba(14,14,26,.95),rgba(8,8,16,.95));border:1px solid rgba(200,168,75,.18);border-radius:16px;padding:18px 20px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">' +
+        '<div style="font-size:13px;font-weight:900;color:var(--t1)">\uD83D\uDCB0 Forecast del mes</div>' +
+        '<div style="font-size:20px;font-weight:900;color:var(--gold2)">' + fmt(data.totalExp) + '</div>' +
+      '</div>' +
+      '<div style="font-size:9px;font-weight:800;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:grid;grid-template-columns:1fr 50px 36px 72px;gap:6px"><span>Etapa</span><span>Prob.</span><span>%</span><span style="text-align:right">Valor esp.</span></div>' +
+      rows + riskHtml +
+    '</div>';
+
+  var target = exec.querySelector('.exec-kpi-grid,#execKpiGrid,.a-kpi-grid') || exec.firstElementChild || exec;
+  target.insertAdjacentElement('beforebegin', card);
+}
+
+document.addEventListener('nexa:login', function(){ setTimeout(_v46RenderForecast, 2000); });
+(function(){
+  function _patch() {
+    if (!window.navTo || window._v46ForecastPatch) return;
+    window._v46ForecastPatch = true;
+    var o = window.navTo;
+    window.navTo = function(v,b){ var r=o.call(this,v,b); if(v==='executive') setTimeout(_v46RenderForecast,300); return r; };
+  }
+  setTimeout(_patch, 800); document.addEventListener('nexa:login', function(){ setTimeout(_patch, 600); });
+})();
+
+
+/* ── 4. GDPR — log de auditoría + exportar datos ── */
+var _auditLog = [];
+window.v46AuditAdd = function(action, leadId, detail) {
+  _auditLog.push({ ts:new Date().toISOString(), user:window.currentUser||'?', action:action, lead:leadId||'', detail:detail||'' });
+  if (_auditLog.length > 500) _auditLog = _auditLog.slice(-500);
+  try { localStorage.setItem('nexa_audit_'+(window.currentUser||'x'), JSON.stringify(_auditLog)); } catch(e) {}
+};
+
+(function(){
+  function _patch() {
+    if (!window.saveAll || window._v46AuditPatch) return;
+    window._v46AuditPatch = true;
+    var o = window.saveAll;
+    window.saveAll = function() {
+      try { if(window.selId) window.v46AuditAdd('lead_guardado', window.selId, ''); } catch(e){}
+      return o.apply(this, arguments);
+    };
+  }
+  setTimeout(_patch, 1000); document.addEventListener('nexa:login', function(){
+    try { _auditLog = JSON.parse(localStorage.getItem('nexa_audit_'+(window.currentUser||'x'))||'[]'); } catch(e){ _auditLog=[]; }
+    window.v46AuditAdd('login','','Sesión iniciada');
+    setTimeout(_patch, 800);
+  });
+})();
+
+function _v46InjectGDPR() {
+  var wrap = document.querySelector('.settings-wrap');
+  if (!wrap || document.getElementById('v46GdprSection')) return;
+  var sec = document.createElement('div');
+  sec.id = 'v46GdprSection';
+  sec.className = 'settings-section';
+  sec.innerHTML =
+    '<div class="settings-section-title">\uD83D\uDD12 Privacidad & GDPR</div>' +
+    '<div class="settings-row"><div><div class="settings-label">Log de auditoría</div><div class="settings-desc">Registro de acciones: quién, qué, cuándo</div></div>' +
+    '<button class="settings-btn" onclick="v46ShowAudit()">Ver log</button></div>' +
+    '<div class="settings-row"><div><div class="settings-label">Exportar mis datos</div><div class="settings-desc">Descarga todos tus datos en JSON (GDPR Art. 20)</div></div>' +
+    '<button class="settings-btn" onclick="v46ExportGDPR()">Exportar</button></div>' +
+    '<div class="settings-row"><div><div class="settings-label">Eliminar datos locales</div><div class="settings-desc">Borra log y preferencias de este dispositivo</div></div>' +
+    '<button class="settings-btn" style="border-color:rgba(244,63,94,.3);color:#fda4af" onclick="v46DeleteLocal()">Eliminar</button></div>';
+  wrap.appendChild(sec);
+}
+
+window.v46ShowAudit = function() {
+  var entries = _auditLog.slice().reverse().slice(0,100);
+  var m = document.createElement('div');
+  m.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--sans)';
+  m.innerHTML =
+    '<div style="background:linear-gradient(145deg,#0d0d1e,#08080f);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:24px;max-width:560px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 40px 100px rgba(0,0,0,.9)">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">' +
+        '<div style="font-size:15px;font-weight:900;color:var(--t1)">\uD83D\uDD12 Log de auditoría</div>' +
+        '<button onclick="this.closest(\'[style]\').remove()" style="background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;min-width:32px">✕</button>' +
+      '</div>' +
+      '<div style="overflow-y:auto;flex:1">' +
+      (entries.length ? entries.map(function(e){
+        return '<div style="display:grid;grid-template-columns:140px 60px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11px">' +
+          '<span style="color:var(--t4)">' + new Date(e.ts).toLocaleString('es-ES') + '</span>' +
+          '<span style="color:var(--gold2);font-weight:700">' + (e.user||'') + '</span>' +
+          '<span style="color:var(--t2)">' + e.action + (e.lead?' · '+e.lead:'') + '</span>' +
+        '</div>';
+      }).join('') : '<div style="color:var(--t3);padding:20px;text-align:center">Sin entradas todavía</div>') +
+      '</div></div>';
+  document.body.appendChild(m);
+  m.addEventListener('click', function(e){ if(e.target===m) m.remove(); });
+};
+
+window.v46ExportGDPR = function() {
+  var user = window.currentUser || 'user';
+  var data = { exportDate:new Date().toISOString(), user:user,
+    auditLog:_auditLog,
+    leads:(window.leads||[]).filter(function(l){return l.owner===user;}),
+    settings:{} };
+  var a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, 2));
+  a.download = 'nexa_gdpr_' + user + '_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); setTimeout(function(){ a.remove(); }, 300);
+  if (typeof toast==='function') toast('Datos exportados', 'Archivo JSON descargado', '\uD83D\uDD12', 4000);
+};
+
+window.v46DeleteLocal = function() {
+  if (!confirm('¿Eliminar log y preferencias locales? Los datos en Supabase NO se borran.')) return;
+  var u = window.currentUser||'x';
+  localStorage.removeItem('nexa_audit_'+u);
+  _auditLog = [];
+  if (typeof toast==='function') toast('Datos eliminados', 'Log borrado de este dispositivo', '\uD83D\uDD12', 3000);
+};
+
+document.addEventListener('nexa:login', function(){ setTimeout(_v46InjectGDPR, 1800); });
+(function(){
+  function _patch() {
+    if (!window.navTo || window._v46GdprPatch) return;
+    window._v46GdprPatch = true;
+    var o = window.navTo;
+    window.navTo = function(v,b){ var r=o.call(this,v,b); if(v==='ajustes') setTimeout(_v46InjectGDPR,300); return r; };
+  }
+  setTimeout(_patch, 1000); document.addEventListener('nexa:login', function(){ setTimeout(_patch, 700); });
+})();
+
+
+/* ── 5. WIZARD SETUP SUPABASE ── */
+window.v46ShowSetup = function() {
+  var old = document.getElementById('v46SetupModal');
+  if (old) { old.style.display='flex'; return; }
+  var m = document.createElement('div');
+  m.id = 'v46SetupModal';
+  m.style.cssText = 'position:fixed;inset:0;z-index:200000;background:rgba(0,0,0,.96);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--sans)';
+  m.innerHTML =
+    '<div style="background:linear-gradient(145deg,#0e0e1c,#070710);border:1px solid rgba(200,168,75,.2);border-radius:24px;padding:32px;max-width:480px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,.95)">' +
+      '<div style="text-align:center;margin-bottom:24px">' +
+        '<div style="font-size:36px;margin-bottom:10px">\uD83D\uDE80</div>' +
+        '<div style="font-size:20px;font-weight:900;color:var(--t1)">Configurar base de datos</div>' +
+        '<div style="font-size:12px;color:var(--t3);margin-top:5px">Conecta tu Supabase en 2 minutos</div>' +
+      '</div>' +
+      '<div style="margin-bottom:14px"><div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">URL del proyecto</div>' +
+      '<input id="v46sbUrl" placeholder="https://xxxxxxxxx.supabase.co" style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;color:var(--t1);font-size:13px;font-family:var(--sans);outline:none;box-sizing:border-box"></div>' +
+      '<div style="margin-bottom:16px"><div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px">API Key (anon public)</div>' +
+      '<input id="v46sbKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:11px 13px;color:var(--t1);font-size:13px;font-family:var(--sans);outline:none;box-sizing:border-box"></div>' +
+      '<div style="background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.15);border-radius:9px;padding:11px 13px;margin-bottom:18px;font-size:11px;color:var(--t3);line-height:1.7">' +
+        '\uD83D\uDCD6 Encuentra estos datos en <a href="https://supabase.com/dashboard" target="_blank" style="color:var(--gold2)">supabase.com</a> → tu proyecto → Settings → API' +
+      '</div>' +
+      '<div style="display:flex;gap:10px">' +
+        '<button onclick="document.getElementById(\'v46SetupModal\').style.display=\'none\'" style="flex:1;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--t3);font-family:var(--sans)">Cancelar</button>' +
+        '<button onclick="v46ApplySetup()" style="flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:900;cursor:pointer;background:linear-gradient(135deg,#C8A84B,#8B6E2A);border:none;color:#000;font-family:var(--sans)">Conectar \u2192</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(m);
+  m.addEventListener('click', function(e){ if(e.target===m) m.style.display='none'; });
+};
+
+window.v46ApplySetup = function() {
+  var url = ((document.getElementById('v46sbUrl')||{}).value||'').trim();
+  var key = ((document.getElementById('v46sbKey')||{}).value||'').trim();
+  if (!url || !key) { if(typeof toast==='function') toast('Faltan datos','Rellena URL y API key','\u26A0\uFE0F',3000); return; }
+  if (!url.includes('supabase.co')) { if(typeof toast==='function') toast('URL incorrecta','Debe ser https://xxx.supabase.co','\u26A0\uFE0F',3000); return; }
+  localStorage.setItem('nexa_sb_url', url);
+  localStorage.setItem('nexa_sb_key', key);
+  document.getElementById('v46SetupModal').style.display = 'none';
+  if (typeof toast==='function') toast('Configurado','Recargando...','✅',3000);
+  setTimeout(function(){ window.location.reload(); }, 2000);
+};
+
+function _v46InjectSetup() {
+  var wrap = document.querySelector('.settings-wrap');
+  if (!wrap || document.getElementById('v46SetupSection')) return;
+  var saved = localStorage.getItem('nexa_sb_url');
+  var sec = document.createElement('div');
+  sec.id = 'v46SetupSection';
+  sec.className = 'settings-section';
+  sec.innerHTML =
+    '<div class="settings-section-title">\uD83D\uDDC4\uFE0F Base de datos Supabase</div>' +
+    '<div class="settings-row"><div><div class="settings-label">URL configurada</div>' +
+    '<div class="settings-desc">' + (saved || 'No configurada — usa la del código fuente') + '</div></div>' +
+    '<button class="settings-btn" onclick="v46ShowSetup()">' + (saved ? 'Cambiar' : 'Configurar') + '</button></div>';
+  wrap.appendChild(sec);
+}
+
+document.addEventListener('nexa:login', function(){ setTimeout(_v46InjectSetup, 2000); });
+(function(){
+  function _patch() {
+    if (!window.navTo || window._v46SetupPatch) return;
+    window._v46SetupPatch = true;
+    var o = window.navTo;
+    window.navTo = function(v,b){ var r=o.call(this,v,b); if(v==='ajustes') setTimeout(_v46InjectSetup,400); return r; };
+  }
+  setTimeout(_patch, 1200); document.addEventListener('nexa:login', function(){ setTimeout(_patch, 800); });
+})();
+
+console.log('%c[NEXA v46] PWA visible + IA Proactiva + Forecast + GDPR + Setup', 'background:linear-gradient(135deg,#C8A84B,#5a3e10);color:#fff;font-weight:900;padding:3px 10px;border-radius:5px');
 </script>
 
 </body>

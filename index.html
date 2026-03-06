@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>NEXA CRM — Enterprise SaaS v23.0</title>
+<title>NEXA CRM — Enterprise SaaS v1.0</title>
 <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22NEXA+CRM+Pro%22%2C%22short_name%22%3A%22NEXA+CRM%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23050508%22%2C%22theme_color%22%3A%22%23C8A84B%22%7D">
 <meta name="theme-color" content="#050508">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -569,6 +569,8 @@ body::after{
 }
 /* Hide app shell while login screen shown */
 #loginScreen:not(.ls-hidden) ~ * { pointer-events:none; }
+/* Cuando el login está hidden, re-activar TODO */
+#loginScreen.ls-hidden ~ * { pointer-events:auto !important; }
 /* Animated background */
 .ls-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 /* Asegurar que todos los hijos de ls-bg nunca interceptan clics */
@@ -600,6 +602,10 @@ body::after{
   z-index:1;pointer-events:none;
 }
 @keyframes gridSlide{from{background-position:0 0}to{background-position:0 60px}}
+@keyframes donutGrow{to{stroke-dasharray:var(--da) 201.06;stroke-dashoffset:var(--do,0)}}
+@keyframes actIn{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:none}}
+@keyframes sigSheen{0%{left:-120%}100%{left:200%}}
+
 
 /* ── DEPTH GLOW ORBS ── */
 .ls-orb{position:absolute;border-radius:50%;pointer-events:none}
@@ -813,6 +819,241 @@ body::after{
 .login-card{display:none}
 #loginUserSelect{position:relative;z-index:300}
 #loginPinBox{position:relative;z-index:300}
+
+/* ══════════════════════════════════════════════════
+   NEXA CRM v1.0 — MEJORAS ENTERPRISE
+   Diseñado y desarrollado por Hugo Álvarez Padilla
+   Nexa Digital Systems · €15.000 SaaS Enterprise
+══════════════════════════════════════════════════ */
+
+/* ── CREDITS BADGE ── */
+#nexaCredits {
+  position:fixed;bottom:16px;right:16px;z-index:50;
+  display:flex;align-items:center;gap:8px;
+  padding:8px 14px;border-radius:10px;
+  background:rgba(8,8,14,0.85);
+  border:1px solid rgba(200,168,75,0.2);
+  backdrop-filter:blur(20px);
+  font-size:10px;color:rgba(200,168,75,0.6);
+  letter-spacing:.05em;font-family:var(--mono);
+  transition:.2s opacity;pointer-events:none;
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+}
+#nexaCredits strong { color:var(--gold2); font-weight:700; }
+
+/* ── APP FOOTER CREDITS ── */
+#appFooterCredits {
+  position:fixed;bottom:0;left:0;right:0;z-index:1;
+  height:22px;
+  display:flex;align-items:center;justify-content:center;
+  gap:12px;
+  font-size:9px;color:var(--t4);font-family:var(--mono);
+  letter-spacing:.06em;
+  border-top:1px solid rgba(255,255,255,0.03);
+  background:linear-gradient(0deg,var(--bg),transparent);
+  pointer-events:none;
+}
+#appFooterCredits span { color:var(--gold);opacity:.4; }
+
+/* ── SPARKLINES ── */
+.sparkline-wrap {
+  display:flex;align-items:flex-end;gap:2px;height:24px;margin-top:6px;
+}
+.sparkline-bar {
+  flex:1;border-radius:2px 2px 0 0;
+  background:var(--gold-glow);
+  transition:.3s height;min-width:4px;max-width:10px;
+}
+.sparkline-bar.peak { background:var(--gold); }
+
+/* ── MINI DONUT ── */
+.mini-donut {
+  width:48px;height:48px;flex-shrink:0;
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.mini-donut svg { width:100%;height:100%; }
+.mini-donut-val {
+  position:absolute;font-size:10px;font-weight:900;
+  font-family:var(--mono);color:var(--t1);
+}
+
+/* ── STATS BAR UPGRADE ── */
+#statsBar {
+  gap:0;padding:0;
+  display:flex;align-items:stretch;
+  border-bottom:1px solid var(--border);
+  background:var(--s1);
+  overflow-x:auto;scrollbar-width:none;
+}
+#statsBar::-webkit-scrollbar { display:none; }
+.sb-item {
+  flex-shrink:0;padding:8px 16px;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  cursor:pointer;transition:.15s background;min-width:90px;
+}
+.sb-item:hover { background:rgba(255,255,255,.04); }
+.sb-label { font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap; }
+.sb-val { font-size:18px;font-weight:900;font-family:var(--mono);line-height:1; }
+.sb-val.hot{color:#f97316}.sb-val.warn{color:var(--warn)}
+.sb-val.gold{color:var(--gold2)}.sb-val.ok{color:var(--ok)}
+.sb-val.bad{color:var(--bad)}.sb-val.info{color:var(--info)}
+.sb-date { margin-left:auto;padding:0 14px;font-size:10px;color:var(--t3);font-family:var(--mono);display:flex;align-items:center;white-space:nowrap;flex-shrink:0; }
+
+/* ── CHART CONTAINER ── */
+.chart-container {
+  position:relative;width:100%;height:180px;
+  display:flex;align-items:flex-end;gap:3px;
+  padding:0 4px;
+}
+.chart-col-wrap {
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+  height:100%;justify-content:flex-end;
+}
+.chart-bar {
+  width:100%;border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg,var(--gold),rgba(200,168,75,.3));
+  transition:.5s height cubic-bezier(.22,1,.36,1);
+  min-height:2px;position:relative;cursor:pointer;
+}
+.chart-bar:hover { filter:brightness(1.2); }
+.chart-bar-label {
+  font-size:8px;font-family:var(--mono);color:var(--t3);
+  text-align:center;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;width:100%;
+}
+.chart-bar-val {
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  font-size:9px;font-weight:800;font-family:var(--mono);
+  color:var(--gold2);white-space:nowrap;
+  opacity:0;transition:.15s;
+}
+.chart-bar:hover .chart-bar-val { opacity:1; }
+
+/* ── DONUT CHART ── */
+.donut-chart-wrap {
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.donut-legend {
+  display:flex;flex-direction:column;gap:6px;
+}
+.donut-legend-item {
+  display:flex;align-items:center;gap:7px;
+  font-size:11px;color:var(--t2);
+}
+.donut-legend-dot {
+  width:8px;height:8px;border-radius:2px;flex-shrink:0;
+}
+.donut-legend-val {
+  font-family:var(--mono);font-weight:700;color:var(--t1);margin-left:auto;font-size:10px;
+}
+
+/* ── KPI BOX ── */
+.kpi-box {
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  gap:4px;padding:16px 18px;
+  border-radius:14px;
+  border:1px solid var(--border2);
+  background:linear-gradient(135deg,var(--s2),var(--s1));
+  box-shadow:var(--shadow),var(--card-edge);
+  cursor:default;
+}
+.kpi-box::before {
+  content:"";position:absolute;inset:0;
+  background:var(--card-shine);pointer-events:none;border-radius:inherit;
+}
+.kpi-box .kpi-num {
+  font-size:30px;font-weight:900;font-family:var(--mono);
+  color:var(--t1);line-height:1;letter-spacing:-.03em;
+}
+.kpi-box .kpi-label {
+  font-size:11px;color:var(--t2);font-weight:600;
+}
+.kpi-trend.up{color:var(--ok)}.kpi-trend.down{color:var(--bad)}.kpi-trend.flat{color:var(--t3)}
+
+/* ── IMPROVED SCROLLBARS ── */
+::-webkit-scrollbar { width:5px;height:5px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(255,255,255,.1);border-radius:99px; }
+::-webkit-scrollbar-thumb:hover { background:rgba(255,255,255,.2); }
+* { scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent; }
+
+/* ── PILL BADGES ── */
+.pill {
+  display:inline-flex;align-items:center;gap:4px;
+  padding:2px 8px;border-radius:999px;font-size:9px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;
+  font-family:var(--sans);
+}
+.pill.gold{background:rgba(200,168,75,.15);color:var(--gold2);border:1px solid rgba(200,168,75,.25)}
+.pill.ok{background:var(--ok-dim);color:var(--ok);border:1px solid rgba(34,197,94,.2)}
+.pill.bad{background:var(--bad-dim);color:var(--bad);border:1px solid rgba(244,63,94,.2)}
+.pill.warn{background:var(--warn-dim);color:var(--warn);border:1px solid rgba(245,158,11,.2)}
+.pill.info{background:var(--info-dim);color:var(--info);border:1px solid rgba(59,130,246,.2)}
+
+/* ── v1 LOGIN LEFT PANEL ENHANCED ── */
+.ls-version-v49 {
+  margin-top:auto;padding-top:24px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.ls-credits-line {
+  font-size:10px;color:rgba(200,168,75,0.35);
+  font-family:var(--mono);letter-spacing:.08em;
+}
+.ls-credits-line strong {
+  color:rgba(200,168,75,0.6);font-weight:700;
+}
+.ls-credits-price {
+  font-size:9px;color:var(--t4);letter-spacing:.06em;
+  font-family:var(--mono);
+}
+
+/* ── MOBILE v1 ── */
+@media(max-width:768px){
+  body { padding-bottom:calc(60px + env(safe-area-inset-bottom)); }
+  header { height:50px;padding:0 12px;gap:8px; }
+  .hdr-logo-word { display:none; }
+  .hdr-nav { display:none !important; }
+  .hdr-more-btn { display:none !important; }
+  #statsBar { font-size:10px; }
+  .sb-item { min-width:70px;padding:6px 10px; }
+  .sb-val { font-size:15px; }
+  #mobileNav {
+    position:fixed;bottom:0;left:0;right:0;
+    height:calc(56px + env(safe-area-inset-bottom));
+    background:rgba(6,6,12,0.97);
+    border-top:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+    display:flex;align-items:flex-start;
+    padding-top:6px;
+    padding-bottom:env(safe-area-inset-bottom);
+    z-index:900;
+    box-shadow:0 -4px 24px rgba(0,0,0,0.6);
+  }
+  .mob-nav-btn {
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    background:none;border:none;
+    font-size:9px;font-weight:700;color:var(--t3);
+    font-family:var(--sans);letter-spacing:.04em;
+    cursor:pointer;padding:4px 2px;
+    transition:.15s color;text-transform:uppercase;
+  }
+  .mob-icon { font-size:18px;line-height:1; }
+  .mob-nav-btn.active { color:var(--gold2); }
+  .mob-nav-btn.active .mob-icon { filter:drop-shadow(0 0 6px rgba(200,168,75,.5)); }
+  .exec-kpi-grid,.analytics-grid { grid-template-columns:1fr 1fr !important;gap:8px !important; }
+  .modal-box { margin:0 !important;border-radius:16px 16px 0 0 !important;max-height:92vh !important;align-self:flex-end; }
+  .modal { align-items:flex-end !important;padding:0 !important; }
+  #fbBack { bottom:68px; }
+  #fbOp { bottom:68px;right:140px; }
+  #nexaBotBtn { bottom:70px; }
+  #toast { bottom:72px; }
+}
+@media(min-width:769px) {
+  #mobileNav { display:none !important; }
+}
+
 .btn-delete-lead{
   display:inline-flex;align-items:center;gap:6px;
   padding:7px 13px;border-radius:8px;font-size:11px;font-weight:700;
@@ -2570,9 +2811,309 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   border-left:1px solid var(--border);
 }
 
+
+/* ════════════════════════════════════════════════════════════════
+   NEXA CRM v2.0 — CLEAN DESIGN + MOTION SYSTEM
+   Luxury minimal · Dark gold · Interactive Canvas charts
+   Hugo Álvarez Padilla · Nexa Digital Systems
+════════════════════════════════════════════════════════════════ */
+
+/* ── Entry keyframes ── */
+@keyframes nx-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+@keyframes nx-pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes nx-fade{from{opacity:0}to{opacity:1}}
+@keyframes nx-bar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes nx-count{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes nx-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes nx-pulse-dot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}60%{opacity:.7;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+@keyframes nx-spin-slow{to{transform:rotate(360deg)}}
+
+/* ── NAV TABS — cleaner ── */
+.nav-tab{
+  border-radius:7px!important;
+  font-size:11px!important;font-weight:600!important;
+  color:rgba(240,240,248,.32)!important;
+  padding:5px 10px!important;
+  transition:color .15s,background .15s!important;
+  border:none!important;background:none!important;
+}
+.nav-tab:hover{color:rgba(240,240,248,.7)!important;background:rgba(255,255,255,.05)!important}
+.nav-tab.active{color:var(--gold2)!important;background:rgba(200,168,75,.09)!important}
+
+/* ── STATS BAR — horizontal chips ── */
+#statsBar{
+  height:38px!important;padding:0!important;
+  display:flex!important;align-items:stretch!important;
+  background:rgba(5,5,9,.92)!important;
+  border-bottom:1px solid rgba(255,255,255,.04)!important;
+  overflow-x:auto!important;scrollbar-width:none!important;gap:0!important;
+}
+#statsBar::-webkit-scrollbar{display:none}
+.sb-item{
+  display:flex!important;align-items:center!important;gap:7px!important;
+  padding:0 14px!important;border-right:1px solid rgba(255,255,255,.04)!important;
+  cursor:pointer!important;transition:background .12s!important;
+  flex-direction:row!important;min-width:auto!important;flex-shrink:0!important;white-space:nowrap!important;
+}
+.sb-item:hover{background:rgba(255,255,255,.03)!important}
+.sb-label{font-size:10px!important;color:rgba(240,240,248,.26)!important;font-weight:500!important;text-transform:none!important;letter-spacing:0!important}
+.sb-val{font-size:14px!important;font-weight:800!important;font-family:var(--mono)!important;line-height:1!important}
+.sb-date{margin-left:auto!important;font-size:10px!important;color:rgba(255,255,255,.18)!important;padding:0 14px!important;display:flex!important;align-items:center!important;flex-shrink:0!important}
+
+/* VIEW ENTRY: animaciones solo via JS, no CSS */
+
+/* ── ANALYTICS SECTION TITLES — cleaner ── */
+.analytics-section-title{
+  font-size:9px!important;font-weight:700!important;
+  color:rgba(240,240,248,.2)!important;letter-spacing:.13em!important;
+  text-transform:uppercase!important;margin-bottom:14px!important;
+  padding-bottom:0!important;border-bottom:none!important;
+  display:flex!important;align-items:center!important;gap:10px!important;
+}
+.analytics-section-title::after{
+  content:''!important;flex:1!important;height:1px!important;
+  background:linear-gradient(90deg,rgba(255,255,255,.05),transparent)!important;
+}
+
+/* ── KPI CARDS ── */
+.a-kpi{
+  border-radius:14px!important;padding:18px 20px!important;
+  border:1px solid rgba(255,255,255,.06)!important;
+  background:rgba(255,255,255,.022)!important;
+  cursor:default!important;position:relative!important;overflow:hidden!important;
+  transition:transform .22s cubic-bezier(.22,1,.36,1),border-color .22s,box-shadow .22s!important;
+}
+.a-kpi::after{content:''!important;position:absolute!important;inset:0!important;
+  background:var(--card-shine)!important;pointer-events:none!important;border-radius:inherit!important}
+.a-kpi:hover{transform:translateY(-5px)!important;border-color:rgba(255,255,255,.11)!important;
+  box-shadow:0 14px 40px rgba(0,0,0,.5)!important}
+.a-kpi .val{
+  font-size:30px!important;font-weight:900!important;
+  font-family:var(--mono)!important;line-height:1!important;letter-spacing:-.04em!important;
+  transition:transform .2s cubic-bezier(.22,1,.36,1)!important;
+}
+.a-kpi:hover .val{transform:scale(1.05)!important}
+.a-kpi .label{font-size:11px!important;color:rgba(240,240,248,.38)!important;margin-top:8px!important;font-weight:500!important}
+.a-kpi .sub{font-size:10px!important;color:rgba(240,240,248,.2)!important;margin-top:3px!important}
+
+/* ── EXEC DASHBOARD ── */
+.exec-title{font-family:var(--display)!important;font-size:22px!important;font-weight:900!important;letter-spacing:-.02em!important;margin-bottom:2px!important}
+.exec-sub{font-size:11px!important;color:rgba(240,240,248,.28)!important;margin-bottom:20px!important}
+.exec-kpi{
+  border-radius:14px!important;padding:18px 20px!important;
+  border:1px solid rgba(255,255,255,.06)!important;
+  background:rgba(255,255,255,.022)!important;
+  position:relative!important;overflow:hidden!important;
+  transition:transform .22s cubic-bezier(.22,1,.36,1),border-color .22s,box-shadow .22s!important;
+  cursor:default!important;
+}
+.exec-kpi::after{content:''!important;position:absolute!important;inset:0!important;background:var(--card-shine)!important;pointer-events:none!important;border-radius:inherit!important}
+.exec-kpi:hover{transform:translateY(-4px)!important;border-color:rgba(255,255,255,.11)!important;box-shadow:0 12px 36px rgba(0,0,0,.48)!important}
+.exec-kpi.ok{border-color:rgba(34,197,94,.1)!important}
+.exec-kpi.gold{border-color:rgba(200,168,75,.1)!important}
+.exec-kpi.bad{border-color:rgba(244,63,94,.1)!important}
+.exec-kpi-val{font-size:28px!important;font-weight:900!important;font-family:var(--mono)!important;line-height:1!important;letter-spacing:-.04em!important;transition:transform .2s cubic-bezier(.22,1,.36,1)!important}
+.exec-kpi:hover .exec-kpi-val{transform:scale(1.04)!important}
+.exec-kpi-lbl{font-size:10px!important;color:rgba(240,240,248,.28)!important;margin-top:7px!important;text-transform:uppercase!important;letter-spacing:.09em!important;font-weight:600!important}
+.exec-kpi-delta{font-size:10px!important;margin-top:5px!important;font-weight:700!important}
+
+/* ── EXEC SECTION TITLES ── */
+.exec-section{margin-bottom:28px!important}
+.exec-section-title{
+  font-size:9px!important;font-weight:700!important;color:rgba(240,240,248,.2)!important;
+  letter-spacing:.13em!important;text-transform:uppercase!important;
+  margin-bottom:12px!important;padding-bottom:0!important;border-bottom:none!important;
+  display:flex!important;align-items:center!important;gap:10px!important;
+}
+.exec-section-title::after{content:''!important;flex:1!important;height:1px!important;background:linear-gradient(90deg,rgba(255,255,255,.05),transparent)!important}
+
+/* ── EXEC CARDS ── */
+.exec-card{
+  background:rgba(255,255,255,.022)!important;
+  border:1px solid rgba(255,255,255,.06)!important;
+  border-radius:14px!important;padding:18px 20px!important;
+  transition:border-color .18s!important;position:relative!important;overflow:hidden!important;
+}
+.exec-card:hover{border-color:rgba(255,255,255,.09)!important}
+.exec-card-title{
+  font-size:9px!important;font-weight:700!important;color:rgba(240,240,248,.22)!important;
+  letter-spacing:.12em!important;text-transform:uppercase!important;margin-bottom:14px!important;
+}
+
+/* ── EXEC BARS (animated) ── */
+.exec-bar-row{display:flex!important;align-items:center!important;gap:10px!important;margin-bottom:9px!important}
+.exec-bar-lbl{font-size:10px!important;color:rgba(240,240,248,.38)!important;width:100px!important;flex-shrink:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+.exec-bar-track{flex:1!important;height:5px!important;background:rgba(255,255,255,.05)!important;border-radius:999px!important;overflow:hidden!important}
+.exec-bar-fill{
+  height:100%!important;border-radius:inherit!important;
+  width:0!important;transform-origin:left!important;
+  transition:width .9s cubic-bezier(.22,1,.36,1)!important;
+}
+.exec-bar-val{font-size:10px!important;color:rgba(240,240,248,.3)!important;font-family:var(--mono)!important;width:55px!important;text-align:right!important;flex-shrink:0!important}
+
+/* ── TABLES ── */
+.pipe-table{width:100%!important;border-collapse:collapse!important}
+.pipe-table th{
+  font-size:9px!important;font-weight:700!important;color:rgba(240,240,248,.2)!important;
+  letter-spacing:.1em!important;text-transform:uppercase!important;
+  padding:8px 12px!important;border-bottom:1px solid rgba(255,255,255,.05)!important;background:transparent!important;text-align:left!important;
+}
+.pipe-table td{padding:10px 12px!important;font-size:12px!important;border-bottom:1px solid rgba(255,255,255,.025)!important;transition:background .1s!important}
+.pipe-table tr:hover td{background:rgba(255,255,255,.028)!important}
+
+/* ── PROGRESS BAR (animated) ── */
+.progress-bar{background:rgba(255,255,255,.05)!important;border-radius:999px!important;height:4px!important;overflow:hidden!important}
+.progress-fill{height:100%!important;border-radius:inherit!important;width:0!important;transition:width .9s cubic-bezier(.22,1,.36,1)!important}
+
+/* ── PANELS ── */
+.panel-hd{border-bottom:1px solid rgba(255,255,255,.05)!important;padding:12px 16px!important}
+.panel-title{font-size:10px!important;font-weight:700!important;letter-spacing:.1em!important;text-transform:uppercase!important;color:rgba(240,240,248,.3)!important}
+
+/* ── LEAD TABLE ── */
+#leadsTable th{
+  font-size:9px!important;font-weight:700!important;letter-spacing:.09em!important;
+  text-transform:uppercase!important;color:rgba(240,240,248,.2)!important;
+  padding:8px 12px!important;background:rgba(0,0,0,.22)!important;
+  position:sticky!important;top:0!important;z-index:2!important;
+  border-bottom:1px solid rgba(255,255,255,.05)!important;
+}
+#leadsTable td{padding:9px 12px!important;font-size:12px!important;border-bottom:1px solid rgba(255,255,255,.025)!important;transition:background .08s!important}
+#leadsTable tbody tr:hover td{background:rgba(255,255,255,.03)!important}
+
+/* ── MODAL UPGRADE ── */
+.modal-box{
+  border-radius:18px!important;border:1px solid rgba(255,255,255,.08)!important;
+  background:rgba(8,8,14,.97)!important;backdrop-filter:blur(36px)!important;
+  box-shadow:0 28px 72px rgba(0,0,0,.7)!important;
+}
+.modal-header{border-bottom:1px solid rgba(255,255,255,.06)!important;padding:16px 22px!important}
+.modal-title{font-size:15px!important;font-weight:800!important}
+
+/* ── BUTTONS ── */
+.btn-gold,.hdr-btn.gold{
+  background:linear-gradient(135deg,#C8A84B,#E4C46A)!important;color:#000!important;
+  font-weight:800!important;border-radius:9px!important;border:none!important;
+  transition:transform .18s,box-shadow .18s!important;
+}
+.btn-gold:hover,.hdr-btn.gold:hover{transform:translateY(-1px)!important;box-shadow:0 5px 18px rgba(200,168,75,.35)!important}
+.hdr-btn{border-radius:8px!important;font-size:11px!important;font-weight:600!important;padding:5px 11px!important}
+
+/* ── PIPELINE CARDS ── */
+.pipe-card{border-radius:12px!important;transition:transform .2s cubic-bezier(.22,1,.36,1),box-shadow .2s!important}
+.pipe-card:hover{transform:translateY(-4px)!important;box-shadow:0 10px 28px rgba(0,0,0,.45)!important}
+
+/* ── TOAST ── */
+#toast{border-radius:12px!important;border:1px solid rgba(255,255,255,.08)!important;backdrop-filter:blur(28px)!important;background:rgba(8,8,14,.96)!important;box-shadow:0 8px 36px rgba(0,0,0,.5)!important}
+
+/* ── CANVAS CHART TOOLTIP ── */
+#nxTooltip{
+  position:fixed;z-index:9999;pointer-events:none;
+  background:rgba(6,6,12,.96);border:1px solid rgba(255,255,255,.1);
+  border-radius:9px;padding:9px 13px;
+  font-family:var(--mono);font-size:11px;color:var(--t1);
+  white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5);
+  opacity:0;transform:translateY(3px);
+  transition:opacity .12s,transform .12s;
+}
+#nxTooltip.show{opacity:1;transform:none}
+
+/* ── CANVAS CHART CARD ── */
+.nx-chart-card{
+  background:rgba(255,255,255,.022);border:1px solid rgba(255,255,255,.06);
+  border-radius:14px;padding:18px 20px 14px;position:relative;overflow:hidden;
+}
+.nx-chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.18),transparent)}
+.nx-chart-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+.nx-chart-label{font-size:9px;font-weight:700;color:rgba(240,240,248,.22);letter-spacing:.12em;text-transform:uppercase}
+.nx-chart-big{font-size:22px;font-weight:900;font-family:var(--mono);color:var(--t1);letter-spacing:-.03em;}
+.nx-chart-delta{font-size:10px;font-weight:700;margin-left:8px}
+.nx-chart-delta.up{color:#4ade80}.nx-chart-delta.down{color:#f87171}
+
+/* ── LIVE INDICATOR ── */
+.nx-live{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;color:rgba(34,197,94,.6);letter-spacing:.08em}
+.nx-live-dot{width:5px;height:5px;border-radius:50%;background:#22c55e;animation:nx-pulse-dot 2s ease-in-out infinite}
+
+/* ── ANALYTICS WRAP ── */
+.analytics-wrap{max-width:1180px!important;padding:26px 30px!important}
+.exec-wrap{max-width:1260px!important;padding:26px 30px!important}
+
+/* ── ANALYTICS GRID OVERLAY (charts section) ── */
+.nx-analytics-charts{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:24px}
+.nx-analytics-charts .span2{grid-column:1/-1}
+@media(max-width:900px){.nx-analytics-charts{grid-template-columns:1fr}}
+
+/* ── STAGGER animations for kpi grid ── */
+/* stagger via JS */
+/* exec stagger via JS */
+
+/* ── Chart rows responsive ── */
+#nxAnalyticsChartRow{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:24px}
+#nxPipeChartRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+@media(max-width:900px){
+  #nxAnalyticsChartRow{grid-template-columns:1fr!important}
+  #nxPipeChartRow{grid-template-columns:1fr!important}
+  #nxPipeChartRow .nx-chart-card{grid-column:auto!important}
+}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+  body{padding-bottom:calc(60px + env(safe-area-inset-bottom))!important}
+  header{height:50px!important;padding:0 12px!important}
+  .hdr-logo-word{display:none!important}
+  .hdr-nav{display:none!important}
+  #mobileNav{
+    position:fixed;bottom:0;left:0;right:0;
+    height:calc(56px + env(safe-area-inset-bottom));
+    background:rgba(4,4,8,.97);border-top:1px solid rgba(255,255,255,.07);
+    backdrop-filter:blur(24px);
+    display:flex;align-items:flex-start;padding-top:6px;
+    padding-bottom:env(safe-area-inset-bottom);
+    z-index:900;box-shadow:0 -4px 20px rgba(0,0,0,.6);
+  }
+  .mob-nav-btn{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+    background:none;border:none;font-size:9px;font-weight:700;
+    color:rgba(240,240,248,.32);font-family:var(--sans);
+    letter-spacing:.04em;cursor:pointer;padding:3px 2px;
+    transition:color .15s;text-transform:uppercase;
+  }
+  .mob-icon{font-size:16px;line-height:1}
+  .mob-nav-btn.active{color:var(--gold2)}
+  .exec-kpi-grid,.analytics-grid{grid-template-columns:1fr 1fr!important}
+  .nx-analytics-charts{grid-template-columns:1fr!important}
+  .analytics-wrap,.exec-wrap{padding:14px!important}
+  .pipe-col{min-width:240px}
+  #fbBack{bottom:68px}#fbOp{bottom:68px;right:140px}#nexaBotBtn{bottom:70px}#toast{bottom:72px}
+}
+@media(min-width:769px){#mobileNav{display:none!important}}
+
 </style>
 </head>
 <body>
+
+<!-- ── CRÉDITOS FIJOS ── -->
+<div id="nexaCredits">✦ Diseñado por <strong>Hugo Álvarez Padilla</strong> · NEXA v1.0</div>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+<nav id="mobileNav">
+  <button class="mob-nav-btn active" id="mobNavLeads" onclick="navTo('leads',null);setMobNav(this)">
+    <span class="mob-icon">◈</span>CRM
+  </button>
+  <button class="mob-nav-btn" id="mobNavCC" onclick="navTo('callcenter',null);setMobNav(this)">
+    <span class="mob-icon">📞</span>Llamadas
+  </button>
+  <button class="mob-nav-btn" id="mobNavPipeline" onclick="navTo('pipeline',null);setMobNav(this)">
+    <span class="mob-icon">◈</span>Pipeline
+  </button>
+  <button class="mob-nav-btn" id="mobNavAnalytics" onclick="navTo('analytics',null);setMobNav(this)">
+    <span class="mob-icon">◎</span>Stats
+  </button>
+  <button class="mob-nav-btn" id="mobNavMenu" onclick="toggleAppMenu()">
+    <span class="mob-icon">⋯</span>Más
+  </button>
+</nav>
 
 <div class="grid-bg"></div>
 
@@ -2601,7 +3142,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
     <div class="ls-particle" style="left:91%;bottom:0;--dur:15s;--del:-11s;--dx:-15px;background:rgba(139,92,246,.5)"></div>
   </div>
 
-  <!-- Left panel: branding -->
+  <!-- Left panel: branding + dashboard visual -->
   <div class="ls-left">
     <div class="ls-brand">
       <div class="ls-logo-wrap">
@@ -2611,17 +3152,113 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
           <circle cx="72" cy="18" r="5" fill="#C8A84B" opacity=".9"/>
         </svg>
       </div>
-      <div class="ls-wordmark">NEXA<span>CRM</span></div>
-      <div class="ls-tagline">Digital Systems · Enterprise</div>
+      <div>
+        <div class="ls-wordmark">NEXA<span>CRM</span></div>
+        <div class="ls-tagline">Enterprise Sales Platform</div>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:5px;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);border-radius:999px;padding:3px 9px;font-size:7.5px;font-weight:800;color:rgba(34,197,94,.75);letter-spacing:.1em;font-family:var(--mono);flex-shrink:0">
+        <span style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.9);animation:blink 1.6s ease-in-out infinite;display:inline-block"></span>LIVE
+      </div>
     </div>
-    <div class="ls-headline">Tu equipo de ventas.<br><span style="color:var(--gold2)">Máximo rendimiento.</span></div>
-    <div class="ls-features">
-      <div class="ls-feat"><span class="ls-feat-dot"></span>Call Center con power dialer</div>
-      <div class="ls-feat"><span class="ls-feat-dot"></span>Pipeline visual en tiempo real</div>
-      <div class="ls-feat"><span class="ls-feat-dot"></span>Propuestas generadas en segundos</div>
-      <div class="ls-feat"><span class="ls-feat-dot"></span>Bot copiloto con insights diarios</div>
+
+    <div style="margin-bottom:clamp(8px,1.4vh,16px)">
+      <h1 style="font-family:var(--display);font-size:clamp(22px,3vw,40px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-.03em;margin:0 0 6px">
+        Cierra más.<br>
+        <span style="background:linear-gradient(125deg,#f0d870 0%,#C8A84B 40%,#a07020 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 16px rgba(200,168,75,.4))">Vende mejor.</span>
+      </h1>
+      <p style="font-size:11px;color:rgba(255,255,255,.34);line-height:1.6;margin:0">CRM Enterprise · Pipeline, llamadas e IA en tiempo real.</p>
     </div>
-    <div class="ls-version">v23.0 Enterprise SaaS · Nexa Digital Systems</div>
+
+    <!-- Dashboard mini -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:7px;min-height:0;overflow:hidden">
+
+      <!-- Área chart canvas -->
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.075);border-radius:11px;padding:10px 12px 8px;position:relative;overflow:hidden;flex-shrink:0">
+        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.4),transparent)"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:8.5px;color:rgba(255,255,255,.35);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase">Ventas · últimos 30 días</span>
+          <span id="lsDcVal" style="font-size:14px;font-weight:900;color:var(--gold2);font-family:var(--mono)">€0</span>
+        </div>
+        <canvas id="lsAreaCanvas" style="display:block;width:100%;height:66px"></canvas>
+        <div style="display:flex;align-items:center;gap:5px;margin-top:4px">
+          <span style="font-size:8.5px;font-weight:700;color:#22c55e;font-family:var(--mono)">↑ +24% vs mes anterior</span>
+          <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(34,197,94,.3),transparent)"></div>
+        </div>
+      </div>
+
+      <!-- Donut + Actividad -->
+      <div style="display:flex;gap:7px;min-height:0;flex:1">
+        <div style="width:110px;flex-shrink:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.075);border-radius:11px;padding:10px 12px 8px;position:relative;overflow:hidden;display:flex;flex-direction:column">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.4),transparent)"></div>
+          <span style="font-size:8.5px;color:rgba(255,255,255,.35);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;display:block">Pipeline</span>
+          <svg viewBox="0 0 80 80" style="width:70px;height:70px;display:block;margin:2px auto 5px">
+            <circle fill="none" stroke="rgba(255,255,255,.05)" stroke-width="9" cx="40" cy="40" r="32"/>
+            <circle fill="none" stroke="#C8A84B" stroke-width="9" stroke-linecap="round" cx="40" cy="40" r="32"
+              style="transform-origin:40px 40px;transform:rotate(-90deg);stroke-dasharray:0 201.06;animation:donutGrow 1.2s cubic-bezier(.22,1,.36,1) .15s forwards;--da:136;--do:0"/>
+            <circle fill="none" stroke="#3b82f6" stroke-width="9" stroke-linecap="round" cx="40" cy="40" r="32"
+              style="transform-origin:40px 40px;transform:rotate(-90deg);stroke-dasharray:0 201.06;animation:donutGrow 1.2s cubic-bezier(.22,1,.36,1) .3s forwards;--da:43;--do:-138"/>
+            <circle fill="none" stroke="#8b5cf6" stroke-width="9" stroke-linecap="round" cx="40" cy="40" r="32"
+              style="transform-origin:40px 40px;transform:rotate(-90deg);stroke-dasharray:0 201.06;animation:donutGrow 1.2s cubic-bezier(.22,1,.36,1) .45s forwards;--da:22;--do:-183"/>
+            <text x="40" y="37" text-anchor="middle" fill="white" font-size="11" font-weight="900" font-family="monospace">68%</text>
+            <text x="40" y="47" text-anchor="middle" fill="rgba(255,255,255,.35)" font-size="5.5" font-family="monospace">WIN RATE</text>
+          </svg>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="display:flex;align-items:center;gap:4px;font-size:7.5px;color:rgba(255,255,255,.38);font-family:var(--mono)"><div style="width:6px;height:6px;border-radius:2px;background:#C8A84B;flex-shrink:0"></div>Cerrados 68%</div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:7.5px;color:rgba(255,255,255,.38);font-family:var(--mono)"><div style="width:6px;height:6px;border-radius:2px;background:#3b82f6;flex-shrink:0"></div>Activos 21%</div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:7.5px;color:rgba(255,255,255,.38);font-family:var(--mono)"><div style="width:6px;height:6px;border-radius:2px;background:#8b5cf6;flex-shrink:0"></div>Nuevos 11%</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.075);border-radius:11px;padding:10px 12px 8px;position:relative;overflow:hidden;display:flex;flex-direction:column">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,168,75,.4),transparent)"></div>
+          <span style="font-size:8.5px;color:rgba(255,255,255,.35);font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;display:block">Actividad reciente</span>
+          <div style="display:flex;flex-direction:column;gap:3px;overflow:hidden;flex:1">
+            <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:actIn .35s cubic-bezier(.22,1,.36,1) .1s both"><div style="width:5px;height:5px;border-radius:50%;background:#22c55e;flex-shrink:0"></div><span style="font-size:7.5px;color:rgba(255,255,255,.45);font-family:var(--mono);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Joel cerró Empresa A</span><span style="font-size:7px;color:rgba(255,255,255,.2);font-family:var(--mono);flex-shrink:0">2m</span></div>
+            <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:actIn .35s cubic-bezier(.22,1,.36,1) .2s both"><div style="width:5px;height:5px;border-radius:50%;background:#3b82f6;flex-shrink:0"></div><span style="font-size:7.5px;color:rgba(255,255,255,.45);font-family:var(--mono);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Llamada entrante B2B</span><span style="font-size:7px;color:rgba(255,255,255,.2);font-family:var(--mono);flex-shrink:0">5m</span></div>
+            <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:actIn .35s cubic-bezier(.22,1,.36,1) .3s both"><div style="width:5px;height:5px;border-radius:50%;background:#C8A84B;flex-shrink:0"></div><span style="font-size:7.5px;color:rgba(255,255,255,.45);font-family:var(--mono);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Nuevo lead · Madrid</span><span style="font-size:7px;color:rgba(255,255,255,.2);font-family:var(--mono);flex-shrink:0">9m</span></div>
+            <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:actIn .35s cubic-bezier(.22,1,.36,1) .4s both"><div style="width:5px;height:5px;border-radius:50%;background:#8b5cf6;flex-shrink:0"></div><span style="font-size:7.5px;color:rgba(255,255,255,.45);font-family:var(--mono);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">IA sugirió seguimiento</span><span style="font-size:7px;color:rgba(255,255,255,.2);font-family:var(--mono);flex-shrink:0">12m</span></div>
+            <div style="display:flex;align-items:center;gap:6px;padding:3px 0;animation:actIn .35s cubic-bezier(.22,1,.36,1) .5s both"><div style="width:5px;height:5px;border-radius:50%;background:#22c55e;flex-shrink:0"></div><span style="font-size:7.5px;color:rgba(255,255,255,.45);font-family:var(--mono);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Hugo cerró Empresa C</span><span style="font-size:7px;color:rgba(255,255,255,.2);font-family:var(--mono);flex-shrink:0">18m</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Sparklines -->
+      <div style="display:flex;gap:7px;flex-shrink:0">
+        <div style="flex:1;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.065);border-radius:9px;padding:7px 9px 5px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:#C8A84B"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+            <span style="font-size:7.5px;color:rgba(255,255,255,.28);font-family:var(--mono);text-transform:uppercase">Llamadas</span>
+            <span id="lsK1" style="font-size:13px;font-weight:900;color:#C8A84B;font-family:var(--mono);line-height:1">0</span>
+          </div>
+          <canvas id="lsSp1" style="display:block;width:100%;height:20px"></canvas>
+        </div>
+        <div style="flex:1;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.065);border-radius:9px;padding:7px 9px 5px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:#3b82f6"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+            <span style="font-size:7.5px;color:rgba(255,255,255,.28);font-family:var(--mono);text-transform:uppercase">Leads</span>
+            <span id="lsK2" style="font-size:13px;font-weight:900;color:#3b82f6;font-family:var(--mono);line-height:1">0</span>
+          </div>
+          <canvas id="lsSp2" style="display:block;width:100%;height:20px"></canvas>
+        </div>
+        <div style="flex:1;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.065);border-radius:9px;padding:7px 9px 5px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:#8b5cf6"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+            <span style="font-size:7.5px;color:rgba(255,255,255,.28);font-family:var(--mono);text-transform:uppercase">Conversión</span>
+            <span id="lsK3" style="font-size:13px;font-weight:900;color:#8b5cf6;font-family:var(--mono);line-height:1">0%</span>
+          </div>
+          <canvas id="lsSp3" style="display:block;width:100%;height:20px"></canvas>
+        </div>
+      </div>
+
+    </div><!-- end dashboard -->
+
+    <!-- Firma -->
+    <div style="display:flex;align-items:center;gap:9px;padding:7px 10px;background:rgba(200,168,75,.03);border:1px solid rgba(200,168,75,.08);border-radius:8px;flex-shrink:0;margin-top:auto;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:-120%;width:80%;height:100%;background:linear-gradient(90deg,transparent,rgba(200,168,75,.06),transparent);animation:sigSheen 6s ease-in-out 3s infinite"></div>
+      <svg width="18" height="13" viewBox="0 0 18 13" fill="none" style="flex-shrink:0;opacity:.6"><path d="M1 10 Q4 3 7 6 Q11 10 14 3 L17 1" stroke="#C8A84B" stroke-width="1.4" stroke-linecap="round" fill="none"/><circle cx="17" cy="1" r="1.5" fill="#C8A84B"/></svg>
+      <span style="font-size:7.5px;color:rgba(255,255,255,.15);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;flex-shrink:0">Created by</span>
+      <span style="font-size:10.5px;font-weight:800;background:linear-gradient(90deg,rgba(228,196,106,.8),rgba(200,168,75,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:var(--display);letter-spacing:.01em;white-space:nowrap;flex:1">Hugo Álvarez Padilla</span>
+      <span style="font-size:7.5px;color:rgba(200,168,75,.28);font-family:var(--mono);letter-spacing:.08em;background:rgba(200,168,75,.06);border:1px solid rgba(200,168,75,.1);padding:2px 6px;border-radius:4px;flex-shrink:0">v1.0</span>
+    </div>
   </div>
 
   <!-- Right panel: login -->
@@ -2893,7 +3530,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
       <span class="menu-icon">◎</span><span class="menu-label">Guía completa</span>
     </button>
     <button class="menu-item" onclick="closeAppMenu();openModal('changelogModal')">
-      <span class="menu-icon">📋</span><span class="menu-label">Changelog</span><span class="menu-badge">v5.0</span>
+      <span class="menu-icon">📋</span><span class="menu-label">Changelog</span><span class="menu-badge">v1.0</span>
     </button>
   </div>
   <div class="menu-divider"></div>
@@ -3274,6 +3911,26 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
         <div style="font-size:13px;color:var(--t3)">Métricas calculadas en tiempo real desde estados y fechas</div>
       </div>
       <div class="analytics-grid" id="analyticsKpiGrid"></div>
+      <!-- ── CHARTS ROW v2 ── -->
+      <div class="analytics-section" id="nxAnalyticsChartRow" style="display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:24px">
+        <div class="nx-chart-card" style="animation-delay:.1s">
+          <div class="nx-chart-hdr">
+            <div>
+              <div class="nx-chart-label">Actividad · últimos 14 días</div>
+              <div style="display:flex;gap:14px;margin-top:6px">
+                <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(240,240,248,.32)"><span style="width:10px;height:2px;background:#C8A84B;display:inline-block;border-radius:2px"></span>Llamadas</span>
+                <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(240,240,248,.32)"><span style="width:10px;height:2px;background:#3b82f6;display:inline-block;border-radius:2px"></span>Leads nuevos</span>
+              </div>
+            </div>
+          </div>
+          <div id="nxLine1"></div>
+        </div>
+        <div class="nx-chart-card" style="animation-delay:.15s">
+          <div class="nx-chart-label" style="margin-bottom:14px">Pipeline por estado</div>
+          <div id="nxDonut1"></div>
+        </div>
+      </div>
+
       <div class="analytics-section">
         <div class="analytics-section-title">Pipeline por estado</div>
         <table class="pipe-table"><thead><tr><th>Estado</th><th>Leads</th><th>%</th><th style="min-width:200px">Distribución</th></tr></thead><tbody id="analyticsPipeTable"></tbody></table>
@@ -4136,6 +4793,18 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
           </div>
         </div>
       </div>
+      <!-- ── PIPELINE CHARTS ── -->
+      <div id="nxPipeChartRow" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px">
+        <div class="nx-chart-card" style="grid-column:span 2;animation-delay:.05s">
+          <div class="nx-chart-label" style="margin-bottom:12px">Conversión por etapa</div>
+          <div id="nxPipeBars"></div>
+        </div>
+        <div class="nx-chart-card" style="animation-delay:.1s">
+          <div class="nx-chart-label" style="margin-bottom:10px">Distribución</div>
+          <div id="nxPipeDonut"></div>
+        </div>
+      </div>
+
       <!-- Kanban columns -->
       <div class="pipeline-kanban" id="pipelineKanban"></div>
       <!-- Forecast breakdown -->
@@ -18210,6 +18879,607 @@ window.nexaAITab = function(tab) {
   };
 })();
 </script>
+
+<!-- ══ NEXA CRM v2.0 — LOGIN CHARTS (sin parpadeo) ══ -->
+<script>
+!function(){
+  var DPR=window.devicePixelRatio||1;
+  function mkC(el,w,h){el.width=w*DPR;el.height=h*DPR;el.style.width=w+'px';el.style.height=h+'px';var ctx=el.getContext('2d');ctx.scale(DPR,DPR);return ctx;}
+  function easeOut(t){return 1-Math.pow(1-Math.min(t,1),3);}
+
+  function runLoginCharts(){
+    /* ── Area chart: animación ÚNICA, se para al terminar ── */
+    var ac=document.getElementById('lsAreaCanvas');
+    if(!ac)return;
+    var W=Math.max(ac.parentElement.clientWidth-24,160),H=66;
+    var ctx=mkC(ac,W,H);
+    var data=[14,18,15,22,19,27,24,31,27,34,30,37,33,40,36,43,39,46,42,50,45,53,48,56,51,59,54,62,57,65];
+    var mn=10,mx=68;
+    function px(i){return(i/(data.length-1))*(W-4)+2;}
+    function py(v){return H-5-((v-mn)/(mx-mn))*(H-12);}
+    var valEl=document.getElementById('lsDcVal');
+    var t0=null,done=false;
+
+    function drawArea(ts){
+      if(done)return;
+      if(!t0)t0=ts;
+      var prog=Math.min((ts-t0)/1600,1);
+      var ease=easeOut(prog);
+      var cnt=Math.max(2,Math.floor(ease*data.length));
+      ctx.clearRect(0,0,W,H);
+      /* grid lines */
+      ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;
+      [.35,.7].forEach(function(f){var y=Math.round(H*f)+.5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();});
+      /* area fill */
+      var grd=ctx.createLinearGradient(0,0,0,H);
+      grd.addColorStop(0,'rgba(200,168,75,.26)');grd.addColorStop(1,'rgba(200,168,75,.00)');
+      ctx.beginPath();ctx.moveTo(px(0),H);ctx.lineTo(px(0),py(data[0]));
+      for(var i=1;i<cnt;i++){var cpx=(px(i-1)+px(i))/2;ctx.bezierCurveTo(cpx,py(data[i-1]),cpx,py(data[i]),px(i),py(data[i]));}
+      ctx.lineTo(px(cnt-1),H);ctx.closePath();ctx.fillStyle=grd;ctx.fill();
+      /* line */
+      ctx.beginPath();ctx.moveTo(px(0),py(data[0]));
+      for(var i=1;i<cnt;i++){var cpx=(px(i-1)+px(i))/2;ctx.bezierCurveTo(cpx,py(data[i-1]),cpx,py(data[i]),px(i),py(data[i]));}
+      ctx.strokeStyle='rgba(200,168,75,.9)';ctx.lineWidth=2;ctx.lineJoin='round';ctx.stroke();
+      /* dot final — estático una vez terminado */
+      var lx=px(cnt-1),ly=py(data[cnt-1]);
+      ctx.beginPath();ctx.arc(lx,ly,4,0,Math.PI*2);ctx.fillStyle='rgba(200,168,75,.15)';ctx.fill();
+      ctx.beginPath();ctx.arc(lx,ly,2.5,0,Math.PI*2);ctx.fillStyle='#E4C46A';ctx.fill();
+      ctx.beginPath();ctx.arc(lx,ly,1.2,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+      if(valEl)valEl.textContent='€'+Math.floor(ease*84500).toLocaleString('es');
+      if(prog<1){requestAnimationFrame(drawArea);}else{done=true;}
+    }
+    requestAnimationFrame(drawArea);
+
+    /* ── Sparklines: animación única, sin loop ── */
+    function spark(id,color,final,suffix,lblId){
+      var c=document.getElementById(id);if(!c)return;
+      var W2=Math.max(c.offsetWidth||110,60),H2=20;
+      var sctx=mkC(c,W2,H2);
+      var pts=[],v=25+Math.random()*30;
+      for(var i=0;i<12;i++){v=Math.max(8,Math.min(90,v+(Math.random()-.3)*20));pts.push(v);}
+      var lo=Math.min.apply(null,pts),hi=Math.max.apply(null,pts)+1;
+      function sx(i){return(i/(pts.length-1))*(W2-2)+1;}
+      function sy(v){return H2-2-((v-lo)/(hi-lo))*(H2-5);}
+      var lbl=document.getElementById(lblId),t1=null;
+      function ds(ts){
+        if(!t1)t1=ts;
+        var p=Math.min((ts-t1)/1200,1),e=easeOut(p),cnt=Math.max(2,Math.floor(e*pts.length));
+        sctx.clearRect(0,0,W2,H2);
+        var g=sctx.createLinearGradient(0,0,0,H2);g.addColorStop(0,color+'40');g.addColorStop(1,color+'00');
+        sctx.beginPath();sctx.moveTo(sx(0),H2);sctx.lineTo(sx(0),sy(pts[0]));
+        for(var i=1;i<cnt;i++){var mcx=(sx(i-1)+sx(i))/2;sctx.bezierCurveTo(mcx,sy(pts[i-1]),mcx,sy(pts[i]),sx(i),sy(pts[i]));}
+        sctx.lineTo(sx(cnt-1),H2);sctx.closePath();sctx.fillStyle=g;sctx.fill();
+        sctx.beginPath();sctx.moveTo(sx(0),sy(pts[0]));
+        for(var i=1;i<cnt;i++){var mcx=(sx(i-1)+sx(i))/2;sctx.bezierCurveTo(mcx,sy(pts[i-1]),mcx,sy(pts[i]),sx(i),sy(pts[i]));}
+        sctx.strokeStyle=color;sctx.lineWidth=1.5;sctx.stroke();
+        sctx.beginPath();sctx.arc(sx(cnt-1),sy(pts[cnt-1]),2.5,0,Math.PI*2);sctx.fillStyle=color;sctx.fill();
+        if(lbl)lbl.textContent=Math.floor(e*final)+suffix;
+        if(p<1)requestAnimationFrame(ds);
+        /* p===1: para sola, sin loop */
+      }
+      requestAnimationFrame(ds);
+    }
+    spark('lsSp1','#C8A84B',127,'','lsK1');
+    spark('lsSp2','#3b82f6',43,'','lsK2');
+    spark('lsSp3','#8b5cf6',68,'%','lsK3');
+  }
+
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(runLoginCharts,120);});
+  else setTimeout(runLoginCharts,120);
+}();
+</script>
+
+<script>
+(function(){
+  'use strict';
+  /* ── MOBILE NAV ── */
+  window.setMobNav = function(btn) {
+    document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  };
+  const _origNavTo = window.navTo;
+  if(_origNavTo) {
+    window.navTo = function(view, el) {
+      _origNavTo(view, el);
+      const map = {leads:'mobNavLeads',callcenter:'mobNavCC',pipeline:'mobNavPipeline',analytics:'mobNavAnalytics'};
+      if(map[view]) {
+        document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+        const t = document.getElementById(map[view]);
+        if(t) t.classList.add('active');
+      }
+    };
+  }
+  /* ── CREDITS fade post-login ── */
+  const credits = document.getElementById('nexaCredits');
+  document.addEventListener('nexa:login', () => {
+    setTimeout(() => {
+      if(credits){credits.style.opacity='0.2';credits.style.fontSize='8px';}
+    }, 1000);
+  });
+  /* ── SPARKLINES en KPI boxes del dashboard ── */
+  window.renderSparkline = function(container, data, color) {
+    if(!container||!data||!data.length) return;
+    const max = Math.max(...data, 1);
+    container.innerHTML = data.map(v => {
+      const h = Math.max(4, Math.round((v/max)*100));
+      const isPeak = v===Math.max(...data);
+      return `<div class="sparkline-bar${isPeak?' peak':''}" style="height:${h}%;background:${isPeak?(color||'var(--gold)'):'rgba(200,168,75,.3)'}"></div>`;
+    }).join('');
+  };
+  console.log('[NEXA v1.0] Enterprise · Hugo Álvarez Padilla · Nexa Digital Systems');
+})();
+</script>
+
+<!-- ════════════════════════════════════════════════════════════
+     NEXA CRM v2.0 — INTERACTIVE CHARTS ENGINE
+     Canvas charts con hover · Animaciones de entrada
+     Hugo Álvarez Padilla · Nexa Digital Systems
+════════════════════════════════════════════════════════════ -->
+<script>
+!function(){'use strict';
+
+/* ── DPR & canvas setup ── */
+var DPR=window.devicePixelRatio||1;
+function mkCanvas(el,w,h){
+  var c=document.createElement('canvas');
+  c.width=w*DPR;c.height=h*DPR;c.style.width=w+'px';c.style.height=h+'px';
+  el.appendChild(c);
+  var ctx=c.getContext('2d');ctx.scale(DPR,DPR);
+  return {c:c,ctx:ctx};
+}
+function easeOut(t){return 1-Math.pow(1-Math.min(t,1),3)}
+function lerp(a,b,t){return a+(b-a)*t}
+
+/* ── TOOLTIP ── */
+var _tip=null;
+function tip(){if(!_tip){_tip=document.createElement('div');_tip.id='nxTooltip';document.body.appendChild(_tip);}return _tip;}
+function showTip(x,y,html){var t=tip();t.innerHTML=html;t.style.left=(x+14)+'px';t.style.top=(y-38)+'px';t.classList.add('show');}
+function hideTip(){tip().classList.remove('show');}
+
+/* ══════════════════════════════════════════════
+   LINE AREA CHART — hover interactivo
+══════════════════════════════════════════════ */
+window.nxLine=function(containerId,datasets,labels,opts){
+  var el=document.getElementById(containerId);if(!el)return;
+  opts=opts||{};
+  var W=Math.max(el.offsetWidth||480,200),H=opts.H||150;
+  var pT=18,pB=28,pL=opts.pL||32,pR=12;
+  el.innerHTML='';
+  var cc=mkCanvas(el,W,H),c=cc.c,ctx=cc.ctx;
+  var all=[];datasets.forEach(function(d){all=all.concat(d.data);});
+  var maxV=Math.max.apply(null,all.concat([1]));
+  var t=0,hov=-1,raf=null;
+  function px(i){return pL+(i/(labels.length-1||1))*(W-pL-pR);}
+  function py(v){return pT+(1-v/maxV)*(H-pT-pB);}
+  function draw(prog){
+    ctx.clearRect(0,0,W,H);
+    /* grid */
+    [0.25,0.5,0.75,1].forEach(function(f){
+      var y=Math.round(pT+(1-f)*(H-pT-pB))+.5;
+      ctx.beginPath();ctx.moveTo(pL,y);ctx.lineTo(W-pR,y);
+      ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;ctx.stroke();
+      ctx.fillStyle='rgba(240,240,248,.16)';ctx.font='9px "IBM Plex Mono",monospace';
+      ctx.textAlign='right';ctx.textBaseline='middle';
+      ctx.fillText(Math.round(maxV*f),pL-4,y);
+    });
+    /* x labels */
+    ctx.fillStyle='rgba(240,240,248,.18)';ctx.font='9px "IBM Plex Mono",monospace';ctx.textAlign='center';ctx.textBaseline='top';
+    var step=Math.ceil(labels.length/6);
+    labels.forEach(function(l,i){if(i%step===0)ctx.fillText(l,px(i),H-pB+5);});
+    var cnt=Math.max(2,Math.round(prog*labels.length));
+    datasets.forEach(function(ds){
+      var clr=ds.color||'#C8A84B';
+      /* area */
+      var grd=ctx.createLinearGradient(0,pT,0,H-pB);
+      grd.addColorStop(0,clr+'2a');grd.addColorStop(1,clr+'00');
+      ctx.beginPath();ctx.moveTo(px(0),H-pB);ctx.lineTo(px(0),py(ds.data[0]||0));
+      for(var i=1;i<cnt;i++){var mx=(px(i-1)+px(i))/2;ctx.bezierCurveTo(mx,py(ds.data[i-1]||0),mx,py(ds.data[i]||0),px(i),py(ds.data[i]||0));}
+      ctx.lineTo(px(cnt-1),H-pB);ctx.closePath();ctx.fillStyle=grd;ctx.fill();
+      /* line */
+      ctx.beginPath();ctx.moveTo(px(0),py(ds.data[0]||0));
+      for(var i=1;i<cnt;i++){var mx=(px(i-1)+px(i))/2;ctx.bezierCurveTo(mx,py(ds.data[i-1]||0),mx,py(ds.data[i]||0),px(i),py(ds.data[i]||0));}
+      ctx.strokeStyle=clr;ctx.lineWidth=2;ctx.lineJoin='round';ctx.stroke();
+      /* dots */
+      if(prog>0.5){
+        for(var i=0;i<cnt;i++){
+          var isH=hov===i;
+          ctx.beginPath();ctx.arc(px(i),py(ds.data[i]||0),isH?5:2.5,0,Math.PI*2);
+          ctx.fillStyle=isH?clr:'#050508';ctx.fill();
+          ctx.strokeStyle=clr;ctx.lineWidth=1.5;ctx.stroke();
+        }
+      }
+    });
+    /* hover line */
+    if(hov>=0&&hov<labels.length){
+      ctx.beginPath();ctx.moveTo(px(hov)+.5,pT);ctx.lineTo(px(hov)+.5,H-pB);
+      ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.setLineDash([3,4]);ctx.stroke();ctx.setLineDash([]);
+    }
+  }
+  function animate(ts){t+=.025;draw(easeOut(t));if(t<1)raf=requestAnimationFrame(animate);}
+  requestAnimationFrame(animate);
+  c.addEventListener('mousemove',function(e){
+    var r=c.getBoundingClientRect(),mx=e.clientX-r.left;
+    var best=-1,bd=9999;
+    labels.forEach(function(_,i){var d=Math.abs(px(i)-mx);if(d<bd){bd=d;best=i;}});
+    if(bd<26){
+      if(hov!==best){hov=best;draw(1);}
+      var lines=datasets.map(function(ds){return'<span style="color:'+ds.color+'">●</span> '+ds.label+': <b>'+(ds.data[best]||0)+'</b>';}).join('<br>');
+      showTip(e.clientX,e.clientY,'<div style="color:rgba(240,240,248,.38);margin-bottom:4px;font-size:10px">'+labels[best]+'</div>'+lines);
+    }else{hov=-1;draw(1);hideTip();}
+  });
+  c.addEventListener('mouseleave',function(){hov=-1;draw(1);hideTip();});
+};
+
+/* ══════════════════════════════════════════════
+   DONUT CHART — hover por segmento + legend
+══════════════════════════════════════════════ */
+window.nxDonut=function(containerId,data,opts){
+  var el=document.getElementById(containerId);if(!el)return;
+  opts=opts||{};
+  var SZ=opts.size||156;
+  el.innerHTML='';
+  var wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;align-items:center;gap:18px;flex-wrap:wrap';
+  el.appendChild(wrap);
+  var cWrap=document.createElement('div');
+  cWrap.style.cssText='position:relative;width:'+SZ+'px;height:'+SZ+'px;flex-shrink:0';
+  wrap.appendChild(cWrap);
+  var cc=mkCanvas(cWrap,SZ,SZ);cc.c.style.position='absolute';cc.c.style.top='0';cc.c.style.left='0';
+  var ctx=cc.ctx,c=cc.c;
+  var total=data.reduce(function(s,d){return s+d.val;},0)||1;
+  var cx=SZ/2,cy=SZ/2,R=SZ*.38,ri=SZ*.23;
+  var GAP=.025,t=0,hov=-1;
+  /* center label */
+  var cLabel=document.createElement('div');
+  cLabel.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;transition:all .15s';
+  cWrap.appendChild(cLabel);
+  /* legend */
+  var leg=document.createElement('div');
+  leg.style.cssText='display:flex;flex-direction:column;gap:5px;flex:1;min-width:110px';
+  wrap.appendChild(leg);
+
+  function arcs(){
+    var res=[],a=-Math.PI/2;
+    data.forEach(function(d,i){
+      var sw=(d.val/total)*(Math.PI*2-data.length*GAP);
+      res.push({s:a,e:a+sw,d:d,i:i});a+=sw+GAP;
+    });return res;
+  }
+  function draw(prog){
+    ctx.clearRect(0,0,SZ,SZ);
+    var p=easeOut(prog);
+    arcs().forEach(function(a,idx){
+      var isH=hov===idx,r=isH?R+5:R;
+      var end=a.s+(a.e-a.s)*p;
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(a.s)*ri,cy+Math.sin(a.s)*ri);
+      ctx.arc(cx,cy,r,a.s,end);
+      ctx.arc(cx,cy,ri,end,a.s,true);
+      ctx.closePath();
+      ctx.fillStyle=a.d.color+(isH?'ff':'cc');
+      if(isH){ctx.shadowColor=a.d.color;ctx.shadowBlur=10;}
+      ctx.fill();ctx.shadowBlur=0;
+    });
+    /* center */
+    var hd=hov>=0?data[hov]:null;
+    cLabel.innerHTML=hd
+      ?'<div style="font-size:18px;font-weight:900;font-family:\'IBM Plex Mono\',monospace;color:'+hd.color+'">'+Math.round(hd.val/total*100)+'%</div><div style="font-size:9px;color:rgba(240,240,248,.35);margin-top:1px;max-width:56px;line-height:1.3;word-break:break-word">'+hd.label+'</div>'
+      :'<div style="font-size:20px;font-weight:900;font-family:\'IBM Plex Mono\',monospace;color:#fff">'+total+'</div><div style="font-size:9px;color:rgba(240,240,248,.25);margin-top:1px">total</div>';
+  }
+  function animate(){t+=.03;draw(t);if(t<1)requestAnimationFrame(animate);}
+  requestAnimationFrame(animate);
+  /* legend items */
+  data.forEach(function(d,i){
+    var pct=Math.round(d.val/total*100);
+    var item=document.createElement('div');
+    item.style.cssText='display:flex;align-items:center;gap:7px;padding:3px 6px;border-radius:6px;cursor:default;transition:background .12s';
+    item.innerHTML='<div style="width:7px;height:7px;border-radius:2px;background:'+d.color+';flex-shrink:0"></div>'
+      +'<span style="font-size:11px;color:rgba(240,240,248,.4);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+d.label+'</span>'
+      +'<span style="font-size:11px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:rgba(240,240,248,.65)">'+d.val+'</span>'
+      +'<span style="font-size:9px;color:rgba(240,240,248,.22);font-family:\'IBM Plex Mono\',monospace">('+pct+'%)</span>';
+    item.addEventListener('mouseenter',function(){hov=i;item.style.background='rgba(255,255,255,.04)';draw(1);});
+    item.addEventListener('mouseleave',function(){hov=-1;item.style.background='';draw(1);});
+    leg.appendChild(item);
+  });
+  c.addEventListener('mousemove',function(e){
+    var r=c.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+    var dx=mx-cx,dy=my-cy,dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist>=ri&&dist<=R+6){
+      var ang=Math.atan2(dy,dx),as=arcs(),found=-1;
+      as.forEach(function(a,idx){
+        var norm=((ang-a.s)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+        if(norm<=(a.e-a.s)&&norm>=0)found=idx;
+      });
+      if(found!==hov){hov=found;draw(1);}
+    }else if(hov!==-1){hov=-1;draw(1);}
+  });
+  c.addEventListener('mouseleave',function(){hov=-1;draw(1);});
+};
+
+/* ══════════════════════════════════════════════
+   BAR CHART HORIZONTAL — canvas interactivo
+══════════════════════════════════════════════ */
+window.nxBars=function(containerId,data,opts){
+  var el=document.getElementById(containerId);if(!el)return;
+  opts=opts||{};
+  var bH=opts.bH||26,gap=opts.gap||8,pL=opts.pL||100,pR=opts.pR||52;
+  var W=Math.max(el.offsetWidth||360,200),H=data.length*(bH+gap)+2;
+  el.innerHTML='';
+  var cc=mkCanvas(el,W,H),c=cc.c,ctx=cc.ctx;
+  var maxV=Math.max.apply(null,data.map(function(d){return d.val;}).concat([1]));
+  var t=0,hov=-1;
+  function bx(v){return pL+(v/maxV)*(W-pL-pR);}
+  function draw(prog){
+    ctx.clearRect(0,0,W,H);
+    data.forEach(function(d,i){
+      var y=i*(bH+gap),isH=hov===i;
+      var bw=Math.max(0,bx(d.val*easeOut(prog))-pL);
+      /* label */
+      ctx.fillStyle=isH?'rgba(240,240,248,.7)':'rgba(240,240,248,.32)';
+      ctx.font=(isH?'700':'600')+' 10px "IBM Plex Mono",monospace';
+      ctx.textAlign='right';ctx.textBaseline='middle';
+      var lbl=d.label.length>13?d.label.slice(0,12)+'…':d.label;
+      ctx.fillText(lbl,pL-8,y+bH/2);
+      /* track */
+      ctx.fillStyle='rgba(255,255,255,.04)';rrect(ctx,pL,y+3,W-pL-pR,bH-6,4);ctx.fill();
+      /* fill */
+      if(bw>0){
+        var grd=ctx.createLinearGradient(pL,0,pL+bw,0);
+        grd.addColorStop(0,(d.color||'#C8A84B')+(isH?'ff':'bb'));
+        grd.addColorStop(1,(d.color||'#C8A84B')+(isH?'cc':'77'));
+        ctx.fillStyle=grd;rrect(ctx,pL,y+3,bw,bH-6,4);ctx.fill();
+      }
+      /* val */
+      if(prog>.45){
+        ctx.fillStyle='rgba(240,240,248,'+(isH?.85:.35)+')';
+        ctx.font=(isH?'800':'700')+' 10px "IBM Plex Mono",monospace';
+        ctx.textAlign='left';
+        ctx.fillText(d.valStr||d.val,pL+bw+7,y+bH/2);
+      }
+    });
+  }
+  function animate(){t+=.028;draw(t);if(t<1)requestAnimationFrame(animate);}
+  requestAnimationFrame(animate);
+  c.addEventListener('mousemove',function(e){
+    var r=c.getBoundingClientRect(),my=e.clientY-r.top;
+    var idx=Math.floor(my/(bH+gap));
+    if(idx>=0&&idx<data.length){
+      if(hov!==idx){hov=idx;draw(1);}
+      showTip(e.clientX,e.clientY,'<b>'+data[idx].label+'</b><br><span style="color:'+(data[idx].color||'#C8A84B')+'">'+(data[idx].valStr||data[idx].val)+'</span>');
+    }else{hov=-1;draw(1);hideTip();}
+  });
+  c.addEventListener('mouseleave',function(){hov=-1;draw(1);hideTip();});
+};
+
+/* ── rrect helper ── */
+function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+
+/* ══════════════════════════════════════════════
+   INTERCEPT: renderAnalytics — gráficos reales
+══════════════════════════════════════════════ */
+var _origAnalytics=window.renderAnalytics;
+window.renderAnalytics=function(){
+  if(_origAnalytics)_origAnalytics();
+  setTimeout(injectAnalyticsCharts,80);
+};
+
+function injectAnalyticsCharts(){
+  var leads=window.leads||[],calls=window.calls||[];
+
+  /* KPI nums: sin animación de entrada */
+
+  /* ── Animate progress bars ── */
+  setTimeout(function(){
+    document.querySelectorAll('.progress-fill').forEach(function(el){
+      var w=el.style.width;el.style.width='0';
+      setTimeout(function(){el.style.transition='width .9s cubic-bezier(.22,1,.36,1)';el.style.width=w;},40);
+    });
+  },80);
+
+  /* ── Line chart: llamadas + leads 14d ── */
+  var lineEl=document.getElementById('nxLine1');
+  if(lineEl){
+    lineEl._nx=0; // reset para re-render siempre
+    lineEl._nx=1;
+    var dayL=[],callD=[],leadD=[];
+    for(var i=13;i>=0;i--){
+      var d=new Date();d.setDate(d.getDate()-i);
+      var ds=d.toISOString().slice(0,10);
+      dayL.push(d.toLocaleDateString('es',{day:'2-digit',month:'2-digit'}));
+      callD.push(calls.filter(function(c){return(c.datetime||'').slice(0,10)===ds;}).length);
+      leadD.push(leads.filter(function(l){return(l.created_at||'').slice(0,10)===ds;}).length);
+    }
+    lineEl.innerHTML='';
+    nxLine('nxLine1',[
+      {data:callD,color:'#C8A84B',label:'Llamadas'},
+      {data:leadD,color:'#3b82f6',label:'Leads nuevos'}
+    ],dayL,{H:140,pL:28});
+  }
+
+  /* ── Donut: estados del pipeline ── */
+  var donutEl=document.getElementById('nxDonut1');
+  if(donutEl){
+    var stColors={
+      'POTENCIAL':'#6366f1','CONTACTADA':'#f59e0b',
+      'INTERESADA / DEMO':'#C8A84B','PROPUESTA ENVIADA':'#8b5cf6',
+      'CLIENTE ACTIVO':'#22c55e','PERDIDO / DESCARTADO':'#f43f5e'
+    };
+    var dd=Object.entries(stColors).map(function(e){
+      return{label:e[0].length>15?e[0].slice(0,14)+'…':e[0],val:leads.filter(function(l){return l.state===e[0];}).length,color:e[1]};
+    }).filter(function(d){return d.val>0;});
+    donutEl.innerHTML='';
+    if(dd.length)nxDonut('nxDonut1',dd,{size:140});
+    else donutEl.innerHTML='<div style="color:rgba(240,240,248,.2);font-size:11px;padding:10px">Sin datos aún</div>';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   INTERCEPT: renderPipeline — gráficos pipeline
+══════════════════════════════════════════════ */
+var _origPipeline=window.renderPipeline;
+window.renderPipeline=function(){
+  if(_origPipeline)_origPipeline();
+  setTimeout(injectPipelineCharts,80);
+};
+
+function injectPipelineCharts(){
+  var leads=window.leads||[];
+
+  /* ── Bars: leads por etapa ── */
+  var barsEl=document.getElementById('nxPipeBars');
+  if(barsEl){
+    var stMap=[
+      {k:'POTENCIAL',l:'Potencial',c:'#6366f1'},
+      {k:'CONTACTADA',l:'Contactada',c:'#f59e0b'},
+      {k:'INTERESADA / DEMO',l:'Demo/Interés',c:'#C8A84B'},
+      {k:'PROPUESTA ENVIADA',l:'Propuesta',c:'#8b5cf6'},
+      {k:'CLIENTE ACTIVO',l:'Cliente',c:'#22c55e'},
+      {k:'PERDIDO / DESCARTADO',l:'Perdido',c:'#f43f5e'}
+    ];
+    var bd=stMap.map(function(s){
+      var cnt=leads.filter(function(l){return l.state===s.k;}).length;
+      return{label:s.l,val:cnt,valStr:cnt+' leads',color:s.c};
+    });
+    barsEl.innerHTML='';
+    nxBars('nxPipeBars',bd,{bH:22,gap:7,pL:90,pR:50});
+  }
+
+  /* ── Donut: distribución ── */
+  var pipeDonut=document.getElementById('nxPipeDonut');
+  if(pipeDonut){
+    var stColors2={
+      'POTENCIAL':'#6366f1','CONTACTADA':'#f59e0b',
+      'INTERESADA / DEMO':'#C8A84B','PROPUESTA ENVIADA':'#8b5cf6',
+      'CLIENTE ACTIVO':'#22c55e','PERDIDO / DESCARTADO':'#f43f5e'
+    };
+    var dd2=Object.entries(stColors2).map(function(e){
+      return{label:e[0].length>12?e[0].slice(0,11)+'…':e[0],val:leads.filter(function(l){return l.state===e[0];}).length,color:e[1]};
+    }).filter(function(d){return d.val>0;});
+    pipeDonut.innerHTML='';
+    if(dd2.length)nxDonut('nxPipeDonut',dd2,{size:120});
+    else pipeDonut.innerHTML='<div style="color:rgba(240,240,248,.2);font-size:11px;padding:10px">Sin datos</div>';
+  }
+
+  /* pipe-cards: sin animación de entrada */
+}
+
+/* ══════════════════════════════════════════════
+   INTERCEPT: renderExecutiveDashboard — canvas charts
+══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   INTERCEPT: renderExecutiveDashboard — canvas charts
+══════════════════════════════════════════════ */
+var _origExec=window.renderExecutiveDashboard;
+window.renderExecutiveDashboard=function(){
+  if(_origExec)_origExec();
+  setTimeout(function(){injectExecCharts();},80);
+};
+function injectExecCharts(){
+  var leads=window.leads||[],calls=window.calls||[];
+
+  /* ── Animate exec bar fills ── */
+  setTimeout(function(){
+    document.querySelectorAll('.exec-bar-fill').forEach(function(el){
+      var w=el.style.width;el.style.width='0';
+      setTimeout(function(){el.style.width=w;},60);
+    });
+  },80);
+
+  /* exec-kpi vals: sin animación de entrada */
+
+  /* ── execPipeChart → canvas bars ── */
+  var pipeEl=document.getElementById('execPipeChart');
+  if(pipeEl&&!pipeEl._nx){
+    pipeEl._nx=1;
+    var sl=[
+      {k:'POTENCIAL',l:'Potencial',c:'#6366f1'},
+      {k:'CONTACTADA',l:'Contactada',c:'#f59e0b'},
+      {k:'INTERESADA / DEMO',l:'Demo/Interés',c:'#C8A84B'},
+      {k:'PROPUESTA ENVIADA',l:'Propuesta',c:'#8b5cf6'},
+      {k:'CLIENTE ACTIVO',l:'Cliente',c:'#22c55e'},
+      {k:'PERDIDO / DESCARTADO',l:'Perdido',c:'#f43f5e'}
+    ];
+    var bd=sl.map(function(s){
+      var cnt=leads.filter(function(l){return l.state===s.k;}).length;
+      return{label:s.l,val:cnt,valStr:cnt+' leads',color:s.c};
+    });
+    pipeEl.innerHTML='';
+    nxBars('execPipeChart',bd,{bH:24,gap:7,pL:90,pR:50});
+  }
+
+  /* ── execCallsChart → line ── */
+  var callEl=document.getElementById('execCallsChart');
+  if(callEl&&!callEl._nx){
+    callEl._nx=1;
+    var dayL2=[],cd2=[];
+    for(var i=6;i>=0;i--){
+      var d2=new Date();d2.setDate(d2.getDate()-i);
+      var ds2=d2.toISOString().slice(0,10);
+      var dy=d2.toLocaleDateString('es',{weekday:'short'});
+      dayL2.push(dy.charAt(0).toUpperCase()+dy.slice(1,3));
+      cd2.push(calls.filter(function(c){return(c.datetime||'').slice(0,10)===ds2;}).length);
+    }
+    callEl.innerHTML='';
+    nxLine('execCallsChart',[{data:cd2,color:'#C8A84B',label:'Llamadas'}],dayL2,{H:110,pL:24});
+  }
+
+  /* ── execCategoryChart → donut ── */
+  var catEl=document.getElementById('execCategoryChart');
+  if(catEl&&!catEl._nx){
+    catEl._nx=1;
+    var cats={};
+    leads.forEach(function(l){var k=l.category||l.sector||'General';cats[k]=(cats[k]||0)+1;});
+    var clrs2=['#C8A84B','#3b82f6','#22c55e','#8b5cf6','#f59e0b','#f43f5e','#06b6d4'];
+    var cd=Object.entries(cats).sort(function(a,b){return b[1]-a[1];}).slice(0,6).map(function(e,i){
+      return{label:e[0].length>14?e[0].slice(0,13)+'…':e[0],val:e[1],color:clrs2[i%clrs2.length]};
+    });
+    if(!cd.length)cd=[{label:'Sin datos',val:1,color:'#333'}];
+    catEl.innerHTML='';
+    nxDonut('execCategoryChart',cd,{size:130});
+  }
+}
+
+/* ══════════════════════════════════════════════
+   VIEW SWITCH: stagger animation
+══════════════════════════════════════════════ */
+var _origSwitch=window._doSwitchView;
+if(_origSwitch){
+  window._doSwitchView=function(v){
+    _origSwitch(v);
+    requestAnimationFrame(function(){
+      /* sin stagger — evita parpadeo */
+      if(false){
+      });
+    });
+  };
+}
+
+/* ── Mobile nav ── */
+window.setMobNav=function(btn){document.querySelectorAll('.mob-nav-btn').forEach(function(b){b.classList.remove('active');});if(btn)btn.classList.add('active');};
+(function(){
+  var _n=window.navTo;
+  if(_n)window.navTo=function(v,el){_n(v,el);var m={leads:'mobNavLeads',callcenter:'mobNavCC',pipeline:'mobNavPipeline',analytics:'mobNavAnalytics'};document.querySelectorAll('.mob-nav-btn').forEach(function(b){b.classList.remove('active');});var t=m[v]&&document.getElementById(m[v]);if(t)t.classList.add('active');};
+})();
+
+/* ── Credits fade ── */
+document.addEventListener('nexa:login',function(){
+  setTimeout(function(){var c=document.getElementById('nexaCredits');if(c){c.style.opacity='.12';c.style.fontSize='8px';}},1200);
+});
+
+console.log('[NEXA v2.0] Charts · Clean UI · Hugo Álvarez Padilla');
+}();
+</script>
+
+
+<!-- ── APP FOOTER ── -->
+<div id="appFooterCredits">
+  NEXA CRM v1.0 Enterprise
+  <span>·</span>
+  Diseñado y desarrollado por Hugo Álvarez Padilla
+  <span>·</span>
+  Nexa Digital Systems
+</div>
+
 </body>
 </html>
 
@@ -26451,4 +27721,1113 @@ document.addEventListener('nexa:login', function(){ setTimeout(_v46InjectSetup, 
 console.log('%c[NEXA v46] PWA visible + IA Proactiva + Forecast + GDPR + Setup', 'background:linear-gradient(135deg,#C8A84B,#5a3e10);color:#fff;font-weight:900;padding:3px 10px;border-radius:5px');
 </script>
 
+<!-- ══════════════════════════════════════════════════════════════
+     NEXA CRM v47 — BUG FIX + MOBILE OVERHAUL + ENTERPRISE UPGRADE
+     Fixes: Mobile layout, Tour reiniciar, z-index conflicts, pointer-events
+     Adds: Bottom nav mobile, Pipeline mobile scroll, Tour instant restart
+══════════════════════════════════════════════════════════════ -->
+<style id="v47-mobile-fix">
+
+/* ══════════════════════════════════════════
+   FIX 1: POINTER-EVENTS — el bug principal de "no se puede pinchar nada"
+   El loginScreen con ls-hidden aún podía bloquear en algunos estados
+══════════════════════════════════════════ */
+#loginScreen.ls-hidden {
+  pointer-events: none !important;
+  display: none !important;
+  visibility: hidden !important;
+}
+#loginScreen.ls-hidden * {
+  pointer-events: none !important;
+}
+
+/* ══════════════════════════════════════════
+   FIX 2: TOUR OVERLAY — unificamos TODAS las definiciones conflictivas
+   Había 5 definiciones diferentes de #tourOverlay chocando entre sí
+══════════════════════════════════════════ */
+#tourOverlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100000 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  display: none;
+}
+#tourOverlay.active {
+  display: block !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  opacity: 1 !important;
+}
+#tourOverlay::before,
+#tourOverlay::after {
+  display: none !important;
+  content: none !important;
+  background: none !important;
+}
+.tour-mask { display: none !important; }
+
+#v37Spotlight {
+  position: fixed !important;
+  z-index: 100001 !important;
+  pointer-events: none !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 0 0 3px rgba(200,168,75,0.80),
+    0 0 0 9999px rgba(0,0,10,0.72) !important;
+  transition: left 0.32s cubic-bezier(0.22,1,0.36,1),
+              top 0.32s cubic-bezier(0.22,1,0.36,1),
+              width 0.32s cubic-bezier(0.22,1,0.36,1),
+              height 0.32s cubic-bezier(0.22,1,0.36,1) !important;
+}
+
+#tourTooltip, .tour-tooltip {
+  position: fixed !important;
+  z-index: 100002 !important;
+  pointer-events: auto !important;
+  min-width: 300px !important;
+  max-width: min(420px, calc(100vw - 24px)) !important;
+}
+
+/* ══════════════════════════════════════════
+   FIX 3: MOBILE BOTTOM NAV — nativo tipo app iOS/Android
+   Reemplaza la nav horizontal desbordada en móvil
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Header más compacto en móvil */
+  header {
+    height: 52px !important;
+  }
+
+  /* Ocultar nav tabs del header en móvil — usamos bottom nav */
+  #hdrNav, .hdr-nav-primary, .hdr-nav-secondary,
+  .hdr-more-btn, #opBar {
+    display: none !important;
+  }
+
+  /* Mostrar bottom nav */
+  #v47BottomNav {
+    display: flex !important;
+  }
+
+  /* Ajustar el shell para dejar espacio al bottom nav */
+  #appShell {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Pipeline kanban en móvil: scroll horizontal suave */
+  .pipeline-kanban {
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+    padding-bottom: 20px !important;
+  }
+  .pipe-col {
+    flex: 0 0 min(240px, 78vw) !important;
+    scroll-snap-align: start !important;
+  }
+
+  /* Pipeline header más compacto */
+  .pipeline-wrap {
+    padding: 12px 14px !important;
+  }
+  .pipeline-title { font-size: 18px !important; }
+  .pipe-total-val { font-size: 15px !important; }
+
+  /* Pipeline scenarios en 1 col */
+  .pipe-scenarios { grid-template-columns: 1fr !important; gap: 8px !important; }
+
+  /* Main layout sin sidebar */
+  main {
+    grid-template-columns: 1fr !important;
+  }
+  .panel { display: none !important; }
+  #appShell > main > .panel:first-child,
+  #sidebarPanel { display: none !important; }
+
+  /* Propuestas mobile */
+  .prop-item {
+    grid-template-columns: 1fr auto !important;
+    grid-template-rows: auto auto !important;
+  }
+
+  /* Stats bar responsive */
+  #statsBar {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    padding: 5px 10px !important;
+  }
+
+  /* Tour tooltip: full width en móvil */
+  #tourTooltip, .tour-tooltip {
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+  }
+
+  /* Modales full-screen en móvil */
+  .modal-box {
+    margin: 8px !important;
+    border-radius: 16px !important;
+    max-height: 92vh !important;
+  }
+
+  /* Briefing card full width */
+  .briefing-card {
+    width: calc(100vw - 16px) !important;
+    margin: 8px !important;
+  }
+  .briefing-header { padding: 18px 18px 12px !important; }
+  .briefing-body { padding: 14px 18px !important; }
+  .briefing-kpi-row { grid-template-columns: 1fr 1fr !important; }
+
+  /* Tables: scroll horizontal */
+  .tbl-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+
+  /* Call center en móvil: tabs en vez de sidebar+main */
+  #viewCallCenter { flex-direction: column !important; }
+  .cc-sidebar {
+    width: 100% !important;
+    max-height: 200px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* Ficha wrap padding */
+  .ficha-wrap { padding: 12px !important; }
+
+  /* Analytics KPIs en 2 cols */
+  .a-kpi-row { grid-template-columns: 1fr 1fr !important; }
+
+  /* Executive cards en 1 col */
+  .exec-grid { grid-template-columns: 1fr !important; }
+
+  /* Botones acción en grid 2 col en pipeline header */
+  .pipeline-header { flex-direction: column !important; align-items: flex-start !important; gap: 10px !important; }
+}
+
+/* ══════════════════════════════════════════
+   BOTTOM NAV STYLES (siempre definidos, hidden en desktop)
+══════════════════════════════════════════ */
+#v47BottomNav {
+  display: none; /* se muestra solo en móvil via media query */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(60px + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: linear-gradient(180deg, rgba(9,9,16,0.96) 0%, var(--s1) 100%);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  z-index: 5500;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.5);
+}
+
+.v47-bnav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  height: 60px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: rgba(240,240,248,0.4);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.12s, transform 0.12s;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.v47-bnav-item:active {
+  transform: scale(0.9);
+}
+.v47-bnav-item.active {
+  color: var(--gold2);
+}
+.v47-bnav-item.active .v47-bnav-icon {
+  background: rgba(200,168,75,0.12);
+  color: var(--gold2);
+}
+.v47-bnav-icon {
+  width: 36px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 18px;
+  transition: background 0.15s, color 0.15s;
+}
+.v47-bnav-add {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #000;
+  font-weight: 900;
+  box-shadow: 0 4px 20px rgba(200,168,75,0.4), 0 0 0 4px rgba(200,168,75,0.08);
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s, box-shadow 0.12s;
+  margin-bottom: 12px;
+}
+.v47-bnav-add:active {
+  transform: scale(0.88);
+  box-shadow: 0 2px 12px rgba(200,168,75,0.3);
+}
+
+/* Indicador de vista activa en bottom nav */
+.v47-bnav-item.active::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: var(--gold2);
+  border-radius: 0 0 3px 3px;
+}
+
+/* ══════════════════════════════════════════
+   FIX 4: SCROLL en vistas — iOS no scrollea bien con overflow:hidden en body
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  html, body {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+  }
+  .view.active {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  #viewPipeline {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   FIX 5: Mejorar legibilidad de tarjetas Pipeline en móvil
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .pipe-card {
+    padding: 12px 14px !important;
+  }
+  .pipe-card-name {
+    font-size: 13px !important;
+    white-space: normal !important;
+  }
+  .pipe-col-cards {
+    min-height: 200px !important;
+    max-height: 55vh !important;
+  }
+  .pipe-col-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   FIX 6: Header en móvil — logo y botones accesibles
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hdr-logo-text { font-size: 16px !important; }
+  .hdr-logo-badge { font-size: 9px !important; }
+  .hdr-search-wrap { display: none !important; }
+  
+  /* Solo mostrar hamburger y logo en header móvil */
+  .hdr-right {
+    gap: 6px !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   FIX 7: Animaciones reducidas en móvil para mejor performance
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .kpi-box:hover, .a-kpi:hover, .guia-card:hover {
+    transform: none !important;
+  }
+  .pipeline-kanban { scroll-behavior: smooth !important; }
+}
+
+</style>
+
+<script id="v47-js-fixes">
+(function() {
+  'use strict';
+
+  // ══════════════════════════════════════════
+  // FIX 1: REINICIAR TOUR — ahora funciona de verdad
+  // El problema: resetTour() solo borra localStorage, no arranca el tour
+  // La solución: después del reset, navegar a leads y arrancar el tour
+  // ══════════════════════════════════════════
+  var _origResetTour = window.resetTour;
+  window.resetTour = function() {
+    if (window.currentUser) {
+      localStorage.removeItem('nexa_tour_done_' + window.currentUser);
+    }
+    // Limpiar estado del tour activo si lo hay
+    if (window.tourActive) {
+      try { window.endTour && window.endTour(); } catch(e) {}
+    }
+    // Mostrar toast y arrancar tour después de un momento
+    if (typeof window.toast === 'function') {
+      window.toast('Tour reiniciado', 'Iniciando en 1 segundo...', '🎯', 1500);
+    }
+    setTimeout(function() {
+      try {
+        // Navegar a la vista de leads primero
+        if (typeof window.navTo === 'function') {
+          window.navTo('leads');
+        }
+        // Quitar clases que podrían interferir
+        document.body.classList.remove('mode-operator', 'mode-ficha');
+        if (typeof window.updateFloat === 'function') {
+          window.updateFloat();
+        }
+        // Arrancar el tour
+        setTimeout(function() {
+          try {
+            if (typeof window.startTour === 'function') {
+              window.startTour();
+            }
+          } catch(e) {
+            console.warn('[v47] startTour error:', e);
+          }
+        }, 350);
+      } catch(e) {
+        console.warn('[v47] resetTour patch error:', e);
+      }
+    }, 600);
+  };
+
+  // ══════════════════════════════════════════
+  // FIX 2: BOTTOM NAV MÓVIL — crearlo e integrarlo
+  // ══════════════════════════════════════════
+  function createBottomNav() {
+    if (document.getElementById('v47BottomNav')) return;
+
+    var nav = document.createElement('div');
+    nav.id = 'v47BottomNav';
+
+    var items = [
+      { icon: '◈', label: 'Leads', view: 'leads' },
+      { icon: '📞', label: 'CC', view: 'callcenter' },
+      { icon: null,  label: '', view: null, isAdd: true },
+      { icon: '🔀', label: 'Pipe', view: 'pipeline' },
+      { icon: '≡', label: 'Más', view: null, isMenu: true }
+    ];
+
+    items.forEach(function(item) {
+      var btn = document.createElement('button');
+      btn.className = 'v47-bnav-item';
+      if (item.view) btn.setAttribute('data-view', item.view);
+
+      if (item.isAdd) {
+        btn.className = 'v47-bnav-add';
+        btn.textContent = '+';
+        btn.onclick = function() {
+          // Abrir nuevo lead
+          try {
+            if (typeof window.openNewLeadModal === 'function') window.openNewLeadModal();
+            else if (typeof window.newLead === 'function') window.newLead();
+            else if (typeof window.openModal === 'function') window.openModal('modalNewLead');
+            else {
+              // Buscar el botón de nuevo lead y clickarlo
+              var newLeadBtn = document.querySelector('[onclick*="newLead"], [onclick*="Nuevo lead"], [onclick*="nuevo-lead"]');
+              if (newLeadBtn) newLeadBtn.click();
+            }
+          } catch(e) {}
+        };
+      } else if (item.isMenu) {
+        var iconDiv = document.createElement('div');
+        iconDiv.className = 'v47-bnav-icon';
+        iconDiv.textContent = item.icon;
+        var labelDiv = document.createElement('div');
+        labelDiv.textContent = item.label;
+        btn.appendChild(iconDiv);
+        btn.appendChild(labelDiv);
+        btn.onclick = function() {
+          try {
+            if (typeof window.openAppMenu === 'function') window.openAppMenu();
+            else {
+              var menuBtn = document.querySelector('[onclick*="openAppMenu"], [onclick*="toggleAppMenu"]');
+              if (menuBtn) menuBtn.click();
+            }
+          } catch(e) {}
+        };
+      } else {
+        var iconDiv2 = document.createElement('div');
+        iconDiv2.className = 'v47-bnav-icon';
+        iconDiv2.textContent = item.icon;
+        var labelDiv2 = document.createElement('div');
+        labelDiv2.textContent = item.label;
+        btn.appendChild(iconDiv2);
+        btn.appendChild(labelDiv2);
+        btn.onclick = (function(view) {
+          return function() {
+            try {
+              if (typeof window.navTo === 'function') {
+                window.navTo(view, btn);
+              }
+            } catch(e) {}
+          };
+        })(item.view);
+      }
+
+      nav.appendChild(btn);
+    });
+
+    document.body.appendChild(nav);
+
+    // Sincronizar estado activo con la navegación
+    function syncBottomNav() {
+      var currentView = window.AppState ? window.AppState.get('currentView') : null;
+      if (!currentView && window.currentView) currentView = window.currentView;
+      nav.querySelectorAll('.v47-bnav-item[data-view]').forEach(function(btn) {
+        if (btn.getAttribute('data-view') === currentView) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    // Escuchar cambios de vista
+    document.addEventListener('nexa:viewChange', syncBottomNav);
+    document.addEventListener('nexa:login', function() {
+      setTimeout(syncBottomNav, 500);
+    });
+
+    // Parchear navTo para sincronizar el bottom nav
+    var _origNavTo = window.navTo;
+    if (_origNavTo && !window._v47NavToPatch) {
+      window._v47NavToPatch = true;
+      window.navTo = function(v, b) {
+        var result = _origNavTo.call(this, v, b);
+        setTimeout(syncBottomNav, 100);
+        return result;
+      };
+    }
+
+    setTimeout(syncBottomNav, 800);
+  }
+
+  // ══════════════════════════════════════════
+  // FIX 3: TOUR OVERLAY — garantizar limpieza de z-index al cerrar
+  // ══════════════════════════════════════════
+  var _origEndTour = window.endTour;
+  window.endTour = function() {
+    // Limpiar todos los spotlights (el original y el v37)
+    ['tourSpotlight', 'v37Spotlight'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.style.display = 'none';
+        el.style.boxShadow = 'none';
+        el.style.width = '0';
+        el.style.height = '0';
+        el.style.opacity = '0';
+      }
+    });
+    var tt = document.getElementById('tourTooltip');
+    if (tt) {
+      tt.style.display = 'none';
+      tt.style.visibility = 'hidden';
+      tt.style.pointerEvents = 'none';
+    }
+    var ov = document.getElementById('tourOverlay');
+    if (ov) {
+      ov.classList.remove('active');
+      ov.style.display = 'none';
+      ov.style.pointerEvents = 'none';
+      ov.style.visibility = 'hidden';
+    }
+    document.body.classList.remove('tour-active');
+    // Llamar al endTour original
+    if (typeof _origEndTour === 'function') {
+      try { _origEndTour.call(this); } catch(e) {}
+    }
+  };
+
+  // ══════════════════════════════════════════
+  // INIT — esperar al DOM completo
+  // ══════════════════════════════════════════
+  function init() {
+    createBottomNav();
+
+    // Fix extra: asegurar que #appShell no tiene pointer-events bloqueados
+    // cuando el login está oculto
+    var loginScreen = document.getElementById('loginScreen');
+    if (loginScreen) {
+      var observer = new MutationObserver(function() {
+        var isHidden = loginScreen.classList.contains('ls-hidden') ||
+                       loginScreen.style.display === 'none';
+        loginScreen.style.pointerEvents = 'none';
+        // Re-activar el appShell y vistas cuando login está oculto
+        if (isHidden) {
+          document.querySelectorAll('#appShell, .view, .settings-wrap, #v45IntGrid, .v45int-card-html').forEach(function(el) {
+            el.style.pointerEvents = 'auto';
+          });
+        }
+      });
+      observer.observe(loginScreen, { attributes: true, attributeFilter: ['class', 'style'] });
+    }
+
+    // Fix: el scroll de iOS en vistas activas
+    document.querySelectorAll('.view').forEach(function(view) {
+      view.addEventListener('touchstart', function() {}, { passive: true });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    // DOM ya listo
+    setTimeout(init, 100);
+  }
+
+  // También ejecutar después del login
+  document.addEventListener('nexa:login', function() {
+    setTimeout(function() {
+      createBottomNav();
+    }, 300);
+  });
+
+  console.log('%c[NEXA v47] Mobile fix + Tour fix + Bottom Nav', 
+    'background:linear-gradient(135deg,#C8A84B,#2d1a00);color:#fff;font-weight:900;padding:3px 10px;border-radius:5px');
+
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     NEXA CRM v48 — INTEGRATIONS FIX
+     Bugs: div onclick no funciona en iOS, z-index modal, comillas rotas
+══════════════════════════════════════════════════════════════ -->
+<style id="v48-int-fix">
+.v45int-card-html,.v45int-card,[onclick*="v45OpenIntModal"]{
+  cursor:pointer!important;
+  -webkit-tap-highlight-color:rgba(200,168,75,0.15)!important;
+  touch-action:manipulation!important;
+  user-select:none!important;-webkit-user-select:none!important;
+  pointer-events:auto!important;
+  position:relative!important;
+  min-height:44px!important;
+}
+.v45int-card-html:active{transform:scale(0.97)!important;background:rgba(255,255,255,0.06)!important}
+#viewAjustes,.settings-wrap,.settings-section,.settings-row{pointer-events:auto!important}
+#v45IntModal{z-index:300000!important;pointer-events:auto!important}
+#v45IntModal *{pointer-events:auto!important}
+@media(max-width:500px){#v45IntGrid{grid-template-columns:1fr!important}}
+@media(max-width:600px){#v45IntModal>div{max-width:calc(100vw - 24px)!important;max-height:92vh!important;padding:18px!important}}
+</style>
+
+<script id="v48-int-js">
+(function(){
+  'use strict';
+
+  function waitFor(fn, tries){
+    tries=tries||0;
+    if(window.INTS && window.v45OpenIntModal){fn();return;}
+    if(tries>50)return;
+    setTimeout(function(){waitFor(fn,tries+1);},200);
+  }
+
+  waitFor(function(){
+
+    // ── Override v45OpenIntModal — versión robusta sin bugs de comillas ──
+    window.v45OpenIntModal = function(k){
+      var ints=window.INTS||{};
+      var i=ints[k];
+      if(!i)return;
+
+      var old=document.getElementById('v45IntModal');
+      if(old)old.remove();
+
+      var st={},wh={};
+      try{st=JSON.parse(localStorage.getItem('nexa_v45_ints')||'{}');}catch(e){}
+      try{wh=JSON.parse(localStorage.getItem('nexa_v45_webhooks')||'{}');}catch(e){}
+
+      var connected=!!st[k], coming=i.status==='coming';
+
+      var modal=document.createElement('div');
+      modal.id='v45IntModal';
+      modal.setAttribute('style','position:fixed;inset:0;z-index:300000;background:rgba(0,0,10,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--sans);pointer-events:auto');
+
+      var stepsHtml=(i.steps||[]).map(function(s){
+        return '<div style="display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:rgba(240,240,248,0.6);line-height:1.65"><span style="flex-shrink:0;color:var(--gold,#C8A84B);font-weight:700">›</span><span>'+s+'</span></div>';
+      }).join('');
+
+      var box=document.createElement('div');
+      box.setAttribute('style','background:linear-gradient(145deg,#0e0e1e,#080812);border:1px solid rgba(255,255,255,0.1);border-radius:22px;padding:26px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,0.95)');
+
+      // Botón cerrar
+      var closeBtn=document.createElement('button');
+      closeBtn.setAttribute('style','position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,248,0.5);font-size:18px;cursor:pointer;min-width:40px;min-height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent');
+      closeBtn.textContent='✕';
+      closeBtn.onclick=function(){modal.remove();};
+
+      var statusColor=connected?'#22c55e':(coming?'#f59e0b':'rgba(240,240,248,0.25)');
+      var statusText=connected?'● Activo':(coming?'⏳ Próximamente':'○ Sin configurar');
+
+      var contentDiv=document.createElement('div');
+      contentDiv.style.position='relative';
+      contentDiv.innerHTML=
+        '<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;padding-right:40px">'+
+          '<div style="width:48px;height:48px;border-radius:14px;background:'+i.color+'22;border:1px solid '+i.color+'44;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">'+i.icon+'</div>'+
+          '<div><div style="font-size:18px;font-weight:900;color:#F0F0F8">'+i.name+'</div>'+
+          '<div style="font-size:11px;margin-top:3px;color:'+statusColor+';font-weight:700">'+statusText+'</div></div>'+
+        '</div>'+
+        '<div style="font-size:12px;color:rgba(240,240,248,0.5);margin-bottom:16px;line-height:1.6;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px">'+i.desc+'</div>'+
+        '<div style="font-size:10px;font-weight:800;color:rgba(240,240,248,0.3);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:10px">Cómo configurarlo</div>'+
+        stepsHtml;
+
+      contentDiv.appendChild(closeBtn);
+      box.appendChild(contentDiv);
+
+      // Campo webhook
+      if(i.webhookField && !coming){
+        var savedUrl=wh[k]||'';
+        var whDiv=document.createElement('div');
+        whDiv.style.cssText='margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.07)';
+        var whLabel=document.createElement('div');
+        whLabel.style.cssText='font-size:10px;font-weight:800;color:rgba(240,240,248,0.35);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px';
+        whLabel.textContent=i.webhookLabel||'Webhook URL';
+        var whRow=document.createElement('div');
+        whRow.style.cssText='display:flex;gap:8px';
+        var whInput=document.createElement('input');
+        whInput.id='v48wh_'+k;
+        whInput.type='url';
+        whInput.value=savedUrl;
+        whInput.placeholder=i.webhookPlaceholder||'https://...';
+        whInput.setAttribute('style','flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:9px;padding:11px 12px;color:#F0F0F8;font-size:13px;outline:none;min-width:0;font-size:16px');
+        var whSave=document.createElement('button');
+        whSave.setAttribute('style','padding:11px 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:rgba(200,168,75,0.15);border:1px solid rgba(200,168,75,0.35);color:#E4C46A;white-space:nowrap;min-height:44px;-webkit-tap-highlight-color:transparent');
+        whSave.textContent='Guardar';
+        whSave.onclick=function(){
+          var url=whInput.value.trim();
+          if(!url){if(typeof toast==='function')toast('URL vacía','Pega la URL del webhook','⚠️',3000);return;}
+          try{wh[k]=url;localStorage.setItem('nexa_v45_webhooks',JSON.stringify(wh));}catch(e){}
+          doConfirm();
+        };
+        whRow.appendChild(whInput);
+        whRow.appendChild(whSave);
+        whDiv.appendChild(whLabel);
+        whDiv.appendChild(whRow);
+        box.appendChild(whDiv);
+      }
+
+      // Botones de acción
+      var actRow=document.createElement('div');
+      actRow.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;align-items:center';
+
+      function doConfirm(){
+        try{st[k]={connectedAt:new Date().toISOString()};localStorage.setItem('nexa_v45_ints',JSON.stringify(st));}catch(e){}
+        modal.remove();
+        if(typeof window.v45RenderIntGrid==='function')window.v45RenderIntGrid();
+        _refreshCards();
+        if(typeof toast==='function')toast(i.name+' configurado','✅ Integración activa',i.icon||'🔌',3500);
+      }
+
+      if(!coming){
+        if(i.actionUrl){
+          var gotoBtn=document.createElement('button');
+          gotoBtn.setAttribute('style','padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;background:'+i.color+';border:none;color:#fff;min-height:44px;-webkit-tap-highlight-color:transparent');
+          gotoBtn.textContent='Ir a '+i.name+' →';
+          gotoBtn.onclick=function(){window.open(i.actionUrl,'_blank');};
+          actRow.appendChild(gotoBtn);
+        }
+        var confirmBtn=document.createElement('button');
+        confirmBtn.setAttribute('style','padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);color:#86efac;min-height:44px;-webkit-tap-highlight-color:transparent');
+        confirmBtn.textContent='✓ '+(connected?'Reconfigurar':'Marcar configurado');
+        confirmBtn.onclick=doConfirm;
+        actRow.appendChild(confirmBtn);
+
+        if(connected){
+          var discBtn=document.createElement('button');
+          discBtn.setAttribute('style','padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);color:#fda4af;min-height:44px;-webkit-tap-highlight-color:transparent');
+          discBtn.textContent='Desconectar';
+          discBtn.onclick=function(){
+            try{delete st[k];localStorage.setItem('nexa_v45_ints',JSON.stringify(st));}catch(e){}
+            modal.remove();
+            if(typeof window.v45RenderIntGrid==='function')window.v45RenderIntGrid();
+            _refreshCards();
+            if(typeof toast==='function')toast(i.name+' desconectado','','🔌',3000);
+          };
+          actRow.appendChild(discBtn);
+        }
+      } else {
+        var comingDiv=document.createElement('div');
+        comingDiv.setAttribute('style','font-size:12px;color:rgba(240,240,248,0.5);padding:12px 14px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:10px');
+        comingDiv.textContent='⏳ Disponible en plan Enterprise con servidor dedicado.';
+        actRow.appendChild(comingDiv);
+      }
+
+      if(i.docsUrl){
+        var docsBtn=document.createElement('button');
+        docsBtn.setAttribute('style','padding:11px 16px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,248,0.4);min-height:44px;-webkit-tap-highlight-color:transparent');
+        docsBtn.textContent='📖 Docs';
+        docsBtn.onclick=function(){window.open(i.docsUrl,'_blank');};
+        actRow.appendChild(docsBtn);
+      }
+
+      box.appendChild(actRow);
+      modal.appendChild(box);
+      document.body.appendChild(modal);
+
+      // Cerrar al click en el fondo
+      modal.addEventListener('click',function(e){if(e.target===modal)modal.remove();});
+      // Prevenir scroll del body
+      modal.addEventListener('touchmove',function(e){e.stopPropagation();},{passive:true});
+    };
+
+    // ── Fix touch en iOS para divs con onclick ──
+    function _fixCards(){
+      document.querySelectorAll('.v45int-card-html,.v45int-card').forEach(function(card){
+        if(card._v48ok)return;
+        card._v48ok=true;
+        card.style.cursor='pointer';
+        card.style.webkitTapHighlightColor='rgba(200,168,75,0.15)';
+        card.style.touchAction='manipulation';
+        var m=(card.getAttribute('onclick')||'').match(/v45OpenIntModal\(['"](\w+)['"]\)/);
+        if(!m)return;
+        var k=m[1];
+        // touchend para iOS (más confiable que click en divs)
+        card.addEventListener('touchend',function(e){
+          e.preventDefault();
+          window.v45OpenIntModal(k);
+        },{passive:false});
+      });
+    }
+
+    function _refreshCards(){
+      var st={};
+      try{st=JSON.parse(localStorage.getItem('nexa_v45_ints')||'{}');}catch(e){}
+      document.querySelectorAll('.v45int-card-html').forEach(function(card){
+        var m=(card.getAttribute('onclick')||'').match(/v45OpenIntModal\(['"](\w+)['"]\)/);
+        if(!m)return;
+        var k=m[1];
+        var el=document.getElementById('v45int-status-'+k);
+        if(el){
+          if(st[k]){el.textContent='● Activo';el.style.color='#22c55e';card.style.borderColor='rgba(34,197,94,0.3)';card.style.background='rgba(34,197,94,0.03)';}
+          else{el.textContent='○ Sin configurar';el.style.color='rgba(240,240,248,0.2)';}
+        }
+      });
+    }
+
+    _fixCards();
+    _refreshCards();
+
+    document.addEventListener('nexa:login',function(){setTimeout(function(){_fixCards();_refreshCards();},600);});
+
+    // Parchear navTo para ajustes
+    if(window.navTo && !window._v48navp){
+      window._v48navp=true;
+      var _nt=window.navTo;
+      window.navTo=function(v,b){
+        var r=_nt.call(this,v,b);
+        if(v==='ajustes')setTimeout(function(){_fixCards();_refreshCards();},400);
+        return r;
+      };
+    }
+
+    // MutationObserver para tarjetas generadas dinámicamente
+    var grid=document.getElementById('v45IntGrid');
+    if(grid&&window.MutationObserver){
+      new MutationObserver(function(){setTimeout(function(){_fixCards();_refreshCards();},100);}).observe(grid,{childList:true,subtree:true});
+    }
+
+    console.log('%c[NEXA v48] Integrations fix OK — '+Object.keys(window.INTS||{}).length+' integraciones',
+      'background:linear-gradient(135deg,#4A154B,#1a0020);color:#fff;font-weight:900;padding:3px 10px;border-radius:5px');
+  });
+})();
+</script>
+
+
+<!-- ══ NEXA v2.1 — CHARTS RUNTIME FIX ══ -->
+<script>
+(function(){
+'use strict';
+
+/* Esperar a que todo esté listo */
+function ready(fn){
+  if(document.readyState!=='loading')fn();
+  else document.addEventListener('DOMContentLoaded',fn);
+}
+
+/* ── Re-instalar intercepts cuando el CRM esté cargado ── */
+document.addEventListener('nexa:login', function(){
+  setTimeout(installChartHooks, 400);
+});
+
+/* También instalar al cargar por si acaso */
+ready(function(){ setTimeout(installChartHooks, 800); });
+
+function installChartHooks(){
+  /* ─ Analytics ─ */
+  if(window.renderAnalytics && !window._nxAnalyticsHooked){
+    window._nxAnalyticsHooked = true;
+    var _orig = window.renderAnalytics;
+    window.renderAnalytics = function(){
+      _orig.apply(this, arguments);
+      setTimeout(function(){ tryRenderAnalyticsCharts(); }, 120);
+    };
+  }
+
+  /* ─ Pipeline ─ */
+  if(window.renderPipeline && !window._nxPipelineHooked){
+    window._nxPipelineHooked = true;
+    var _origP = window.renderPipeline;
+    window.renderPipeline = function(){
+      _origP.apply(this, arguments);
+      setTimeout(function(){ tryRenderPipelineCharts(); }, 120);
+    };
+  }
+
+  /* ─ View switch ─ */
+  if(window._doSwitchView && !window._nxSwitchHooked){
+    window._nxSwitchHooked = true;
+    var _origS = window._doSwitchView;
+    window._doSwitchView = function(v){
+      _origS.apply(this, arguments);
+      setTimeout(function(){
+        if(v === 'analytics') tryRenderAnalyticsCharts();
+        if(v === 'pipeline')  tryRenderPipelineCharts();
+        animateViewCards();
+      }, 100);
+    };
+  }
+}
+
+/* ════════════════════════════════════════════════
+   RENDER ANALYTICS CHARTS
+════════════════════════════════════════════════ */
+function tryRenderAnalyticsCharts(){
+  if(!window.nxLine || !window.nxDonut) return;
+  var leads = window.leads || [];
+  var calls  = window.calls  || [];
+
+  /* KPI stagger: eliminado */
+
+  /* ─ Progress bars animate ─ */
+  setTimeout(function(){
+    document.querySelectorAll('.progress-fill').forEach(function(el){
+      var w = el.style.width; el.style.width='0';
+      setTimeout(function(){ el.style.transition='width .9s cubic-bezier(.22,1,.36,1)'; el.style.width=w; }, 40);
+    });
+  }, 80);
+
+  /* ─ Line chart ─ */
+  var lineEl = document.getElementById('nxLine1');
+  if(lineEl){
+    var dayL=[], callD=[], leadD=[];
+    for(var i=13;i>=0;i--){
+      var d=new Date(); d.setDate(d.getDate()-i);
+      var ds=d.toISOString().slice(0,10);
+      dayL.push(d.toLocaleDateString('es',{day:'2-digit',month:'2-digit'}));
+      callD.push(calls.filter(function(c){return(c.datetime||'').slice(0,10)===ds;}).length);
+      leadD.push(leads.filter(function(l){return(l.created_at||'').slice(0,10)===ds;}).length);
+    }
+    lineEl.innerHTML='';
+    window.nxLine('nxLine1',[
+      {data:callD,color:'#C8A84B',label:'Llamadas'},
+      {data:leadD,color:'#3b82f6',label:'Leads nuevos'}
+    ],dayL,{H:140,pL:28});
+  }
+
+  /* ─ Donut pipeline ─ */
+  var donutEl = document.getElementById('nxDonut1');
+  if(donutEl){
+    var stClr={
+      'POTENCIAL':'#6366f1','CONTACTADA':'#f59e0b',
+      'INTERESADA / DEMO':'#C8A84B','PROPUESTA ENVIADA':'#8b5cf6',
+      'CLIENTE ACTIVO':'#22c55e','PERDIDO / DESCARTADO':'#f43f5e'
+    };
+    var dd = Object.entries(stClr).map(function(e){
+      return{label:e[0].length>15?e[0].slice(0,14)+'…':e[0],
+             val:leads.filter(function(l){return l.state===e[0];}).length,
+             color:e[1]};
+    }).filter(function(d){return d.val>0;});
+    donutEl.innerHTML='';
+    if(dd.length) window.nxDonut('nxDonut1',dd,{size:140});
+    else donutEl.innerHTML='<div style="color:rgba(240,240,248,.2);font-size:11px;padding:12px">Sin datos aún — importa leads</div>';
+  }
+}
+
+/* ════════════════════════════════════════════════
+   RENDER PIPELINE CHARTS
+════════════════════════════════════════════════ */
+function tryRenderPipelineCharts(){
+  if(!window.nxBars || !window.nxDonut) return;
+  var leads = window.leads || [];
+
+  /* ─ Bars ─ */
+  var barsEl = document.getElementById('nxPipeBars');
+  if(barsEl){
+    var stMap=[
+      {k:'POTENCIAL',l:'Potencial',c:'#6366f1'},
+      {k:'CONTACTADA',l:'Contactada',c:'#f59e0b'},
+      {k:'INTERESADA / DEMO',l:'Demo/Interés',c:'#C8A84B'},
+      {k:'PROPUESTA ENVIADA',l:'Propuesta',c:'#8b5cf6'},
+      {k:'CLIENTE ACTIVO',l:'Cliente ✓',c:'#22c55e'},
+      {k:'PERDIDO / DESCARTADO',l:'Perdido',c:'#f43f5e'}
+    ];
+    var bd=stMap.map(function(s){
+      var cnt=leads.filter(function(l){return l.state===s.k;}).length;
+      return{label:s.l,val:cnt,valStr:cnt+' leads',color:s.c};
+    });
+    barsEl.innerHTML='';
+    window.nxBars('nxPipeBars',bd,{bH:22,gap:7,pL:88,pR:48});
+  }
+
+  /* ─ Donut ─ */
+  var pipeD = document.getElementById('nxPipeDonut');
+  if(pipeD){
+    var stClr2={
+      'POTENCIAL':'#6366f1','CONTACTADA':'#f59e0b',
+      'INTERESADA / DEMO':'#C8A84B','PROPUESTA ENVIADA':'#8b5cf6',
+      'CLIENTE ACTIVO':'#22c55e','PERDIDO / DESCARTADO':'#f43f5e'
+    };
+    var dd2=Object.entries(stClr2).map(function(e){
+      return{label:e[0].length>12?e[0].slice(0,11)+'…':e[0],
+             val:leads.filter(function(l){return l.state===e[0];}).length,
+             color:e[1]};
+    }).filter(function(d){return d.val>0;});
+    pipeD.innerHTML='';
+    if(dd2.length) window.nxDonut('nxPipeDonut',dd2,{size:120});
+    else pipeD.innerHTML='<div style="color:rgba(240,240,248,.2);font-size:11px;padding:10px">Sin datos</div>';
+  }
+
+  /* pipe-cards stagger: eliminado */
+  if(false){
+  });
+}
+
+/* ════════════════════════════════════════════════
+   ANIMATE CARDS ON VIEW SWITCH
+════════════════════════════════════════════════ */
+function animateViewCards(){
+  /* eliminado — causaba parpadeo en todas las vistas */
+  if(false){
+    var items = [];
+    items.forEach(function(el,i){
+      void el;
+    });
+  });
+}
+
+/* ════════════════════════════════════════════════
+   FIX INTEGRACIONES — garantizar click en mobile + desktop
+════════════════════════════════════════════════ */
+function fixIntCards(){
+  document.querySelectorAll('.v45int-card-html,.v45int-card').forEach(function(card){
+    if(card._nxFixed) return;
+    card._nxFixed = true;
+    var m = (card.getAttribute('onclick')||'').match(/v45OpenIntModal\(['"](\w+)['"]\)/);
+    if(!m) return;
+    var k = m[1];
+    /* Asegurar pointer-events y cursor */
+    card.style.pointerEvents = 'all';
+    card.style.cursor = 'pointer';
+    /* Click desktop */
+    card.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(window.v45OpenIntModal) window.v45OpenIntModal(k);
+    });
+    /* Touch mobile */
+    card.addEventListener('touchend', function(e){
+      e.preventDefault();
+      if(window.v45OpenIntModal) window.v45OpenIntModal(k);
+    }, {passive:false});
+  });
+}
+
+/* Correr fixIntCards cada vez que se entra a ajustes */
+document.addEventListener('nexa:login', function(){
+  setTimeout(fixIntCards, 800);
+});
+ready(function(){
+  setTimeout(fixIntCards, 1200);
+  /* Observer para cuando aparecen las cards */
+  var grid = document.getElementById('v45IntGrid');
+  if(grid && window.MutationObserver){
+    new MutationObserver(function(){ setTimeout(fixIntCards,100); }).observe(grid,{childList:true,subtree:true});
+  }
+});
+
+/* Si navTo va a ajustes, re-fixear */
+var _nxNavTo = window.navTo;
+if(_nxNavTo && !window._nxNavFixed){
+  window._nxNavFixed = true;
+  window.navTo = function(v,b){
+    var r = _nxNavTo.apply(this, arguments);
+    if(v==='ajustes') setTimeout(fixIntCards, 500);
+    return r;
+  };
+}
+
+/* Fix final: re-activar pointer-events en toda la app tras login */
+document.addEventListener('nexa:login', function() {
+  setTimeout(function() {
+    // Asegurar que nada bloquea los clicks en la app
+    var ls = document.getElementById('loginScreen');
+    if (ls) ls.style.pointerEvents = 'none';
+    
+    // Re-activar todo el contenido
+    ['#appShell','#mainContent','.view','.settings-wrap',
+     '#v45IntGrid','.v45int-card-html','#viewAjustes',
+     '.settings-section','.settings-row'
+    ].forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+      });
+    });
+    
+    // Fix específico tarjetas integraciones
+    document.querySelectorAll('.v45int-card-html, [onclick*="v45OpenIntModal"]').forEach(function(card) {
+      card.style.pointerEvents = 'auto';
+      card.style.cursor = 'pointer';
+      if (!card._nxInt) {
+        card._nxInt = true;
+        var m = (card.getAttribute('onclick') || '').match(/v45OpenIntModal\(['"](\w+)['"]\)/);
+        if (m) {
+          var k = m[1];
+          card.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (window.v45OpenIntModal) window.v45OpenIntModal(k);
+          });
+        }
+      }
+    });
+  }, 500);
+});
+
+console.log('[NEXA v2.1] Charts runtime + integrations fix ✓');
+})();
+</script>
+
 </body>
+</html>

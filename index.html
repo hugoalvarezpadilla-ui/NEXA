@@ -4615,94 +4615,223 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
         <div id="nexaPwaSteps" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;font-size:12px;line-height:1.8;color:var(--t2)"></div>
       </div>
 
-      <!-- ══════════ INTEGRACIONES v3 — botones reales ══════════ -->
+      <!-- ══════════ INTEGRACIONES — autónomo ══════════ -->
       <div class="settings-section" id="v45IntSection">
         <div class="settings-section-title">🔌 Integraciones</div>
-        <p style="font-size:12px;color:var(--t3);margin:0 0 14px;line-height:1.6">Conecta NEXA con tus herramientas. Pulsa cualquier tarjeta para configurarla. Las marcadas con ● verde ya están activas.</p>
+        <p style="font-size:12px;color:var(--t3);margin:0 0 14px;line-height:1.6">Conecta NEXA con tus herramientas. Pulsa cualquier tarjeta para configurarla.</p>
         <div id="v45IntGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
-          <!-- INTEGRACIONES v3: botones reales, todas configurables -->
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="zapier">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('zapier')" data-int="zapier">
             <div class="nxint-icon" style="background:#FF4A0022;border-color:#FF4A0055">⚡</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Zapier</div>
-              <div class="nxint-desc">Conecta NEXA con +6000 apps sin código.</div>
-              <div class="nxint-status" id="v45int-status-zapier">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Zapier</div><div class="nxint-desc">Conecta NEXA con +6000 apps sin código.</div><div class="nxint-status" id="v45int-status-zapier">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="make">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('make')" data-int="make">
             <div class="nxint-icon" style="background:#6D00CC22;border-color:#6D00CC55">🔧</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Make (Integromat)</div>
-              <div class="nxint-desc">Automatizaciones avanzadas y flujos complejos.</div>
-              <div class="nxint-status" id="v45int-status-make">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Make (Integromat)</div><div class="nxint-desc">Automatizaciones avanzadas y flujos complejos.</div><div class="nxint-status" id="v45int-status-make">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="gcalendar">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('gcalendar')" data-int="gcalendar">
             <div class="nxint-icon" style="background:#4285F422;border-color:#4285F455">📅</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Google Calendar</div>
-              <div class="nxint-desc">Crea eventos con datos del lead pre-rellenados.</div>
-              <div class="nxint-status" id="v45int-status-gcalendar">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Google Calendar</div><div class="nxint-desc">Crea eventos con datos del lead pre-rellenados.</div><div class="nxint-status" id="v45int-status-gcalendar">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="gmail">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('gmail')" data-int="gmail">
             <div class="nxint-icon" style="background:#EA433522;border-color:#EA433555">📧</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Gmail</div>
-              <div class="nxint-desc">Abre Gmail con el email del lead ya puesto.</div>
-              <div class="nxint-status" id="v45int-status-gmail">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Gmail</div><div class="nxint-desc">Abre Gmail con el email del lead ya puesto.</div><div class="nxint-status" id="v45int-status-gmail">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="slack">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('slack')" data-int="slack">
             <div class="nxint-icon" style="background:#4A154B22;border-color:#4A154B55">💬</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Slack</div>
-              <div class="nxint-desc">Notificaciones en tu canal cuando hay cambios.</div>
-              <div class="nxint-status" id="v45int-status-slack">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Slack</div><div class="nxint-desc">Notificaciones en tu canal cuando hay cambios.</div><div class="nxint-status" id="v45int-status-slack">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="sheets">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('sheets')" data-int="sheets">
             <div class="nxint-icon" style="background:#34A85322;border-color:#34A85355">📊</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Google Sheets</div>
-              <div class="nxint-desc">Exporta todos tus leads a una hoja de cálculo.</div>
-              <div class="nxint-status" id="v45int-status-sheets">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Google Sheets</div><div class="nxint-desc">Exporta todos tus leads a una hoja de cálculo.</div><div class="nxint-status" id="v45int-status-sheets">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="whatsapp">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('whatsapp')" data-int="whatsapp">
             <div class="nxint-icon" style="background:#25D36622;border-color:#25D36655">💬</div>
-            <div class="nxint-body">
-              <div class="nxint-name">WhatsApp Business</div>
-              <div class="nxint-desc">Integración oficial Meta para envíos automatizados.</div>
-              <div class="nxint-status" id="v45int-status-whatsapp">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">WhatsApp Business</div><div class="nxint-desc">Integración oficial Meta para envíos automatizados.</div><div class="nxint-status" id="v45int-status-whatsapp">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="twilio">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('twilio')" data-int="twilio">
             <div class="nxint-icon" style="background:#F22F4622;border-color:#F22F4655">📞</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Twilio (Llamadas)</div>
-              <div class="nxint-desc">Grabación y transcripción automática de llamadas.</div>
-              <div class="nxint-status" id="v45int-status-twilio">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Twilio (Llamadas)</div><div class="nxint-desc">Grabación y transcripción automática de llamadas.</div><div class="nxint-status" id="v45int-status-twilio">○ No configurado</div></div>
           </button>
-          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="stripe">
+          <button type="button" class="nxint-btn" onclick="nxOpenInt('stripe')" data-int="stripe">
             <div class="nxint-icon" style="background:#635BFF22;border-color:#635BFF55">💳</div>
-            <div class="nxint-body">
-              <div class="nxint-name">Stripe (Pagos)</div>
-              <div class="nxint-desc">Cobra propuestas con tarjeta desde la ficha del lead.</div>
-              <div class="nxint-status" id="v45int-status-stripe">○ No configurado</div>
-            </div>
+            <div class="nxint-body"><div class="nxint-name">Stripe (Pagos)</div><div class="nxint-desc">Cobra propuestas con tarjeta desde la ficha del lead.</div><div class="nxint-status" id="v45int-status-stripe">○ No configurado</div></div>
           </button>
-        </div>
-        <div id="v45WebhookSection" style="margin-top:16px;display:none">
-          <div class="settings-label" style="margin-bottom:8px">🔗 Tu Webhook URL (para Zapier / Make)</div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <code id="v45WebhookUrl" style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">https://hook.nexacrm.app/webhook/ORG_ID</code>
-            <button onclick="v45CopyWebhook()" style="padding:8px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.3);color:var(--gold2);white-space:nowrap;font-family:var(--sans)">Copiar</button>
-          </div>
-          <div style="font-size:11px;color:var(--t4);margin-top:6px">Pega esta URL en Zapier o Make como "Webhook URL" para recibir eventos de NEXA.</div>
         </div>
       </div>
+
+      <script>
+      /* ── INTEGRACIONES: modal autónomo, cero dependencias externas ── */
+      var NX_INTS = {
+        zapier:    { name:'Zapier',             icon:'⚡', color:'#FF4A00', url:'https://zapier.com/sign-up',   webhook:true,  whLabel:'Zapier Webhook URL', whPh:'https://hooks.zapier.com/hooks/catch/...', coming:false,
+          steps:['Ve a <b>zapier.com</b> e inicia sesión','Crea un Zap → trigger <b>Webhooks → Catch Hook</b>','Copia la URL que te da Zapier','Pégala abajo en "Webhook URL" y pulsa Guardar','Cada lead guardado en NEXA lo recibirá Zapier automáticamente'],
+          docs:'https://zapier.com/apps/webhook/integrations' },
+        make:      { name:'Make (Integromat)',   icon:'🔧', color:'#6D00CC', url:'https://make.com/en/register', webhook:true,  whLabel:'Make Webhook URL',   whPh:'https://hook.eu1.make.com/...', coming:false,
+          steps:['Ve a <b>make.com</b> → nuevo Scenario','Añade módulo <b>Webhooks → Custom Webhook</b>','Pulsa Add → copia la URL','Pégala abajo y guarda','Añade los módulos que quieras (Sheets, Gmail, Notion…)'],
+          docs:'https://www.make.com/en/help/tools/webhooks' },
+        gcalendar: { name:'Google Calendar',    icon:'📅', color:'#4285F4', url:null, webhook:false, coming:false,
+          steps:['No necesitas configurar nada — funciona directamente','Abre cualquier lead → botón <b>📅 Calendario</b>','Se abre Google Calendar con el evento ya rellenado','Elige fecha/hora y pulsa Guardar','Asegúrate de estar logueado en Google en el mismo navegador'],
+          docs:'https://calendar.google.com' },
+        gmail:     { name:'Gmail',              icon:'📧', color:'#EA4335', url:null, webhook:false, coming:false,
+          steps:['No necesitas configurar nada — funciona directamente','Abre cualquier lead con email → botón <b>📧 Email</b>','Se abre Gmail con el destinatario ya puesto','Escribe y envía','Para historial en ficha se necesita Gmail API (plan Enterprise)'],
+          docs:'https://mail.google.com' },
+        slack:     { name:'Slack',              icon:'💬', color:'#4A154B', url:'https://api.slack.com/apps?new_app=1', webhook:true, whLabel:'Slack Webhook URL', whPh:'https://hooks.slack.com/services/T.../B.../', coming:false,
+          steps:['Ve a <b>api.slack.com/apps</b> → crea App','Activa <b>Incoming Webhooks</b> → añade workspace','Elige canal (ej: #ventas) → copia la Webhook URL','Pégala abajo y guarda','Cada lead nuevo enviará mensaje a tu canal'],
+          docs:'https://api.slack.com/messaging/webhooks' },
+        sheets:    { name:'Google Sheets',      icon:'📊', color:'#34A853', url:null, webhook:false, coming:false,
+          steps:['No necesitas configurar nada previo','Ve a <b>Ajustes → Exportar CSV</b> o usa el botón ↓ del header','Abre el CSV con Google Sheets','Para sync automático: usa Zapier → New Lead → Add Row in Sheets','La opción más sencilla es exportar manualmente cuando lo necesites'],
+          docs:'https://sheets.google.com' },
+        whatsapp:  { name:'WhatsApp Business',  icon:'📱', color:'#25D366', url:'https://business.facebook.com', webhook:false, coming:true,
+          steps:['Necesitas cuenta <b>Meta Business</b> verificada','Solicita acceso a la <b>WhatsApp Business API</b>','Configura número dedicado (no el personal)','Obtén API Token y Phone Number ID','Disponible en plan Enterprise'],
+          docs:'https://developers.facebook.com/docs/whatsapp/cloud-api' },
+        twilio:    { name:'Twilio (Llamadas)',   icon:'📞', color:'#F22F46', url:'https://www.twilio.com/try-twilio', webhook:false, coming:true,
+          steps:['Crea cuenta en <b>twilio.com</b> y compra número','Obtén Account SID y Auth Token','Configura TwiML webhook para grabación','Conecta con OpenAI Whisper para transcripción','Disponible en plan Enterprise'],
+          docs:'https://www.twilio.com/docs/voice' },
+        stripe:    { name:'Stripe (Pagos)',      icon:'💳', color:'#635BFF', url:'https://dashboard.stripe.com/register', webhook:false, coming:true,
+          steps:['Crea cuenta en <b>stripe.com</b>','Activa con datos fiscales de tu empresa','Ve a Developers → API Keys → copia Publishable Key','Cada propuesta generará un Payment Link para enviar al cliente','Disponible en plan Enterprise'],
+          docs:'https://stripe.com/docs' }
+      };
+
+      function nxGetSt(){try{return JSON.parse(localStorage.getItem('nexa_v45_ints')||'{}');}catch(e){return {};}}
+      function nxGetWh(){try{return JSON.parse(localStorage.getItem('nexa_v45_webhooks')||'{}');}catch(e){return {};}}
+
+      function nxRefreshBadges(){
+        var st=nxGetSt();
+        Object.keys(NX_INTS).forEach(function(k){
+          var el=document.getElementById('v45int-status-'+k);
+          var btn=el&&el.closest?el.closest('.nxint-btn'):null;
+          if(!el)return;
+          if(st[k]){el.textContent='● Activo';el.style.color='#22c55e';if(btn)btn.classList.add('active');}
+          else{el.textContent='○ No configurado';el.style.color='';if(btn)btn.classList.remove('active');}
+        });
+      }
+
+      function nxOpenInt(k){
+        var i=NX_INTS[k]; if(!i)return;
+        var st=nxGetSt(), wh=nxGetWh();
+        var connected=!!st[k];
+
+        var old=document.getElementById('nxIntModal'); if(old)old.remove();
+
+        var modal=document.createElement('div');
+        modal.id='nxIntModal';
+        modal.style.cssText='position:fixed;inset:0;z-index:999999;background:rgba(0,0,10,0.92);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:16px';
+
+        var box=document.createElement('div');
+        box.style.cssText='background:linear-gradient(145deg,#0e0e1e,#07070f);border:1px solid rgba(255,255,255,0.12);border-radius:22px;padding:26px;max-width:500px;width:100%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 40px 100px rgba(0,0,0,0.95)';
+
+        /* Cabecera */
+        var hdr=document.createElement('div');
+        hdr.style.cssText='display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-right:36px';
+        hdr.innerHTML='<div style="width:48px;height:48px;border-radius:14px;background:'+i.color+'22;border:1px solid '+i.color+'44;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">'+i.icon+'</div>'
+          +'<div><div style="font-size:18px;font-weight:900;color:#F0F0F8">'+i.name+'</div>'
+          +'<div style="font-size:11px;font-weight:700;color:'+(connected?'#22c55e':i.coming?'#f59e0b':'rgba(240,240,248,0.3)')+'">'+
+          (connected?'● Activo':i.coming?'⏳ Próximamente':'○ Sin configurar')+'</div></div>';
+        box.appendChild(hdr);
+
+        /* Botón cerrar */
+        var xBtn=document.createElement('button');
+        xBtn.textContent='✕';
+        xBtn.style.cssText='position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,248,0.5);font-size:18px;cursor:pointer;width:36px;height:36px;border-radius:9px';
+        xBtn.onclick=function(){modal.remove();};
+        box.appendChild(xBtn);
+
+        /* Pasos */
+        var stepsDiv=document.createElement('div');
+        stepsDiv.style.cssText='background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px;margin-bottom:14px';
+        stepsDiv.innerHTML='<div style="font-size:10px;font-weight:800;color:rgba(240,240,248,0.3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px">📋 Cómo configurarlo</div>'
+          +(i.steps||[]).map(function(s){
+            return '<div style="display:flex;gap:9px;margin-bottom:9px;font-size:12px;color:rgba(240,240,248,0.6);line-height:1.6"><span style="flex-shrink:0;color:'+i.color+';font-weight:700">›</span><span>'+s+'</span></div>';
+          }).join('');
+        box.appendChild(stepsDiv);
+
+        /* Webhook input */
+        if(i.webhook && !i.coming){
+          var wDiv=document.createElement('div');
+          wDiv.style.cssText='margin-bottom:14px';
+          var wLbl=document.createElement('div');
+          wLbl.style.cssText='font-size:10px;font-weight:800;color:rgba(240,240,248,0.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px';
+          wLbl.textContent=i.whLabel||'Webhook URL';
+          var wRow=document.createElement('div');
+          wRow.style.cssText='display:flex;gap:8px';
+          var inp=document.createElement('input');
+          inp.type='text'; inp.value=wh[k]||''; inp.placeholder=i.whPh||'https://...';
+          inp.style.cssText='flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:9px;padding:11px 12px;color:#F0F0F8;font-size:13px;outline:none;min-width:0';
+          var savBtn=document.createElement('button');
+          savBtn.textContent='Guardar';
+          savBtn.style.cssText='padding:0 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:rgba(200,168,75,0.15);border:1px solid rgba(200,168,75,0.35);color:#E4C46A;white-space:nowrap;min-height:44px';
+          savBtn.onclick=function(){
+            var url=inp.value.trim();
+            if(!url){typeof toast==='function'&&toast('URL vacía','Pega la URL','⚠');return;}
+            var w=nxGetWh(); w[k]=url; localStorage.setItem('nexa_v45_webhooks',JSON.stringify(w));
+            doConfirm();
+          };
+          wRow.appendChild(inp); wRow.appendChild(savBtn);
+          wDiv.appendChild(wLbl); wDiv.appendChild(wRow);
+          box.appendChild(wDiv);
+        }
+
+        /* Botones acción */
+        var acts=document.createElement('div');
+        acts.style.cssText='display:flex;flex-wrap:wrap;gap:8px;align-items:center';
+
+        function doConfirm(){
+          var s=nxGetSt(); s[k]={connectedAt:new Date().toISOString()};
+          localStorage.setItem('nexa_v45_ints',JSON.stringify(s));
+          modal.remove(); nxRefreshBadges();
+          typeof toast==='function'&&toast(i.name+' configurado','✅ Integración activa',i.icon,3000);
+        }
+
+        if(!i.coming){
+          if(i.url){
+            var goBtn=document.createElement('button');
+            goBtn.textContent='Ir a '+i.name+' →';
+            goBtn.style.cssText='padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;background:'+i.color+';border:none;color:#fff;min-height:44px';
+            goBtn.onclick=function(){window.open(i.url,'_blank');};
+            acts.appendChild(goBtn);
+          }
+          var cfBtn=document.createElement('button');
+          cfBtn.textContent='✓ '+(connected?'Reconfigurar':'Marcar configurado');
+          cfBtn.style.cssText='padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.35);color:#86efac;min-height:44px';
+          cfBtn.onclick=doConfirm;
+          acts.appendChild(cfBtn);
+          if(connected){
+            var dcBtn=document.createElement('button');
+            dcBtn.textContent='Desconectar';
+            dcBtn.style.cssText='padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);color:#fda4af;min-height:44px';
+            dcBtn.onclick=function(){
+              var s=nxGetSt(); delete s[k]; localStorage.setItem('nexa_v45_ints',JSON.stringify(s));
+              modal.remove(); nxRefreshBadges();
+              typeof toast==='function'&&toast(i.name+' desconectado','','🔌',3000);
+            };
+            acts.appendChild(dcBtn);
+          }
+        } else {
+          var cDiv=document.createElement('div');
+          cDiv.style.cssText='font-size:12px;color:rgba(240,240,248,0.5);padding:12px 14px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:10px;width:100%';
+          cDiv.textContent='⏳ Disponible próximamente en plan Enterprise.';
+          acts.appendChild(cDiv);
+        }
+        if(i.docs){
+          var dBtn=document.createElement('button');
+          dBtn.textContent='📖 Docs';
+          dBtn.style.cssText='padding:11px 16px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(240,240,248,0.4);min-height:44px';
+          dBtn.onclick=function(){window.open(i.docs,'_blank');};
+          acts.appendChild(dBtn);
+        }
+        box.appendChild(acts);
+        modal.appendChild(box);
+        document.body.appendChild(modal);
+        modal.addEventListener('click',function(e){if(e.target===modal)modal.remove();});
+      }
+
+      window.nxOpenInt = nxOpenInt;
+      window.v45OpenIntModal = nxOpenInt;
+      window.nxIntOpen = nxOpenInt;
+
+      /* Refrescar badges al cargar */
+      document.addEventListener('DOMContentLoaded', nxRefreshBadges);
+      setTimeout(nxRefreshBadges, 500);
+      </script>
       <!-- ══════════ FIN INTEGRACIONES ══════════ -->
 
       <!-- Tema -->
@@ -5807,7 +5936,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
     <div class="modal-hd"><div><div class="modal-title">Importar desde CSV</div><div class="modal-sub">Exporta tu Excel como CSV. Detecta duplicados automáticamente.</div></div><button class="modal-close" id="impClose">Cerrar</button></div>
     <div class="modal-bd">
       <div class="fg" style="gap:12px">
-        <label class="btn-gold" style="width:fit-content;cursor:pointer;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px">↑ Seleccionar archivo CSV<input id="impFile" type="file" accept=".csv,text/csv" style="display:none"></label>
+        <label class="btn-gold" style="width:fit-content;cursor:pointer;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px">↑ Seleccionar archivo CSV<input id="impFile" type="file" accept=".csv,.txt,.tsv,text/csv,text/plain,application/csv,application/vnd.ms-excel" style="display:none"></label>
         <div style="font-size:13px;color:var(--t2)" id="impInfo">Ningún archivo seleccionado</div>
         <div class="pill ok" id="impHint" style="display:none">✓ Archivo cargado — Revisa el mapeo y confirma la importación</div>
       </div>
@@ -6476,46 +6605,48 @@ function _showLeadAlert(icon, user, action, leadName, color){
 
 // Parchear solo la fila afectada en la tabla (sin re-render completo)
 function _patchTableRow(leadId){
-  // Buscar por data-lead-id (añadido en renderTable)
+  // FIX: en lugar de reconstruir la fila completa (que causa desalineamiento
+  // de columnas cuando hay parches que añaden el checkbox u otras columnas),
+  // actualizamos SOLO la celda de estado buscándola por contenido, no por índice.
   const row = document.querySelector(`tr[data-lead-id="${leadId}"]`);
   if(!row){
-    // Fallback: render completo solo si la vista es leads
     const cv = AppState.get('currentView');
     if(cv==='leads') try{render();}catch(e){}
     return;
   }
   const l = getLead(leadId); if(!l) return;
-  const sc = scoreFinal(l);
-  // Las celdas no tienen data-cell, reconstruir la fila es más seguro
-  // que buscar por posición (puede variar con columnas opcionales)
-  // Re-render solo esa fila (append in-place)
-  const parent = row.parentNode;
-  const nextSib = row.nextSibling;
-  const newRow = row.cloneNode(false); // mismas clases
-  newRow.dataset.leadId = leadId;
-  newRow.classList.toggle('row-active', leadId===selId);
-  const tel=(l.phone||'').trim();
-  const waNum=tel?'34'+tel.replace(/[^\d]/g,'').replace(/^34/,''):'';
-  const waMsg=encodeURIComponent('Hola, soy de NEXA Digital Systems. ¿Cuándo te viene bien una demo?');
-  newRow.innerHTML = `
-    <td><div class="fw9" style="font-size:14px">${esc(l.name||'(sin nombre)')}</div>
-      <div class="mono dim" style="font-size:10px;margin-top:3px">${esc(l.lead_id)} · ${esc(l.owner||'—')}</div></td>
-    <td style="color:var(--t2)">${esc(l.category||'—')}</td>
-    <td>${chipState(l.state)}</td>
-    <td><span class="pill ${sc.priority==='A'?'ok':sc.priority==='B'?'warn':'bad'}" style="font-family:var(--mono);font-size:10px">${sc.final}</span></td>
-    <td class="mono" style="font-size:13px">${esc(tel)||'<span class=\'dim\'>—</span>'}</td>
-    <td style="font-size:13px;color:var(--t2)">${esc(l.next_type||'—')}</td>
-    <td style="white-space:nowrap;font-size:13px">${esc(l.next_date||'—')}${dateBadge(l.next_date)}</td>
-    <td><div class="ra">
-      <button class="ra-open" data-action="open" data-id="${esc(l.lead_id)}">Abrir</button>
-      <button data-action="log" data-id="${esc(l.lead_id)}">Log</button>
-      ${tel?`<a class="ra-call" href="tel:${tel}">📞</a>`:''}
-      ${tel?`<a class="ra-ok" href="https://wa.me/${waNum}?text=${waMsg}" target="_blank">💬 WA</a>`:''}
-      <button class="ra-ok" data-action="paid" data-id="${esc(l.lead_id)}">✓ Cliente</button>
-      <button class="ra-bad" data-action="nc" data-id="${esc(l.lead_id)}">✕ NC</button>
-    </div></td>`;
-  parent.insertBefore(newRow, nextSib);
-  parent.removeChild(row);
+
+  // Encontrar la celda de estado: la que contiene un span.pill con texto de estado (no número)
+  const cells = row.querySelectorAll('td');
+  let stateCellFound = false;
+  cells.forEach(td => {
+    if(stateCellFound) return;
+    const pill = td.querySelector('span.pill');
+    if(pill && !td.querySelector('[data-action]') && !td.querySelector('.ra')) {
+      const txt = pill.textContent.trim();
+      // Celda de estado: texto no es un número corto (los scores son numéricos)
+      if(txt.length > 2 && isNaN(Number(txt))) {
+        td.innerHTML = chipState(l.state);
+        stateCellFound = true;
+      }
+    }
+  });
+
+  // Si no encontramos por pill, hacer render completo seguro
+  if(!stateCellFound) {
+    try{ render(); }catch(e){}
+    return;
+  }
+
+  // Actualizar chip y select en ficha si es el lead activo
+  if(leadId === window.selId) {
+    const chip = document.getElementById('fichaEstadoChip');
+    if(chip && typeof chipState==='function') chip.innerHTML = chipState(l.state);
+    const fState = document.getElementById('f_state');
+    if(fState) fState.value = l.state||'';
+  }
+
+  row.classList.toggle('row-active', leadId===window.selId);
 }
 
 // Parchear ficha sin cerrarla ni perder foco del usuario
@@ -8897,6 +9028,11 @@ function ccMakeState(s){
   renderCCList_v13();
   renderCCDetail_v13(ccSelId);
   render();
+  // Sincronizar sección de Leads con el nuevo estado
+  const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
+  const sec = SEC_MAP[s];
+  if(sec){ window._lvSection=sec; document.querySelectorAll('.lv-sec-btn').forEach(b=>b.classList.toggle('active',b.dataset.sec===sec)); }
+  if(typeof renderVentas==='function') setTimeout(()=>{try{renderVentas();}catch(e){}},60);
   toast('Estado: '+s, ccSelId, '→');
 }
 
@@ -13224,14 +13360,19 @@ function ventasFilter(btn, f){ lvDateFilter(btn, f); }
 
 function makeStateById(id, newState) {
   const l = (typeof getLead==='function') ? getLead(id) : null; if(!l) return;
-  const prev = l.state;
-  l.state = newState; l.updated_at = isoNow();
-  const sc = scoreFinal(l); l.score_auto=sc.auto; l.score_final=sc.final; l.priority=sc.priority;
-  saveAll(); sbUpsertLeadSafe(l);
-  typeof AuditLog!=='undefined'&&AuditLog.record('change_state',id,prev,newState);
+  // Usar updateLeadField para disparar EventBus, automations y sync Supabase
+  if (typeof updateLeadField === 'function') {
+    updateLeadField(id, { state: newState });
+  } else {
+    const prev = l.state;
+    l.state = newState; l.updated_at = isoNow();
+    const sc = scoreFinal(l); l.score_auto=sc.auto; l.score_final=sc.final; l.priority=sc.priority;
+    saveAll(); sbUpsertLeadSafe(l);
+    typeof AuditLog!=='undefined'&&AuditLog.record('change_state',id,prev,newState);
+  }
   const TOASTS={'VENDIDO':'💰 ¡Vendido!','AGENDADO':'📅 Agendado','PERDIDO':'✕ Perdido','CONTACTADO':'📞 Contactado','NO CONTACTADO':'↺ Sin contactar'};
   toast(TOASTS[newState]||'Estado: '+newState, l.name||id, '→');
-  render();
+  if(typeof render==='function') render();
   // Cambiar sección automáticamente al estado correcto
   const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
   const sec = SEC_MAP[newState] || window._lvSection;
@@ -16165,11 +16306,15 @@ console.log(
     if (!id) { toast('Selecciona un lead','','⚠'); return; }
     if (typeof updateLeadField === 'function') {
       updateLeadField(id, { state: s });
+      // Actualizar tabla CRM
       if (typeof render === 'function') render();
       // Actualizar chip en ficha
       const chip = document.getElementById('fichaEstadoChip');
       if (chip && typeof chipState === 'function') chip.innerHTML = chipState(s);
-      // Mapear estado → sección en la página Leads
+      // Actualizar select de estado en ficha
+      const fState = document.getElementById('f_state');
+      if (fState) fState.value = s;
+      // Mapear estado → sección en la página Leads y actualizar botones sin navegar
       const SEC_MAP = {
         'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO',
         'AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO',
@@ -16178,15 +16323,13 @@ console.log(
         'PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO',
       };
       const sec = SEC_MAP[s] || 'NO_CONTACTADO';
-      // Cambiar sección activa y navegar a Leads
-      setTimeout(() => {
-        try {
-          window._lvSection = sec;
-          document.querySelectorAll('.lv-sec-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
-          navTo('ventas');
-          setTimeout(() => { try { renderVentas(); } catch(e) {} }, 60);
-        } catch(e) {}
-      }, 80);
+      // Sincronizar sección activa en Leads SIN navegar
+      try {
+        window._lvSection = sec;
+        document.querySelectorAll('.lv-sec-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
+        // Re-render ventas si la vista está visible
+        if (typeof renderVentas === 'function') setTimeout(() => { try { renderVentas(); } catch(e) {} }, 60);
+      } catch(e) {}
       // Toast descriptivo
       const T = { 'VENDIDO':'💰 ¡Vendido!', 'AGENDADO':'📅 Agendado', 'CONTACTADO':'📞 Contactado', 'PERDIDO':'✕ Perdido', 'NO CONTACTADO':'⬜ Sin contactar' };
       toast(T[s] || 'Estado: ' + s, getLead(id)?.name || id, '→');
@@ -17440,10 +17583,11 @@ console.log(
      FIX 7 — SYNC TOTAL / EVENTBUS RE-RENDER
   ════════════════════════════════════════════════════════ */
   if (typeof EventBus!=='undefined' && EventBus.on) {
-    EventBus.on('lead:updated', ()=>{ if(typeof render==='function')render(); if(typeof renderCCList_v13==='function')renderCCList_v13(); });
-    EventBus.on('lead:deleted', ()=>{ if(typeof render==='function')render(); if(typeof renderCCList_v13==='function')renderCCList_v13(); });
-    EventBus.on('call:registered', ()=>{ if(typeof renderCCList_v13==='function')renderCCList_v13(); });
-    EventBus.on('leads:bulk_deleted', ()=>{ if(typeof render==='function')render(); if(typeof renderCCList_v13==='function')renderCCList_v13(); });
+    EventBus.on('lead:updated', ()=>{ if(typeof render==='function')render(); if(typeof renderCCList_v13==='function')renderCCList_v13(); if(typeof renderVentas==='function')try{renderVentas();}catch(e){} });
+    EventBus.on('lead:state_changed', ()=>{ if(typeof renderVentas==='function')try{renderVentas();}catch(e){} });
+    EventBus.on('lead:deleted', ()=>{ if(typeof render==='function')render(); if(typeof renderCCList_v13==='function')renderCCList_v13(); if(typeof renderVentas==='function')try{renderVentas();}catch(e){} });
+    EventBus.on('call:registered', ()=>{ if(typeof renderCCList_v13==='function')renderCCList_v13(); if(typeof renderVentas==='function')try{renderVentas();}catch(e){} });
+    EventBus.on('leads:bulk_deleted', ()=>{ if(typeof render==='function')render(); if(typeof renderCCList_v13==='function')renderCCList_v13(); if(typeof renderVentas==='function')try{renderVentas();}catch(e){} });
   }
 
   /* ════════════════════════════════════════════════════════
@@ -29211,31 +29355,28 @@ function _saveWebhook(k, url) {
 }
 
 function v45RenderIntGrid() {
+  // ONLY update status badges — never replace the HTML buttons (they have working onclick)
+  var st = _getIntState();
+  Object.keys(window.INTS || {}).forEach(function(k) {
+    var el = document.getElementById('v45int-status-' + k);
+    var btn = el && el.closest ? el.closest('.nxint-btn') : null;
+    if (!el) return;
+    var connected = !!st[k];
+    if (connected) {
+      el.textContent = '● Activo';
+      el.className = 'nxint-status on';
+      if (btn) btn.classList.add('active');
+    } else {
+      el.textContent = '○ No configurado';
+      el.className = 'nxint-status';
+      if (btn) btn.classList.remove('active');
+    }
+  });
+  // dead code kept for reference — return before old innerHTML replacement
+  if (true) return;
   var grid = document.getElementById('v45IntGrid');
   if (!grid) return;
-  var st = _getIntState();
-
-  // v47: if hardcoded HTML cards exist, just update their status badges instead of replacing
-  if (grid.querySelector('.v45int-card-html')) {
-    Object.keys(INTS).forEach(function(k) {
-      var el = document.getElementById('v45int-status-' + k);
-      var card = el && el.closest ? el.closest('.v45int-card-html') : null;
-      if (!el) return;
-      var connected = !!st[k];
-      if (connected) {
-        el.textContent = '● Configurado';
-        el.style.color = '#22c55e';
-        if (card) card.style.borderColor = 'rgba(34,197,94,.3)';
-      } else {
-        el.textContent = '○ No configurado';
-        el.style.color = 'var(--t4)';
-        if (card) card.style.borderColor = 'rgba(255,255,255,.08)';
-      }
-    });
-    return;
-  }
-
-  grid.innerHTML = Object.entries(INTS).map(function(entry) {
+  grid.innerHTML = Object.entries(window.INTS||{}).map(function(entry) {
     var k = entry[0], i = entry[1];
     var connected = !!st[k];
     var coming = i.status === 'coming';
@@ -29261,7 +29402,7 @@ function v45RenderIntGrid() {
 }
 
 window.v45OpenIntModal = function(k) {
-  var i = INTS[k];
+  var i = window.INTS && window.INTS[k];
   if (!i) return;
   var st = _getIntState();
   var wh = _getWebhooks();
@@ -29273,67 +29414,117 @@ window.v45OpenIntModal = function(k) {
 
   var modal = document.createElement('div');
   modal.id = 'v45IntModal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:200000;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--sans)';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:16px;font-family:var(--sans)';
 
-  var webhookHtml = '';
+  var box = document.createElement('div');
+  box.style.cssText = 'background:linear-gradient(145deg,#0e0e1c,#090912);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:28px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.9)';
+
+  // Header
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;gap:14px;margin-bottom:20px';
+  hdr.innerHTML = '<div style="width:48px;height:48px;border-radius:14px;background:' + i.color + '22;border:1px solid ' + i.color + '44;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">' + i.icon + '</div>' +
+    '<div style="flex:1"><div style="font-size:18px;font-weight:900;color:#f0f0f8">' + i.name + '</div><div style="font-size:12px;color:rgba(240,240,248,.4);margin-top:2px">' + i.desc + '</div></div>';
+  var closeBtn = document.createElement('button');
+  closeBtn.textContent = '✕';
+  closeBtn.style.cssText = 'background:none;border:none;color:rgba(240,240,248,.4);font-size:22px;cursor:pointer;min-width:36px;min-height:36px;border-radius:8px;flex-shrink:0';
+  closeBtn.onclick = function() { modal.remove(); };
+  hdr.appendChild(closeBtn);
+  box.appendChild(hdr);
+
+  // Coming soon
+  if (coming) {
+    var comDiv = document.createElement('div');
+    comDiv.style.cssText = 'background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:16px;font-size:13px;color:rgba(240,240,248,.6);line-height:1.6;margin-bottom:16px';
+    comDiv.textContent = '⏳ Esta integración estará disponible próximamente en la versión Enterprise.';
+    box.appendChild(comDiv);
+  }
+
+  // Steps
+  var stepsDiv = document.createElement('div');
+  stepsDiv.style.cssText = 'background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;margin-bottom:16px';
+  var stepsTitle = document.createElement('div');
+  stepsTitle.style.cssText = 'font-size:10px;font-weight:800;color:rgba(240,240,248,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px';
+  stepsTitle.textContent = '📋 CÓMO CONFIGURARLO';
+  stepsDiv.appendChild(stepsTitle);
+  (i.steps || []).forEach(function(s) {
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:rgba(240,240,248,.65);line-height:1.6';
+    row.innerHTML = '<div style="flex-shrink:0;color:' + i.color + ';margin-top:1px">→</div><div>' + s + '</div>';
+    stepsDiv.appendChild(row);
+  });
+  box.appendChild(stepsDiv);
+
+  // Webhook input
   if (i.webhookField && !coming) {
-    var lbl = i.webhookLabel || 'Webhook URL';
-    var ph = i.webhookPlaceholder || 'https://...';
-    var saved = wh[k] || '';
-    webhookHtml = '<div style="margin-top:14px">' +
-      '<div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">' + lbl + '</div>' +
-      '<div style="display:flex;gap:8px">' +
-        '<input id="v45IntWebhookInput_' + k + '" type="text" value="' + saved + '" placeholder="' + ph + '"' +
-        ' style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:10px 12px;color:var(--t1);font-size:12px;font-family:var(--sans);outline:none">' +
-        '<button onclick="v45SaveWebhook('' + k + '')" style="padding:10px 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);color:var(--gold2);white-space:nowrap;font-family:var(--sans)">Guardar</button>' +
-      '</div>' +
-    '</div>';
+    var wDiv = document.createElement('div');
+    wDiv.style.cssText = 'margin-bottom:16px';
+    var wLbl = document.createElement('div');
+    wLbl.style.cssText = 'font-size:10px;font-weight:800;color:rgba(240,240,248,.35);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px';
+    wLbl.textContent = i.webhookLabel || 'Webhook URL';
+    wDiv.appendChild(wLbl);
+    var wRow = document.createElement('div');
+    wRow.style.cssText = 'display:flex;gap:8px';
+    var wInput = document.createElement('input');
+    wInput.id = 'v45IntWebhookInput_' + k;
+    wInput.type = 'text';
+    wInput.value = wh[k] || '';
+    wInput.placeholder = i.webhookPlaceholder || 'https://...';
+    wInput.style.cssText = 'flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:10px 12px;color:#f0f0f8;font-size:12px;font-family:var(--sans);outline:none';
+    var wSave = document.createElement('button');
+    wSave.textContent = 'Guardar';
+    wSave.style.cssText = 'padding:10px 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;background:rgba(200,168,75,.15);border:1px solid rgba(200,168,75,.3);color:#C8A84B;white-space:nowrap;font-family:var(--sans)';
+    wSave.onclick = function() {
+      var url = wInput.value.trim();
+      if (!url) { typeof toast==='function' && toast('URL vacía','Pega la URL del webhook','⚠'); return; }
+      _saveWebhook(k, url);
+      v45ConfirmInt(k);
+    };
+    wRow.appendChild(wInput);
+    wRow.appendChild(wSave);
+    wDiv.appendChild(wRow);
+    box.appendChild(wDiv);
   }
 
-  var actionBtns = '';
+  // Action buttons
   if (!coming) {
+    var btnsDiv = document.createElement('div');
+    btnsDiv.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px';
+
     if (i.actionUrl) {
-      actionBtns += '<button onclick="window.open('' + i.actionUrl + '','_blank')" style="padding:10px 18px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;background:' + i.color + ';border:none;color:#fff;font-family:var(--sans)">Ir a ' + i.name + ' →</button> ';
+      var goBtn = document.createElement('button');
+      goBtn.textContent = 'Ir a ' + i.name + ' →';
+      goBtn.style.cssText = 'padding:10px 18px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;background:' + i.color + ';border:none;color:#fff;font-family:var(--sans)';
+      goBtn.onclick = function() { window.open(i.actionUrl, '_blank'); };
+      btnsDiv.appendChild(goBtn);
     }
-    actionBtns += '<button onclick="v45ConfirmInt('' + k + '')" style="padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#86efac;font-family:var(--sans)">✓ ' + (connected ? 'Reconfigurar' : 'Marcar como configurado') + '</button>';
+
+    var confirmBtn = document.createElement('button');
+    confirmBtn.textContent = connected ? '✓ Reconfigurar' : '✓ Marcar como configurado';
+    confirmBtn.style.cssText = 'padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:#86efac;font-family:var(--sans)';
+    confirmBtn.onclick = function() { v45ConfirmInt(k); };
+    btnsDiv.appendChild(confirmBtn);
+
     if (connected) {
-      actionBtns += ' <button onclick="v45DisconnectInt('' + k + '')" style="padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);color:#fda4af;font-family:var(--sans)">Desconectar</button>';
+      var discBtn = document.createElement('button');
+      discBtn.textContent = 'Desconectar';
+      discBtn.style.cssText = 'padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);color:#fda4af;font-family:var(--sans)';
+      discBtn.onclick = function() { v45DisconnectInt(k); };
+      btnsDiv.appendChild(discBtn);
     }
-  } else {
-    actionBtns = '<div style="font-size:12px;color:var(--t3);padding:10px 14px;background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:9px">⏳ Esta integración estará disponible en la versión Enterprise con servidor dedicado.</div>';
+
+    var docsBtn = document.createElement('button');
+    docsBtn.textContent = '📖 Documentación';
+    docsBtn.style.cssText = 'padding:10px 16px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(240,240,248,.4);font-family:var(--sans)';
+    docsBtn.onclick = function() { window.open(i.docsUrl, '_blank'); };
+    btnsDiv.appendChild(docsBtn);
+
+    box.appendChild(btnsDiv);
   }
 
-  modal.innerHTML =
-    '<div style="background:linear-gradient(145deg,#0e0e1c,#090912);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:28px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.9)">' +
-      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">' +
-        '<div style="width:48px;height:48px;border-radius:14px;background:' + i.color + '22;border:1px solid ' + i.color + '44;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">' + i.icon + '</div>' +
-        '<div style="flex:1">' +
-          '<div style="font-size:18px;font-weight:900;color:var(--t1)">' + i.name + '</div>' +
-          '<div style="font-size:12px;color:var(--t3);margin-top:2px">' + i.desc + '</div>' +
-        '</div>' +
-        '<button onclick="document.getElementById('v45IntModal').remove()" style="background:none;border:none;color:var(--t3);font-size:22px;cursor:pointer;padding:4px;min-width:36px;min-height:36px;border-radius:8px;flex-shrink:0">✕</button>' +
-      '</div>' +
-
-      '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px;margin-bottom:16px">' +
-        '<div style="font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">📋 CÓMO CONFIGURARLO</div>' +
-        i.steps.map(function(s) {
-          return '<div style="display:flex;gap:10px;margin-bottom:10px;font-size:12px;color:var(--t2);line-height:1.6">' +
-            '<div style="flex-shrink:0;margin-top:1px">→</div><div>' + s + '</div></div>';
-        }).join('') +
-      '</div>' +
-
-      webhookHtml +
-
-      '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center">' +
-        actionBtns +
-        '<button onclick="window.open('' + i.docsUrl + '','_blank')" style="padding:10px 16px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--t3);font-family:var(--sans)">📖 Docs</button>' +
-      '</div>' +
-    '</div>';
-
+  modal.appendChild(box);
   document.body.appendChild(modal);
   modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
 };
-
 window.v45SaveWebhook = function(k) {
   var input = document.getElementById('v45IntWebhookInput_' + k);
   if (!input) return;

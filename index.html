@@ -1531,7 +1531,7 @@ body.mode-ficha main{grid-template-columns:1fr!important}
   display:flex;align-items:center;justify-content:space-between;gap:8px;
   box-shadow:0 1px 0 rgba(255,255,255,.04);
 }
-.panel-title{font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.12em;text-transform:uppercase}
+.panel-title{font-size:10px;font-weight:800;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;font-family:var(--display)}
 .panel-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px}
 
 /* SCROLLBAR */
@@ -1659,7 +1659,7 @@ label{font-size:10px;font-weight:800;color:var(--t3);display:block;margin:0 0 6p
   pointer-events:none;
 }
 .kpi-box .kv{font-size:22px;font-weight:900;font-family:var(--mono);line-height:1;letter-spacing:-.03em}
-.kpi-box .kl{font-size:9px;font-weight:700;color:var(--t3);margin-top:5px;letter-spacing:.08em;text-transform:uppercase}
+.kpi-box .kl{font-size:9px;font-weight:700;color:var(--t3);margin-top:5px;letter-spacing:.08em;text-transform:uppercase;font-family:var(--display)}
 .kpi-box.hot{border-color:rgba(245,158,11,.22)}.kpi-box.hot .kv{color:var(--warn);text-shadow:0 0 20px rgba(245,158,11,.3)}
 .kpi-box.ok{border-color:rgba(34,197,94,.22)}.kpi-box.ok .kv{color:var(--ok);text-shadow:0 0 20px rgba(34,197,94,.3)}
 .kpi-box.gold{border-color:rgba(200,168,75,.22)}.kpi-box.gold .kv{color:var(--gold2);text-shadow:0 0 20px rgba(200,168,75,.3)}
@@ -1755,7 +1755,7 @@ tbody tr.row-hot td:first-child{border-left:2px solid var(--warn)!important}
 .att-val{font-weight:800;font-family:var(--mono);font-size:12px}
 .att-val.nc{color:var(--bad)}.att-val.ok{color:var(--ok)}.att-val.warn{color:var(--warn)}
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:12px 0}
-.section-title{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.section-title{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid var(--border);font-family:var(--display)}
 
 /* ═══ PRICING CARDS ═══ */
 .pricing-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
@@ -1801,7 +1801,7 @@ tbody tr.row-hot td:first-child{border-left:2px solid var(--warn)!important}
 .a-kpi .label{font-size:12px;font-weight:600;color:var(--t2);margin-top:8px}
 .a-kpi .sub{font-size:10px;color:var(--t3);margin-top:4px}
 .analytics-section{margin-bottom:28px}
-.analytics-section-title{font-size:11px;font-weight:800;color:var(--t3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.analytics-section-title{font-size:11px;font-weight:800;color:var(--t3);letter-spacing:.09em;text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);font-family:var(--display)}
 .pipe-table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
 .pipe-table th{font-size:9px;font-weight:800;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;padding:10px 14px;border-bottom:1px solid var(--border);text-align:left}
 .pipe-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--t1)}
@@ -2455,7 +2455,7 @@ body.no-3d body::after{display:none}
 .exec-kpi.gold{border-color:var(--gold-ring)}.exec-kpi.gold .exec-kpi-val{color:var(--gold2)}
 .exec-kpi.ok .exec-kpi-val{color:var(--ok)}.exec-kpi.bad .exec-kpi-val{color:var(--bad)}
 .exec-section{margin-bottom:28px}
-.exec-section-title{font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.exec-section-title{font-size:11px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);font-family:var(--display)}
 .exec-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .exec-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
 .exec-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:18px}
@@ -2604,6 +2604,45 @@ body.no-3d .card-3d{box-shadow:none}
 
 /* ── PIPELINE VIEW ── */
 #viewPipeline{flex-direction:column;overflow-y:auto;padding:0}
+#viewVentas{flex-direction:column;overflow-y:auto}
+.ventas-wrap{max-width:1060px;width:100%;margin:0 auto;padding:24px}
+.ventas-header{margin-bottom:24px}
+.ventas-title{font-size:22px;font-weight:900;font-family:var(--display);color:var(--t1);margin-bottom:4px}
+.ventas-sub{font-size:12px;color:var(--t3);font-family:var(--mono)}
+.ventas-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.vkpi{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.vkpi-val{font-size:22px;font-weight:900;font-family:var(--mono);color:var(--t1);line-height:1;margin-bottom:4px}
+.vkpi-lbl{font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--display)}
+.vkpi-sub{font-size:10px;color:var(--t4);margin-top:3px;font-family:var(--mono)}
+.ventas-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.vsec{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:18px}
+.vsec-title{font-size:10px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;font-family:var(--display)}
+.venta-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.venta-row:last-child{border-bottom:none}
+.venta-name{font-size:12px;font-weight:600;color:var(--t1);font-family:var(--display)}
+.venta-cat{font-size:10px;color:var(--t3);margin-top:2px}
+.venta-val{font-size:12px;font-weight:700;font-family:var(--mono);color:var(--gold2)}
+.venta-date{font-size:10px;color:var(--t4);font-family:var(--mono);margin-top:2px;text-align:right}
+.vbar-wrap{margin-bottom:10px}
+.vbar-label{display:flex;justify-content:space-between;margin-bottom:4px}
+.vbar-name{font-size:11px;color:var(--t2)}
+.vbar-pct{font-size:10px;font-family:var(--mono);color:var(--t3)}
+.vbar-track{height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.vbar-fill{height:5px;border-radius:99px;background:var(--gold2);transition:width .4s}
+.ventas-full{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.ventas-table{width:100%;border-collapse:collapse}
+.ventas-table th{font-size:9px;font-weight:800;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;padding:0 8px 10px;text-align:left;font-family:var(--display)}
+.ventas-table td{font-size:11px;color:var(--t2);padding:8px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.ventas-table tr:last-child td{border-bottom:none}
+.ventas-table tr:hover td{background:rgba(255,255,255,.02)}
+.vtag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:9px;font-weight:700;font-family:var(--mono)}
+.vtag-web{background:rgba(200,168,75,.12);color:var(--gold2)}
+.vtag-mant{background:rgba(99,102,241,.12);color:#a5b4fc}
+.vtag-otro{background:rgba(255,255,255,.06);color:var(--t3)}
+.ventas-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.vfbtn{padding:5px 12px;border-radius:8px;font-size:10px;font-weight:700;border:1px solid var(--border);background:transparent;color:var(--t3);cursor:pointer;font-family:var(--display);letter-spacing:.05em;text-transform:uppercase;transition:.12s}
+.vfbtn.active,.vfbtn:hover{border-color:rgba(200,168,75,.4);color:var(--gold2);background:rgba(200,168,75,.08)}
+@media(max-width:700px){.ventas-kpis{grid-template-columns:1fr 1fr}.ventas-grid{grid-template-columns:1fr}}
 .pipeline-wrap{max-width:1600px;width:100%;margin:0 auto;padding:20px 24px}
 .pipeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
 .pipeline-title{font-size:22px;font-weight:900;font-family:var(--display);color:var(--t1)}
@@ -2615,14 +2654,14 @@ body.no-3d .card-3d{box-shadow:none}
 .pipeline-kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:16px;min-height:480px}
 .pipe-col{flex:0 0 200px;display:flex;flex-direction:column;gap:8px}
 .pipe-col-header{padding:10px 12px;border-radius:10px 10px 0 0;border:1px solid var(--border);border-bottom:none;background:var(--s2)}
-.pipe-col-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t2)}
+.pipe-col-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);font-family:var(--display)}
 .pipe-col-meta{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
 .pipe-col-count{font-size:10px;color:var(--t3)}
 .pipe-col-value{font-size:11px;font-weight:700;color:var(--gold)}
 .pipe-col-cards{flex:1;border:1px solid var(--border);border-radius:0 0 10px 10px;background:var(--s1);padding:8px;overflow-y:auto;min-height:300px;max-height:60vh}
 .pipe-card{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:transform var(--dur-fast),box-shadow var(--dur-fast),border-color var(--dur-fast)}
 .pipe-card:hover{transform:translateY(-2px);box-shadow:var(--elev-2);border-color:var(--border2)}
-.pipe-card-name{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pipe-card-name{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--display)}
 .pipe-card-meta{font-size:10px;color:var(--t3);margin-bottom:6px}
 .pipe-card-footer{display:flex;align-items:center;justify-content:space-between}
 .pipe-card-score{font-size:10px;font-weight:700}
@@ -2680,7 +2719,7 @@ body.no-3d .card-3d{box-shadow:none}
 .briefing-sub{font-size:12px;color:var(--t3);margin-top:4px}
 .briefing-body{padding:20px 28px}
 .briefing-section{margin-bottom:20px}
-.briefing-section-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.10em;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.briefing-section-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.10em;color:var(--t3);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-family:var(--display)}
 .briefing-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 .briefing-kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
 .briefing-kpi{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
@@ -2967,7 +3006,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
 
 /* ── PANELS ── */
 .panel-hd{border-bottom:1px solid rgba(255,255,255,.05)!important;padding:12px 16px!important}
-.panel-title{font-size:10px!important;font-weight:700!important;letter-spacing:.1em!important;text-transform:uppercase!important;color:rgba(240,240,248,.3)!important}
+.panel-title{font-size:10px!important;font-weight:700!important;letter-spacing:.1em!important;text-transform:uppercase!important;color:rgba(240,240,248,.3)!important;font-family:var(--display)!important}
 
 /* ── LEAD TABLE ── */
 #leadsTable th{
@@ -3668,6 +3707,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
       <button class="nav-tab" data-mv="callcenter" onclick="navTo('callcenter',this)"><span class="nav-tab-icon">📞</span> Call Center</button>
       <button class="nav-tab" data-mv="analytics" onclick="navTo('analytics',this)"><span class="nav-tab-icon">◎</span> Analytics</button>
       <button class="nav-tab" data-mv="pipeline" onclick="navTo('pipeline',this)"><span class="nav-tab-icon">◈</span> Pipeline</button>
+      <button class="nav-tab" data-mv="ventas" onclick="navTo('ventas',this)"><span class="nav-tab-icon">◑</span> Leads</button>
       <button class="nav-tab" data-mv="propuestas" onclick="navTo('propuestas',this)"><span class="nav-tab-icon">◧</span> Propuestas</button>
       <button class="nav-tab" data-mv="argumentarios" onclick="navTo('argumentarios',this)"><span class="nav-tab-icon">◫</span> Scripts</button>
     </div>
@@ -4037,111 +4077,197 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
             <button onclick="v45OpenSign(window.selId||'')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.1);color:#c4b5fd;font-family:var(--sans);min-height:38px;transition:.15s">✍️ Firmar</button>
             <button onclick="v45AddToCalendar(window.selId||'')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(59,130,246,.4);background:rgba(59,130,246,.1);color:#93c5fd;font-family:var(--sans);min-height:38px;transition:.15s">📅 Calendario</button>
           </div>
+          <!-- FICHA CSS -->
+          <style>
+          .fcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:8px;overflow:hidden}
+          .fcard-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;user-select:none;transition:background .15s}
+          .fcard-hd:hover{background:rgba(255,255,255,.03)}
+          .fcard-hd-left{display:flex;align-items:center;gap:8px}
+          .fcard-icon{font-size:12px;opacity:.6}
+          .fcard-title{font-size:10px;font-weight:800;color:rgba(240,240,248,.55);text-transform:uppercase;letter-spacing:.1em;font-family:var(--display)}
+          .fcard-badge{font-size:9px;font-family:var(--mono);color:rgba(240,240,248,.3);background:rgba(255,255,255,.05);padding:2px 7px;border-radius:99px}
+          .fcard-arrow{font-size:10px;color:rgba(240,240,248,.25);transition:transform .2s}
+          .fcard.open .fcard-arrow{transform:rotate(180deg)}
+          .fcard-body{display:none;padding:12px 14px 14px;border-top:1px solid rgba(255,255,255,.05)}
+          .fcard.open .fcard-body{display:block}
+          </style>
           <div class="fg">
-            <!-- PRECIOS -->
-            <div class="section-title">Oferta Comercial</div>
-            <div class="pricing-cards">
-              <div class="pricing-card gold-border">
-                <div class="price-label">💻 Web Profesional</div>
-                <div class="price-val">149<span style="font-size:14px">,99</span><span class="price-period">€</span></div>
-                <div class="price-desc">Web optimizada + Google Business + WhatsApp</div>
+            <!-- ── SECCIÓN: ESTADO & ACCIÓN ── -->
+            <!-- estado badge -->
+            <div id="fichaEstadoBadge" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(255,255,255,.025);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
+              <span style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,240,248,.3);font-family:var(--display)">Estado actual</span>
+              <span id="fichaEstadoChip" style="margin-left:auto"></span>
+            </div>
+            <!-- acciones rápidas fcard -->
+            <div class="fcard open" id="fcard_acciones">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">⚡</span><span class="fcard-title">Acciones rápidas</span></div>
+                <span class="fcard-arrow">▾</span>
               </div>
-              <div class="pricing-card">
-                <div class="price-label">🔧 Mantenimiento</div>
-                <div class="price-val">39<span style="font-size:14px">,99</span><span class="price-period">€/mes</span></div>
-                <div class="price-desc">Actualizaciones + soporte + hosting incluido</div>
+              <div class="fcard-body" style="padding:10px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+                  <button id="btnMakeInterested" onclick="makeState('CONTACTADO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.07);color:#f59e0b;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>CONTACTADO</button>
+                  <button id="btnMakeProposal" onclick="makeState('AGENDADO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.07);color:#8b5cf6;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#8b5cf6;flex-shrink:0"></span>AGENDADO</button>
+                  <button id="btnMakePaid" onclick="makeState('VENDIDO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.07);color:#22c55e;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0"></span>VENDIDO ✓</button>
+                  <button id="btnMakeNoContact" onclick="makeState('PERDIDO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(244,63,94,.3);background:rgba(244,63,94,.06);color:#f43f5e;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#f43f5e;flex-shrink:0"></span>PERDIDO ✕</button>
+                </div>
+                <div style="display:flex;gap:6px">
+                  <button class="btn-gold" id="btnSave" style="flex:1">💾 Guardar</button>
+                  <button class="btn-delete-lead" id="btnDeleteLead" title="Eliminar lead">🗑</button>
+                </div>
               </div>
             </div>
-            <button class="copy-offer-btn" id="btnCopyOffer">📋 Copiar oferta para WhatsApp</button>
+            <!-- estado avanzado fcard (colapsado) -->
+            <div class="fcard" id="fcard_estado">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">◈</span><span class="fcard-title">Estado & Próxima Acción</span></div>
+                <span class="fcard-arrow">▾</span>
+              </div>
+              <div class="fcard-body">
+                <div class="fg fg2">
+                  <div><label>Estado</label>
+                    <select id="f_state">
+                      <optgroup label="── NUEVOS ──">
+                      <option>NO CONTACTADO</option><option>CONTACTADO</option><option>AGENDADO</option><option>VENDIDO</option><option>PERDIDO</option>
+                      </optgroup>
+                      <optgroup label="── Legacy ──">
+                      <option>POTENCIAL</option><option>CONTACTADA</option><option>INTERESADA / DEMO</option><option>PROPUESTA ENVIADA</option><option>CLIENTE ACTIVO</option><option>PERDIDO / DESCARTADO</option><option>NO CONTACTAR</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                  <div><label>Asignado a</label><select id="f_owner"><option value="">— Sin asignar</option><option>Joel</option><option>Hugo</option></select></div>
+                </div>
+                <div class="fg fg2" style="margin-top:8px">
+                  <div><label>Próxima acción</label>
+                    <select id="f_nextType">
+                      <option value="">—</option><option>Llamar</option><option>WhatsApp</option><option>Email</option><option>Demo</option><option>Propuesta</option><option>Seguimiento</option>
+                    </select>
+                  </div>
+                  <div><label>Fecha</label><input id="f_nextDate" type="date"/></div>
+                </div>
+                <div class="fg fg2 mt8">
+                  <div class="pill">Última llamada: <b id="f_lastCall" style="margin-left:4px">—</b></div>
+                  <div class="pill">Cadencia OK: <b id="f_cadOk" style="margin-left:4px">—</b></div>
+                </div>
+              </div>
+            </div>
 
-            <div class="divider"></div>
-            <div class="section-title">Identificación</div>
-            <div class="fg fg2">
-              <div><label>Lead ID</label><input id="f_leadId" disabled/></div>
-              <div><label>Asignado a</label><select id="f_owner"><option value="">— Sin asignar</option><option>Joel</option><option>Hugo</option></select></div>
-            </div>
-            <div><label>Nombre de la empresa</label><input id="f_name"/></div>
-            <div class="fg fg2">
-              <div><label>Categoría</label><input id="f_category" list="catList"/><datalist id="catList"><option>Salud</option><option>Estética</option><option>Automoción</option><option>Hostelería</option><option>Construcción</option><option>Asesoría</option><option>Inmobiliaria</option><option>Educación</option><option>General</option></datalist></div><div><label>Sector</label><input id="f_sector" list="sectorList"/><datalist id="sectorList"><option>Salud &amp; Bienestar</option><option>Estética &amp; Belleza</option><option>Automoción</option><option>Hostelería</option><option>Turismo &amp; Alojamiento</option><option>Construcción &amp; Reformas</option><option>Legal &amp; Asesoría</option><option>Inmobiliaria</option><option>Educación &amp; Formación</option><option>Comercio &amp; Retail</option><option>Logística &amp; Transporte</option><option>Marketing &amp; Agencia</option><option>Finanzas &amp; Seguros</option><option>Tecnología &amp; Software</option><option>Veterinaria &amp; Mascotas</option><option>Deporte &amp; Fitness</option><option>Servicios Generales</option></datalist></div>
-              <div><label>Estado</label>
-                <select id="f_state">
-                  <option>POTENCIAL</option><option>CONTACTADA</option>
-                  <option>INTERESADA / DEMO</option><option>PROPUESTA ENVIADA</option>
-                  <option>CLIENTE ACTIVO</option><option>PERDIDO / DESCARTADO</option>
-                  <option>NO CONTACTAR</option>
-                </select>
+            <!-- ── SECCIÓN: IDENTIFICACIÓN ── -->
+            <div class="fcard open" id="fcard_id">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">◻</span><span class="fcard-title">Identificación</span></div>
+                <span class="fcard-arrow">▾</span>
+              </div>
+              <div class="fcard-body">
+                <div><label>Nombre de la empresa</label><input id="f_name"/></div>
+                <div class="fg fg2" style="margin-top:8px">
+                  <div><label>Categoría</label><input id="f_category" list="catList"/><datalist id="catList"><option>Salud</option><option>Estética</option><option>Automoción</option><option>Hostelería</option><option>Construcción</option><option>Asesoría</option><option>Inmobiliaria</option><option>Educación</option><option>General</option></datalist></div>
+                  <div><label>Sector</label><input id="f_sector" list="sectorList"/><datalist id="sectorList"><option>Salud &amp; Bienestar</option><option>Estética &amp; Belleza</option><option>Automoción</option><option>Hostelería</option><option>Turismo &amp; Alojamiento</option><option>Construcción &amp; Reformas</option><option>Legal &amp; Asesoría</option><option>Inmobiliaria</option><option>Educación &amp; Formación</option><option>Comercio &amp; Retail</option><option>Logística &amp; Transporte</option><option>Marketing &amp; Agencia</option><option>Finanzas &amp; Seguros</option><option>Tecnología &amp; Software</option><option>Veterinaria &amp; Mascotas</option><option>Deporte &amp; Fitness</option><option>Servicios Generales</option></datalist></div>
+                </div>
+                <div style="margin-top:8px"><label>Dirección</label><input id="f_address"/></div>
+                <div class="fg fg2" style="margin-top:8px">
+                  <div><label>Lead ID</label><input id="f_leadId" disabled/></div>
+                </div>
               </div>
             </div>
-            <div><label>Dirección</label><input id="f_address"/></div>
-            <div class="divider"></div>
-            <div class="section-title">Contacto</div>
-            <div class="fg fg2">
-              <div><label>Teléfono</label><input id="f_phone" placeholder="+34..."/></div>
-              <div><label>Web</label><input id="f_web"/></div>
-            </div>
-            <div><label>Google Maps URL</label><input id="f_gmaps"/></div>
-            <div>
-              <label>Acciones rápidas</label>
-              <div class="ra">
-                <a class="ra-call btn-info" id="btnDial" href="#">📞 Llamar</a>
-                <button id="btnCopyPhone">📋 Copiar tel.</button>
-                <a class="ra-ok" id="btnWA" href="#" target="_blank" style="padding:7px 12px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid rgba(34,197,94,.25);color:#86efac;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(34,197,94,.06));text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 0 rgba(0,60,20,.6),0 4px 12px rgba(0,0,0,.3);transition:.12s all">💬 WhatsApp</a>
+
+            <!-- ── SECCIÓN: CONTACTO ── -->
+            <div class="fcard open" id="fcard_contacto">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">◎</span><span class="fcard-title">Contacto</span></div>
+                <span class="fcard-arrow">▾</span>
+              </div>
+              <div class="fcard-body">
+                <div class="fg fg2">
+                  <div><label>Teléfono</label><input id="f_phone" placeholder="+34..."/></div>
+                  <div><label>Web</label><input id="f_web"/></div>
+                </div>
+                <div style="margin-top:8px"><label>Google Maps URL</label><input id="f_gmaps"/></div>
+                <div style="margin-top:10px">
+                  <div class="ra">
+                    <a class="ra-call btn-info" id="btnDial" href="#">📞 Llamar</a>
+                    <button id="btnCopyPhone">📋 Copiar tel.</button>
+                    <a class="ra-ok" id="btnWA" href="#" target="_blank" style="padding:7px 12px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid rgba(34,197,94,.25);color:#86efac;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(34,197,94,.06));text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 0 rgba(0,60,20,.6),0 4px 12px rgba(0,0,0,.3);transition:.12s all">💬 WhatsApp</a>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="divider"></div>
-            <div class="section-title">Score & Análisis</div>
-            <div class="fg fg2">
-              <div><label>Rating Google</label><input id="f_rating" type="number" step="0.1"/></div>
-              <div><label>Reseñas</label><input id="f_reviews" type="number" step="1"/></div>
-            </div>
-            <div class="fg fg2">
-              <div><label>Score automático</label><input id="f_scoreAuto" disabled/></div>
-              <div><label>Score override</label><input id="f_scoreOverride" type="number" min="0" max="100" placeholder="vacío = auto"/></div>
-            </div>
-            <div class="fg fg2">
-              <div><label>Score final</label><input id="f_scoreFinal" disabled/></div>
-              <div><label>Prioridad</label><input id="f_priority" disabled/></div>
-            </div>
-            <div class="divider"></div>
-            <div class="section-title">Próxima Acción</div>
-            <div class="fg fg2">
-              <div><label>Tipo</label>
-                <select id="f_nextType">
-                  <option value="">—</option><option>Llamar</option><option>WhatsApp</option>
-                  <option>Email</option><option>Demo</option><option>Propuesta</option><option>Seguimiento</option>
-                </select>
+
+            <!-- ── SECCIÓN: OFERTA COMERCIAL ── -->
+            <div class="fcard" id="fcard_oferta">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">💰</span><span class="fcard-title">Oferta Comercial</span></div>
+                <span class="fcard-arrow">▾</span>
               </div>
-              <div><label>Fecha</label><input id="f_nextDate" type="date"/></div>
-            </div>
-            <div class="divider"></div>
-            <div class="section-title">Notas</div>
-            <textarea id="f_notes" placeholder="Notas internas, observaciones, tono de la llamada..."></textarea>
-            <div>
-              <div class="ra" style="flex-wrap:wrap;gap:8px">
-                <button class="btn-gold" id="btnSave">💾 Guardar</button>
-                <button class="btn-warn" id="btnMakeInterested">Interesada</button>
-                <button class="btn-info" id="btnMakeProposal">Propuesta</button>
-                <button class="btn-ok" id="btnMakePaid">✓ Cliente</button>
-                <button class="btn-bad" id="btnMakeNoContact">✕ No contactar</button>
-                <button class="btn-delete-lead" id="btnDeleteLead" title="Eliminar este lead permanentemente">🗑 Eliminar lead</button>
+              <div class="fcard-body">
+                <div class="pricing-cards">
+                  <div class="pricing-card gold-border">
+                    <div class="price-label">💻 Web Profesional</div>
+                    <div class="price-val">149<span style="font-size:14px">,99</span><span class="price-period">€</span></div>
+                    <div class="price-desc">Web optimizada + Google Business + WhatsApp</div>
+                  </div>
+                  <div class="pricing-card">
+                    <div class="price-label">🔧 Mantenimiento</div>
+                    <div class="price-val">39<span style="font-size:14px">,99</span><span class="price-period">€/mes</span></div>
+                    <div class="price-desc">Actualizaciones + soporte + hosting incluido</div>
+                  </div>
+                </div>
+                <button class="copy-offer-btn" id="btnCopyOffer" style="margin-top:8px">📋 Copiar oferta para WhatsApp</button>
               </div>
             </div>
-            <div class="fg fg2 mt8">
-              <div class="pill">Última llamada: <b id="f_lastCall" style="margin-left:4px">—</b></div>
-              <div class="pill">Cadencia OK: <b id="f_cadOk" style="margin-left:4px">—</b></div>
+
+            <!-- ── SECCIÓN: SCORE ── -->
+            <div class="fcard" id="fcard_score">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">◆</span><span class="fcard-title">Score & Análisis</span><span class="fcard-badge" id="fcard_score_badge">—</span></div>
+                <span class="fcard-arrow">▾</span>
+              </div>
+              <div class="fcard-body">
+                <div class="fg fg2">
+                  <div><label>Rating Google</label><input id="f_rating" type="number" step="0.1"/></div>
+                  <div><label>Reseñas</label><input id="f_reviews" type="number" step="1"/></div>
+                </div>
+                <div class="fg fg2" style="margin-top:8px">
+                  <div><label>Score automático</label><input id="f_scoreAuto" disabled/></div>
+                  <div><label>Score override</label><input id="f_scoreOverride" type="number" min="0" max="100" placeholder="vacío = auto"/></div>
+                </div>
+                <div class="fg fg2" style="margin-top:8px">
+                  <div><label>Score final</label><input id="f_scoreFinal" disabled/></div>
+                  <div><label>Prioridad</label><input id="f_priority" disabled/></div>
+                </div>
+              </div>
             </div>
-            <div class="divider"></div>
-            <div class="section-title">Historial de Llamadas</div>
-            <div style="overflow-x:auto">
-              <table style="min-width:480px">
-                <thead><tr><th>Fecha</th><th>Resultado</th><th>Duración</th><th>Notas</th></tr></thead>
-                <tbody id="tbodyCalls"></tbody>
-              </table>
+
+            <!-- ── SECCIÓN: NOTAS ── -->
+            <div class="fcard open" id="fcard_notas">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">◇</span><span class="fcard-title">Notas</span></div>
+                <span class="fcard-arrow">▾</span>
+              </div>
+              <div class="fcard-body">
+                <textarea id="f_notes" placeholder="Notas internas, observaciones, tono de la llamada..."></textarea>
+              </div>
             </div>
-            <div id="callsEmpty" style="display:none;padding:14px 0;text-align:center;font-size:12px;color:var(--t3)">Sin llamadas registradas aún</div>
+
+            <!-- ── SECCIÓN: HISTORIAL ── -->
+            <div class="fcard" id="fcard_historial">
+              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
+                <div class="fcard-hd-left"><span class="fcard-icon">◁</span><span class="fcard-title">Historial de Llamadas</span><span class="fcard-badge" id="fcard_calls_badge">0</span></div>
+                <span class="fcard-arrow">▾</span>
+              </div>
+              <div class="fcard-body">
+                <div style="overflow-x:auto">
+                  <table style="min-width:480px">
+                    <thead><tr><th>Fecha</th><th>Resultado</th><th>Duración</th><th>Notas</th></tr></thead>
+                    <tbody id="tbodyCalls"></tbody>
+                  </table>
+                </div>
+                <div id="callsEmpty" style="display:none;padding:14px 0;text-align:center;font-size:12px;color:var(--t3)">Sin llamadas registradas aún</div>
+              </div>
+            </div>
 
             <!-- ═══ TIMELINE ═══ -->
-            <div class="divider" style="margin:16px 0"></div>
+            <div class="divider" style="margin:8px 0"></div>
             <div class="timeline" id="fichaTimeline" style="padding:0">
               <div class="timeline-title">
                 <span>◎ Timeline de actividad</span>
@@ -4495,7 +4621,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
         <p style="font-size:12px;color:var(--t3);margin:0 0 14px;line-height:1.6">Conecta NEXA con tus herramientas. Pulsa cualquier tarjeta para configurarla. Las marcadas con ● verde ya están activas.</p>
         <div id="v45IntGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
           <!-- INTEGRACIONES v3: botones reales, todas configurables -->
-          <button type="button" class="nxint-btn" data-int="zapier">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="zapier">
             <div class="nxint-icon" style="background:#FF4A0022;border-color:#FF4A0055">⚡</div>
             <div class="nxint-body">
               <div class="nxint-name">Zapier</div>
@@ -4503,7 +4629,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-zapier">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="make">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="make">
             <div class="nxint-icon" style="background:#6D00CC22;border-color:#6D00CC55">🔧</div>
             <div class="nxint-body">
               <div class="nxint-name">Make (Integromat)</div>
@@ -4511,7 +4637,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-make">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="gcalendar">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="gcalendar">
             <div class="nxint-icon" style="background:#4285F422;border-color:#4285F455">📅</div>
             <div class="nxint-body">
               <div class="nxint-name">Google Calendar</div>
@@ -4519,7 +4645,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-gcalendar">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="gmail">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="gmail">
             <div class="nxint-icon" style="background:#EA433522;border-color:#EA433555">📧</div>
             <div class="nxint-body">
               <div class="nxint-name">Gmail</div>
@@ -4527,7 +4653,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-gmail">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="slack">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="slack">
             <div class="nxint-icon" style="background:#4A154B22;border-color:#4A154B55">💬</div>
             <div class="nxint-body">
               <div class="nxint-name">Slack</div>
@@ -4535,7 +4661,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-slack">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="sheets">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="sheets">
             <div class="nxint-icon" style="background:#34A85322;border-color:#34A85355">📊</div>
             <div class="nxint-body">
               <div class="nxint-name">Google Sheets</div>
@@ -4543,7 +4669,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-sheets">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="whatsapp">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="whatsapp">
             <div class="nxint-icon" style="background:#25D36622;border-color:#25D36655">💬</div>
             <div class="nxint-body">
               <div class="nxint-name">WhatsApp Business</div>
@@ -4551,7 +4677,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-whatsapp">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="twilio">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="twilio">
             <div class="nxint-icon" style="background:#F22F4622;border-color:#F22F4655">📞</div>
             <div class="nxint-body">
               <div class="nxint-name">Twilio (Llamadas)</div>
@@ -4559,7 +4685,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
               <div class="nxint-status" id="v45int-status-twilio">○ No configurado</div>
             </div>
           </button>
-          <button type="button" class="nxint-btn" data-int="stripe">
+          <button type="button" class="nxint-btn" onclick="(window.v45OpenIntModal||window.nxIntOpen)(this.dataset.int)" data-int="stripe">
             <div class="nxint-icon" style="background:#635BFF22;border-color:#635BFF55">💳</div>
             <div class="nxint-body">
               <div class="nxint-name">Stripe (Pagos)</div>
@@ -5117,6 +5243,85 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   </div>
 
   <!-- ═══ CALCULADORA VIEW ═══ -->
+
+  <!-- ══ VISTA LEADS UNIFICADA ═══════════════════════════════════════════ -->
+  <div class="view" id="viewVentas">
+    <div class="ventas-wrap" style="max-width:1100px">
+
+      <!-- ── HEADER + SELECTOR DE SECCIÓN ── -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:22px">
+        <div>
+          <div style="font-family:var(--display);font-size:22px;font-weight:900;color:var(--t1);letter-spacing:-.02em;display:flex;align-items:center;gap:10px">
+            <span id="lv_section_icon">◑</span> <span id="lv_section_title">Leads</span>
+          </div>
+          <div style="font-size:11px;color:var(--t3);margin-top:3px" id="lv_section_sub">Selecciona una sección para ver tus leads</div>
+        </div>
+        <!-- Selector de sección — los 5 estados como botones pill -->
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center" id="lv_selector">
+          <button class="lv-sec-btn active" data-sec="VENDIDO"       onclick="lvSetSection(this)" style="--c:#22c55e;--cb:rgba(34,197,94,.12)">
+            <span class="lv-dot"></span>Vendidos<span class="lv-cnt" id="lvc_VENDIDO">0</span>
+          </button>
+          <button class="lv-sec-btn" data-sec="AGENDADO"     onclick="lvSetSection(this)" style="--c:#8b5cf6;--cb:rgba(139,92,246,.12)">
+            <span class="lv-dot"></span>Agendados<span class="lv-cnt" id="lvc_AGENDADO">0</span>
+          </button>
+          <button class="lv-sec-btn" data-sec="CONTACTADO"   onclick="lvSetSection(this)" style="--c:#f59e0b;--cb:rgba(245,158,11,.12)">
+            <span class="lv-dot"></span>Contactados<span class="lv-cnt" id="lvc_CONTACTADO">0</span>
+          </button>
+          <button class="lv-sec-btn" data-sec="NO_CONTACTADO" onclick="lvSetSection(this)" style="--c:#6366f1;--cb:rgba(99,102,241,.12)">
+            <span class="lv-dot"></span>No contactados<span class="lv-cnt" id="lvc_NO_CONTACTADO">0</span>
+          </button>
+          <button class="lv-sec-btn" data-sec="PERDIDO"      onclick="lvSetSection(this)" style="--c:#f43f5e;--cb:rgba(244,63,94,.10)">
+            <span class="lv-dot"></span>Perdidos<span class="lv-cnt" id="lvc_PERDIDO">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── KPIs DINÁMICOS ── -->
+      <div class="ventas-kpis" id="lv_kpis">
+        <div class="vkpi"><div class="vkpi-val" id="vk_total_cli">0</div><div class="vkpi-lbl" id="lv_k1_lbl">Total</div><div class="vkpi-sub" id="lv_k1_sub">En esta sección</div></div>
+        <div class="vkpi"><div class="vkpi-val" id="vk_nuevos_mes">0</div><div class="vkpi-lbl">Este mes</div><div class="vkpi-sub" id="vk_nuevos_sub">Nuevos</div></div>
+        <div class="vkpi"><div class="vkpi-val" id="vk_mrr">—</div><div class="vkpi-lbl" id="lv_k3_lbl">Métrica</div><div class="vkpi-sub" id="lv_k3_sub">Calculada</div></div>
+        <div class="vkpi"><div class="vkpi-val" id="vk_conv">0%</div><div class="vkpi-lbl">Conversión</div><div class="vkpi-sub">Leads → vendidos</div></div>
+      </div>
+
+      <!-- ── CONTENIDO DE SECCIÓN ── -->
+      <div id="lv_content">
+
+        <!-- Tabla de leads de la sección activa -->
+        <div class="ventas-full" style="margin-top:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="vsec-title" style="margin:0" id="lv_table_title">Lista</div>
+              <div style="display:flex;gap:6px" id="lv_date_filters">
+                <button class="vfbtn active" onclick="lvDateFilter(this,'todos')">Todos</button>
+                <button class="vfbtn" onclick="lvDateFilter(this,'mes')">Este mes</button>
+                <button class="vfbtn" onclick="lvDateFilter(this,'semana')">Esta semana</button>
+                <button class="vfbtn" onclick="lvDateFilter(this,'hoy')">Hoy</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input id="lv_search" placeholder="Buscar..." style="padding:5px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--s3);color:var(--t1);font-size:11px;width:140px" oninput="renderVentas()">
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="ventas-table" id="lv_main_table">
+              <thead id="lv_thead">
+                <tr>
+                  <th>Empresa</th><th>Sector</th><th>Agente</th>
+                  <th id="lv_th_date">Fecha</th><th>Score</th><th>Estado</th><th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="ventas_tbody">
+                <tr><td colspan="7" style="text-align:center;color:var(--t4);padding:32px">Cargando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /lv_content -->
+
+    </div>
+  </div>
   <div class="view" id="viewCalculadora">
     <div id="nxCalcRoot" style="max-width:1060px;width:100%;margin:0 auto;padding:32px 24px 60px;box-sizing:border-box">
 
@@ -7070,6 +7275,7 @@ function _doSwitchView(v, btn) {
   if(v==="ajustes")renderSettings();
   if(v==="callcenter")renderCallCenter_v13?renderCallCenter_v13():renderCallCenter();
   if(v==="pipeline"){try{renderPipeline();}catch(e){}}
+  if(v==="ventas"){try{renderVentas();}catch(e){}}
   if(v==="propuestas"){try{renderProposals();}catch(e){}}
   if(v==="executive"){try{renderExecutiveDashboard();}catch(e){}}
   if(v==="automations"){try{renderAutomations();}catch(e){}}
@@ -7081,7 +7287,7 @@ function _doSwitchView(v, btn) {
 function switchView(v, btn){ navTo(v, btn); }
 function goToModule(v){ navTo(v); closeCmdPalette(); }
 function cap(s){
-  const MAP={'callcenter':'CallCenter','leads':'Leads','analytics':'Analytics','argumentarios':'Argumentarios','guia':'Guia','ajustes':'Ajustes','pipeline':'Pipeline','propuestas':'Propuestas','executive':'Executive','automations':'Automations','audit':'Audit','calculadora':'Calculadora','servicios':'Servicios'};
+  const MAP={'callcenter':'CallCenter','leads':'Leads','analytics':'Analytics','argumentarios':'Argumentarios','guia':'Guia','ajustes':'Ajustes','pipeline':'Pipeline','ventas':'Ventas','propuestas':'Propuestas','executive':'Executive','automations':'Automations','audit':'Audit','calculadora':'Calculadora','servicios':'Servicios'};
   return MAP[s]||(s.charAt(0).toUpperCase()+s.slice(1));
 }
 
@@ -7117,6 +7323,14 @@ function applyView(rows,vOvr){
   if(view==="HOY"){const out2=out.filter(l=>{const due=l.next_date&&l.next_date<=today;const act=["CONTACTADA","INTERESADA / DEMO","PROPUESTA ENVIADA"].includes(l.state);return(act&&due&&cadOk(l))||isBlocked(l)});const hot=out2.filter(l=>["INTERESADA / DEMO","PROPUESTA ENVIADA"].includes(l.state));const cold=out2.filter(l=>!hot.includes(l));hot.sort((a,b)=>(a.next_date||"9").localeCompare(b.next_date||"9"));cold.sort((a,b)=>{const ab=isBlocked(a)?1:0,bb=isBlocked(b)?1:0;if(bb!==ab)return bb-ab;return(a.next_date||"9").localeCompare(b.next_date||"9")});return[...hot,...cold]}
   return sortRows(out);
 }
+function setEstadoFilter(estado){
+  const MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
+  const sec=MAP[estado]||'NO_CONTACTADO';
+  navTo('ventas');
+  setTimeout(()=>{window._lvSection=sec;document.querySelectorAll('.lv-sec-btn').forEach(b=>b.classList.toggle('active',b.dataset.sec===sec));if(typeof renderVentas==='function')renderVentas();},100);
+}
+window.setEstadoFilter=setEstadoFilter;
+
 function sortRows(rows){return rows.slice().sort((a,b)=>{let va,vb;if(sortC==="score"){va=scoreFinal(a).final;vb=scoreFinal(b).final}else if(sortC==="name"){va=normStr(a.name||"");vb=normStr(b.name||"")}else if(sortC==="state"){va=a.state||"";vb=b.state||""}else if(sortC==="category"){va=a.category||"";vb=b.category||""}else{va=a.next_date||"9999";vb=b.next_date||"9999"}if(va<vb)return -sortD;if(va>vb)return sortD;return 0})}
 
 /* CHIP STATE */
@@ -7232,6 +7446,7 @@ function renderDetail(){
   if(!l){$("fichaSummary").style.display="none";$("fichaEmpty").style.display="flex";$("fichaFields").style.display="none";return}
   $("fichaEmpty").style.display="none";$("fichaSummary").style.display="block";$("fichaFields").style.display="block";
   $("fichaName").textContent=l.name||"(sin nombre)";$("fichaMeta").textContent=`${l.lead_id} · ${l.category||"—"} · ${l.sector||""} · ${l.owner||"Sin asignar"}`.replace(' ·  ·',' ·');
+  const _chip=document.getElementById("fichaEstadoChip");if(_chip&&typeof chipState==="function")_chip.innerHTML=chipState(l.state||"NO CONTACTADO");
   renderAttempts(l.lead_id);
   const sc=scoreFinal(l);
   $("f_leadId").value=l.lead_id;$("f_owner").value=l.owner||"";$("f_name").value=l.name||"";$("f_category").value=l.category||"";$("f_sector").value=l.sector||"";$("f_state").value=l.state||"POTENCIAL";$("f_address").value=l.address||"";$("f_phone").value=l.phone||"";$("f_web").value=l.web||"";$("f_gmaps").value=l.gmaps||"";$("f_rating").value=l.rating??"";$("f_reviews").value=l.reviews??"";$("f_scoreAuto").value=sc.auto;$("f_scoreOverride").value=l.score_override??"";$("f_scoreFinal").value=sc.final;$("f_priority").value=sc.priority;$("f_nextType").value=l.next_type||"";$("f_nextDate").value=l.next_date||"";$("f_notes").value=l.notes||"";$("f_lastCall").textContent=l.last_call_at?new Date(l.last_call_at).toLocaleString("es-ES"):"—";$("f_cadOk").textContent=cadOk(l)?"Sí":"No";
@@ -8110,10 +8325,17 @@ document.addEventListener("DOMContentLoaded",()=>{
   $("emptyNewBtn").addEventListener("click",newLead);
   $("btnSave").addEventListener("click",saveSelected);
   $("btnDeleteLead").addEventListener("click",deleteLead);
-  $("btnMakeInterested").addEventListener("click",()=>makeState("INTERESADA / DEMO"));
-  $("btnMakeProposal").addEventListener("click",()=>makeState("PROPUESTA ENVIADA"));
-  $("btnMakePaid").addEventListener("click",()=>makeState("CLIENTE ACTIVO"));
-  $("btnMakeNoContact").addEventListener("click",()=>makeState("NO CONTACTAR"));
+  // botones wired via onclick en HTML — noop fallback
+  (function(){
+    const bI=document.getElementById("btnMakeInterested");
+    const bP=document.getElementById("btnMakeProposal");
+    const bV=document.getElementById("btnMakePaid");
+    const bN=document.getElementById("btnMakeNoContact");
+    if(bI&&!bI._wired){bI._wired=1;bI.addEventListener("click",()=>makeState("CONTACTADO"));}
+    if(bP&&!bP._wired){bP._wired=1;bP.addEventListener("click",()=>makeState("AGENDADO"));}
+    if(bV&&!bV._wired){bV._wired=1;bV.addEventListener("click",()=>makeState("VENDIDO"));}
+    if(bN&&!bN._wired){bN._wired=1;bN.addEventListener("click",()=>makeState("PERDIDO"));}
+  })();
   $("btnCopyPhone").addEventListener("click",async()=>{const p=($("f_phone").value||"").trim();if(!p){toast("Sin teléfono","","⚠");return}try{await navigator.clipboard.writeText(p);toast("Copiado",p,"📋")}catch{toast("Error","","⚠")}});
   $("btnCopyOffer").addEventListener("click",()=>copyOffer($("f_name").value));
   $("f_phone").addEventListener("input",()=>setDialLink($("f_phone").value||""));
@@ -8123,7 +8345,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   $("ownJoel").addEventListener("click",()=>setOwnerFilter("Joel"));
   $("ownHugo").addEventListener("click",()=>setOwnerFilter("Hugo"));
   document.querySelectorAll("thead th[data-sort]").forEach(th=>th.addEventListener("click",()=>{const col=th.dataset.sort;if(sortC===col)sortD*=-1;else{sortC=col;sortD=1}document.querySelectorAll("thead th").forEach(t=>t.classList.remove("sorted"));th.classList.add("sorted");render()}));
-  $("tbody").addEventListener("click",e=>{const btn=e.target.closest("[data-action]");if(!btn)return;const action=btn.getAttribute("data-action"),id=btn.getAttribute("data-id");if(action==="open"&&id)selectLead(id);if(action==="log"&&id)openCallModal(id);if(action==="paid"&&id){const l=getLead(id);if(!l)return;l.state="CLIENTE ACTIVO";l.updated_at=isoNow();saveAll();render();toast("Cliente activo",id,"✓")}if(action==="nc"&&id){const l=getLead(id);if(!l)return;l.state="NO CONTACTAR";l.updated_at=isoNow();saveAll();render();toast("No contactar",id,"✓")}});
+  $("tbody").addEventListener("click",e=>{const btn=e.target.closest("[data-action]");if(!btn)return;const action=btn.getAttribute("data-action"),id=btn.getAttribute("data-id");if(action==="open"&&id)selectLead(id);if(action==="log"&&id)openCallModal(id);if(action==="paid"&&id){updateLeadField(id,{state:"VENDIDO"});render();setTimeout(renderVentas,80);toast("💰 Vendido",getLead(id)?.name||id,"✓")}if(action==="nc"&&id){updateLeadField(id,{state:"PERDIDO"});render();setTimeout(renderVentas,80);toast("✕ Perdido",getLead(id)?.name||id,"—")}});
   $("impClose").addEventListener("click",()=>closeModal("importModal"));
   $("importModal").addEventListener("click",e=>{if(e.target.id==="importModal")closeModal("importModal")});
   $("impFile").addEventListener("change",async e=>{const f=e.target.files?.[0];if(!f)return;try{const text=await f.text();const parsed=parseCSV(text);staging.headers=parsed.headers;staging.rows=parsed.rows;staging.validated=false;staging.report=[];$("impInfo").textContent=`CSV: ${staging.rows.length} filas · ${staging.headers.length} columnas · Sep: ${parsed.delim==="\t"?"TAB":parsed.delim}`;$("impHint").style.display="none";$("mapBox").style.display="block";$("summaryBox").style.display="none";setupMap();$("btnValidate").disabled=false;$("btnConfirmImport").disabled=true;// Auto-validate after short delay (UX: 1 less click)
@@ -8437,7 +8659,7 @@ function _registerAllActions(){
   registerAction('bot-mark-client', (leadId) => {
     const id = leadId || selId || ccSelId;
     if(!id){ toast('Selecciona un lead primero','','⚠'); return; }
-    executeAction('bot-change-state', id, 'CLIENTE ACTIVO');
+    executeAction('bot-change-state', id, 'VENDIDO');
   });
 
   // Lead hot sin contacto → abrir en CC
@@ -8810,11 +9032,11 @@ function registerCall(leadId, callData) {
 
   // State transitions by result
   const STATE_MAP = {
-    'Interesado':        'INTERESADA / DEMO',
-    'Quiere demo':       'INTERESADA / DEMO',
-    'Enviar propuesta':  'PROPUESTA ENVIADA',
-    'No interesa':       'PERDIDO / DESCARTADO',
-    'Cliente / Pagado':  'CLIENTE ACTIVO'
+    'Interesado':        'CONTACTADO',
+    'Quiere demo':       'AGENDADO',
+    'Enviar propuesta':  'AGENDADO',
+    'No interesa':       'PERDIDO',
+    'Cliente / Pagado':  'VENDIDO'
   };
   if (l.state === 'POTENCIAL') l.state = 'CONTACTADA';
   if (STATE_MAP[c.result]) l.state = STATE_MAP[c.result];
@@ -9437,8 +9659,8 @@ function renderCCDetail_v13(id) {
   if (actionsStrip) actionsStrip.innerHTML = `
     ${tel?`<a class="cc-quick-btn ok" href="tel:${tel}">📞 Llamar</a>`:''}
     ${tel?`<a class="cc-quick-btn" href="https://wa.me/${waNum}?text=${waMsg}" target="_blank">💬 WhatsApp</a>`:''}
-    <button class="cc-quick-btn ok" onclick="ccMakeState('CLIENTE ACTIVO')">✓ Cliente</button>
-    <button class="cc-quick-btn bad" onclick="ccMakeState('NO CONTACTAR')">✕ NC</button>
+    <button class="cc-quick-btn ok" onclick="ccMakeState('VENDIDO')">✓ Vendido</button>
+    <button class="cc-quick-btn bad" onclick="ccMakeState('PERDIDO')">✕ Perdido</button>
     <button class="cc-quick-btn" onclick="ccMakeState('PERDIDO / DESCARTADO')">✕ Perdido</button>
   `;
 
@@ -11385,7 +11607,7 @@ function markProposalAccepted(id) {
   saveProposals();
   sbUpsertProposal(p);
   if (p.leadId && typeof updateLeadField === 'function') {
-    updateLeadField(p.leadId, { state: 'CLIENTE ACTIVO', notes: (getLead(p.leadId)?.notes||'') + '\n[' + todayStr() + '] Propuesta ' + id + ' ACEPTADA ✓' });
+    updateLeadField(p.leadId, { state: 'VENDIDO', notes: (getLead(p.leadId)?.notes||'') + '\n[' + todayStr() + '] Propuesta ' + id + ' ACEPTADA ✓' });
     render();
   }
   renderProposals();
@@ -11399,7 +11621,7 @@ function markProposalRejected(id) {
   saveProposals();
   sbUpsertProposal(p);
   if (p.leadId && typeof updateLeadField === 'function') {
-    updateLeadField(p.leadId, { state: 'PERDIDO / DESCARTADO' });
+    updateLeadField(p.leadId, { state: 'PERDIDO' });
     render();
   }
   renderProposals();
@@ -12922,7 +13144,199 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Global exports
+
 window.renderPipeline = renderPipeline;
+
+/* ═══════════════════════════════════════════════════════════
+   VENTAS ENGINE
+═══════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════
+   LEADS UNIFICADA — página única con selector de sección
+════════════════════════════════════════════════════════ */
+var _lvSection    = 'VENDIDO';   // sección activa
+var _lvDateFilter = 'todos';     // filtro de fecha
+
+// Configuración de cada sección
+var LV_SECTIONS = {
+  'VENDIDO': {
+    label:'Vendidos', icon:'✓', color:'#22c55e', bg:'rgba(34,197,94,.12)',
+    match: l => l.state==='VENDIDO'||l.state==='CLIENTE ACTIVO',
+    k1:'Total vendidos', k3lbl:'MRR estimado', k3fn: n => '€'+Math.round(n*39.99).toLocaleString('es'),
+    thDate:'Fecha cierre', sort: (a,b)=>(b.updated_at||'').localeCompare(a.updated_at||''),
+    actions: l => `<button onclick="event.stopPropagation();makeStateById('${l.lead_id}','PERDIDO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(244,63,94,.25);background:rgba(244,63,94,.06);color:#f43f5e;font-size:9px;font-weight:700;cursor:pointer">✕ Perdido</button>`
+  },
+  'AGENDADO': {
+    label:'Agendados', icon:'📅', color:'#8b5cf6', bg:'rgba(139,92,246,.12)',
+    match: l => l.state==='AGENDADO'||l.state==='INTERESADA / DEMO',
+    k1:'Total agendados', k3lbl:'Citas hoy', k3fn: (n,L,today) => L.filter(l=>l.state==='AGENDADO'&&l.next_date===today).length,
+    thDate:'Fecha cita', sort: (a,b)=>(a.next_date||'9999').localeCompare(b.next_date||'9999'),
+    actions: l => `
+      <button onclick="event.stopPropagation();makeStateById('${l.lead_id}','VENDIDO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.07);color:#22c55e;font-size:9px;font-weight:700;cursor:pointer;margin-right:3px">✓ Vender</button>
+      <button onclick="event.stopPropagation();makeStateById('${l.lead_id}','PERDIDO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(244,63,94,.2);background:rgba(244,63,94,.05);color:#f43f5e;font-size:9px;font-weight:700;cursor:pointer">✕</button>`
+  },
+  'CONTACTADO': {
+    label:'Contactados', icon:'📞', color:'#f59e0b', bg:'rgba(245,158,11,.12)',
+    match: l => l.state==='CONTACTADO'||l.state==='CONTACTADA',
+    k1:'Total contactados', k3lbl:'Con próx. acción', k3fn: (n,L) => L.filter(l=>(l.state==='CONTACTADO'||l.state==='CONTACTADA')&&l.next_date).length,
+    thDate:'Próx. acción', sort: (a,b)=>(a.next_date||'9999').localeCompare(b.next_date||'9999'),
+    actions: l => `
+      <button onclick="event.stopPropagation();makeStateById('${l.lead_id}','AGENDADO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(139,92,246,.25);background:rgba(139,92,246,.07);color:#8b5cf6;font-size:9px;font-weight:700;cursor:pointer;margin-right:3px">📅 Agendar</button>
+      <button onclick="event.stopPropagation();makeStateById('${l.lead_id}','VENDIDO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.07);color:#22c55e;font-size:9px;font-weight:700;cursor:pointer">✓</button>`
+  },
+  'NO_CONTACTADO': {
+    label:'No contactados', icon:'🔵', color:'#6366f1', bg:'rgba(99,102,241,.12)',
+    match: l => l.state==='NO CONTACTADO'||l.state==='POTENCIAL',
+    k1:'Sin contactar', k3lbl:'Sin teléfono', k3fn: (n,L) => L.filter(l=>(l.state==='NO CONTACTADO'||l.state==='POTENCIAL')&&!(l.phone||'').trim()).length,
+    thDate:'Creado', sort: (a,b)=>(b.created_at||'').localeCompare(a.created_at||''),
+    actions: l => `
+      <button onclick="event.stopPropagation();makeStateById('${l.lead_id}','CONTACTADO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(245,158,11,.25);background:rgba(245,158,11,.07);color:#f59e0b;font-size:9px;font-weight:700;cursor:pointer;margin-right:3px">Contactar</button>
+      <button onclick="event.stopPropagation();makeStateById('${l.lead_id}','PERDIDO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(244,63,94,.2);background:rgba(244,63,94,.05);color:#f43f5e;font-size:9px;font-weight:700;cursor:pointer">✕</button>`
+  },
+  'PERDIDO': {
+    label:'Perdidos', icon:'✕', color:'#f43f5e', bg:'rgba(244,63,94,.10)',
+    match: l => l.state==='PERDIDO'||l.state==='PERDIDO / DESCARTADO'||l.state==='NO CONTACTAR',
+    k1:'Total perdidos', k3lbl:'% de total', k3fn: (n,L) => L.length>0?Math.round(n/L.length*100)+'%':'0%',
+    thDate:'Fecha', sort: (a,b)=>(b.updated_at||'').localeCompare(a.updated_at||''),
+    actions: l => `<button onclick="event.stopPropagation();makeStateById('${l.lead_id}','NO CONTACTADO');setTimeout(renderVentas,80)" style="padding:3px 8px;border-radius:5px;border:1px solid rgba(99,102,241,.25);background:rgba(99,102,241,.07);color:#6366f1;font-size:9px;font-weight:700;cursor:pointer">↺ Recuperar</button>`
+  },
+};
+
+function lvSetSection(btn) {
+  _lvSection = btn.dataset.sec;
+  _lvDateFilter = 'todos';
+  // Reset date filter btns
+  document.querySelectorAll('#lv_date_filters .vfbtn').forEach(b => b.classList.toggle('active', b.textContent==='Todos'));
+  // Update section btns
+  document.querySelectorAll('.lv-sec-btn').forEach(b => b.classList.toggle('active', b.dataset.sec===_lvSection));
+  renderVentas();
+}
+window.lvSetSection = lvSetSection;
+
+function lvDateFilter(btn, f) {
+  _lvDateFilter = f;
+  document.querySelectorAll('#lv_date_filters .vfbtn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderVentas();
+}
+window.lvDateFilter = lvDateFilter;
+
+function ventasFilter(btn, f){ lvDateFilter(btn, f); }
+
+function makeStateById(id, newState) {
+  const l = (typeof getLead==='function') ? getLead(id) : null; if(!l) return;
+  const prev = l.state;
+  l.state = newState; l.updated_at = isoNow();
+  const sc = scoreFinal(l); l.score_auto=sc.auto; l.score_final=sc.final; l.priority=sc.priority;
+  saveAll(); sbUpsertLeadSafe(l);
+  typeof AuditLog!=='undefined'&&AuditLog.record('change_state',id,prev,newState);
+  const TOASTS={'VENDIDO':'💰 ¡Vendido!','AGENDADO':'📅 Agendado','PERDIDO':'✕ Perdido','CONTACTADO':'📞 Contactado','NO CONTACTADO':'↺ Sin contactar'};
+  toast(TOASTS[newState]||'Estado: '+newState, l.name||id, '→');
+  render();
+  // Cambiar sección automáticamente al estado correcto
+  const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
+  const sec = SEC_MAP[newState] || window._lvSection;
+  window._lvSection = sec;
+  document.querySelectorAll('.lv-sec-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
+  setTimeout(renderVentas, 60);
+}
+window.makeStateById = makeStateById;
+
+function renderVentas() {
+  const L = (typeof getLeads==='function' ? getLeads() : (window.AppState?.get('leads') || []));
+  const today = todayStr ? todayStr() : new Date().toISOString().slice(0,10);
+  const now = new Date();
+  const mesActual = now.getMonth(), añoActual = now.getFullYear();
+
+  const si = (id, v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  const cfg = LV_SECTIONS[_lvSection] || LV_SECTIONS['VENDIDO'];
+
+  // Update section header
+  si('lv_section_title', cfg.label);
+  si('lv_section_icon', cfg.icon);
+  si('lv_section_sub', 'Leads en estado · ' + cfg.label.toLowerCase() + ' · click para abrir en CRM');
+  const thDate = document.getElementById('lv_th_date'); if(thDate) thDate.textContent = cfg.thDate||'Fecha';
+  si('lv_k1_lbl', cfg.k1);
+
+  // Pool for this section
+  const pool = L.filter(cfg.match);
+  const poolMes = pool.filter(l => { const d=l.updated_at?new Date(l.updated_at):null; return d&&d.getMonth()===mesActual&&d.getFullYear()===añoActual; });
+  const vendidos = L.filter(l=>l.state==='VENDIDO'||l.state==='CLIENTE ACTIVO').length;
+  const conv = L.length>0 ? Math.round(vendidos/L.length*100) : 0;
+
+  // KPIs
+  si('vk_total_cli', pool.length);
+  si('vk_nuevos_mes', poolMes.length);
+  const k3v = cfg.k3fn ? cfg.k3fn(pool.length, L, today) : '—';
+  si('vk_mrr', k3v);
+  si('lv_k3_lbl', cfg.k3lbl||'Métrica');
+  si('vk_conv', conv+'%');
+
+  // Counters for all section buttons
+  Object.keys(LV_SECTIONS).forEach(k => {
+    const el = document.getElementById('lvc_'+k);
+    if(el) el.textContent = L.filter(LV_SECTIONS[k].match).length;
+  });
+
+  // Date filter
+  function passFecha(l) {
+    if(_lvDateFilter==='todos') return true;
+    const ref = _lvSection==='NO_CONTACTADO' ? l.created_at : (_lvSection==='AGENDADO' ? l.next_date : l.updated_at);
+    if(!ref) return false;
+    const d = new Date(ref);
+    if(_lvDateFilter==='hoy') return ref.slice(0,10)===today;
+    const in7 = new Date(); in7.setDate(in7.getDate()+7);
+    if(_lvDateFilter==='semana') return d>=now&&d<=in7;
+    if(_lvDateFilter==='mes') return d.getMonth()===mesActual&&d.getFullYear()===añoActual;
+    return true;
+  }
+
+  // Search filter
+  const q = (document.getElementById('lv_search')?.value||'').toLowerCase().trim();
+  function passSearch(l){ if(!q) return true; return (l.name||'').toLowerCase().includes(q)||(l.category||'').toLowerCase().includes(q)||(l.owner||'').toLowerCase().includes(q); }
+
+  // Final filtered & sorted
+  const filtered = pool.filter(l => passFecha(l)&&passSearch(l));
+  const sorted = [...filtered].sort(cfg.sort||(()=>0));
+
+  // Render table
+  const tbody = document.getElementById('ventas_tbody');
+  if(!tbody) return;
+
+  if(sorted.length===0){
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--t4)">
+      <div style="font-size:28px;margin-bottom:8px">${cfg.icon}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--t3)">Sin leads en ${cfg.label.toLowerCase()}</div>
+      <div style="font-size:11px;margin-top:4px">Cambia el filtro de fecha o la sección</div>
+    </td></tr>`;
+    return;
+  }
+
+  const fmtDate = s => { if(!s) return '—'; const d=new Date(s+'T00:00:00'); return d.toLocaleDateString('es',{day:'2-digit',month:'short',year:'2-digit'}); };
+  const fmtDateFull = s => { if(!s) return '—'; return new Date(s).toLocaleDateString('es',{day:'2-digit',month:'short',year:'2-digit'}); };
+
+  tbody.innerHTML = sorted.map(l => {
+    const sc = typeof scoreFinal==='function'?scoreFinal(l):{final:0,priority:'—'};
+    const prioClr = sc.priority==='A'?'#22c55e':sc.priority==='B'?'#f59e0b':'#f43f5e';
+    const refDate = _lvSection==='NO_CONTACTADO' ? l.created_at : (_lvSection==='AGENDADO' ? l.next_date : l.updated_at);
+    const nd = refDate||'';
+    const isToday = nd.slice(0,10)===today;
+    const isPast = _lvSection==='AGENDADO'&&nd&&nd<today;
+    const dateStyle = isToday?'color:#f59e0b;font-weight:800':isPast?'color:#f43f5e;font-weight:700':'';
+    const stateChip = `<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:800;font-family:var(--display);text-transform:uppercase;background:${cfg.bg};color:${cfg.color};border:1px solid ${cfg.color}30">${l.state}</span>`;
+    const actionBtns = cfg.actions ? cfg.actions(l) : '';
+    return `<tr onclick="navTo('leads');setTimeout(()=>selectLead('${l.lead_id}'),70);" style="cursor:pointer">
+      <td style="font-weight:700;color:var(--t1);font-family:var(--display);font-size:12px">${l.name||'Sin nombre'}</td>
+      <td style="font-size:11px;color:var(--t2)">${l.category||l.sector||'—'}</td>
+      <td style="font-size:11px;color:var(--t2)">${l.owner||'—'}</td>
+      <td style="font-family:var(--mono);font-size:10px;${dateStyle}">${_lvSection==='AGENDADO'?fmtDate(nd):fmtDateFull(nd)}${isToday?' ⚑':isPast?' ⚠':''}</td>
+      <td><span style="font-size:10px;font-family:var(--mono);color:${prioClr};font-weight:800">${sc.final}pts <b>${sc.priority}</b></span></td>
+      <td>${stateChip}</td>
+      <td style="white-space:nowrap">${actionBtns}</td>
+    </tr>`;
+  }).join('');
+}
+window.renderVentas = renderVentas;
+
 window.renderProposals = renderProposals;
 window.openProposalForLead = openProposalForLead;
 window.openNewProposalModal = openNewProposalModal;
@@ -14437,7 +14851,7 @@ function _v28_autoFollowUp(leadId, result) {
   }
   if ((result === 'Interesado' || result === 'Quiere demo') && window._v28_settings.autoFollowUpInteresado) {
     if (typeof updateLeadField === 'function') {
-      updateLeadField(leadId, { next_type: 'Enviar info', next_date: in48h, state: 'INTERESADA / DEMO' });
+      updateLeadField(leadId, { next_type: 'Enviar info', next_date: in48h, state: 'CONTACTADO' });
     }
     _v28_createTask(leadId, 'Enviar info', in48h);
     _actLog('automation', 'lead', leadId, { rule: 'auto-follow-up: INTERESADO' });
@@ -14445,7 +14859,7 @@ function _v28_autoFollowUp(leadId, result) {
   }
   if (result === 'Cita' && window._v28_settings.autoFollowUpCita) {
     if (typeof updateLeadField === 'function') {
-      updateLeadField(leadId, { state: 'CITA', next_type: 'Confirmar cita', next_date: tomorrow });
+      updateLeadField(leadId, { state: 'AGENDADO', next_type: 'Confirmar cita', next_date: tomorrow });
     }
     _v28_createTask(leadId, 'Confirmar cita', tomorrow);
     _actLog('automation', 'lead', leadId, { rule: 'auto-follow-up: CITA' });
@@ -14857,7 +15271,7 @@ window._v28_requestPhone = _v28_requestPhone;
 function _v28_reactivateLead(leadId) {
   const tomorrow = (function(){ const d = new Date(); d.setDate(d.getDate()+1); return d.toISOString().slice(0,10); })();
   if (typeof updateLeadField === 'function') {
-    updateLeadField(leadId, { next_type: 'Reactivar', next_date: tomorrow, state: 'CONTACTADA' });
+    updateLeadField(leadId, { next_type: 'Reactivar', next_date: tomorrow, state: 'CONTACTADO' });
   }
   _actLog('state_change', 'lead', leadId, { from: '?', to: 'CONTACTADA (reactivado)' });
   toast('Lead reactivado', leadId, '🔄');
@@ -15748,12 +16162,34 @@ console.log(
   // Override makeState to use the proper updateLeadField
   window.makeState = function(s) {
     const id = window.selId;
-    if (!id) { toast('Selecciona un lead', '', '⚠'); return; }
+    if (!id) { toast('Selecciona un lead','','⚠'); return; }
     if (typeof updateLeadField === 'function') {
       updateLeadField(id, { state: s });
-      // updateLeadField calls saveAll + sbUpsertLeadSafe + EventBus + automations
       if (typeof render === 'function') render();
-      toast('Estado: ' + s, id, '→');
+      // Actualizar chip en ficha
+      const chip = document.getElementById('fichaEstadoChip');
+      if (chip && typeof chipState === 'function') chip.innerHTML = chipState(s);
+      // Mapear estado → sección en la página Leads
+      const SEC_MAP = {
+        'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO',
+        'AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO',
+        'CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO',
+        'NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO',
+        'PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO',
+      };
+      const sec = SEC_MAP[s] || 'NO_CONTACTADO';
+      // Cambiar sección activa y navegar a Leads
+      setTimeout(() => {
+        try {
+          window._lvSection = sec;
+          document.querySelectorAll('.lv-sec-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
+          navTo('ventas');
+          setTimeout(() => { try { renderVentas(); } catch(e) {} }, 60);
+        } catch(e) {}
+      }, 80);
+      // Toast descriptivo
+      const T = { 'VENDIDO':'💰 ¡Vendido!', 'AGENDADO':'📅 Agendado', 'CONTACTADO':'📞 Contactado', 'PERDIDO':'✕ Perdido', 'NO CONTACTADO':'⬜ Sin contactar' };
+      toast(T[s] || 'Estado: ' + s, getLead(id)?.name || id, '→');
     }
   };
   console.log('[v30] makeState → updateLeadField ✓');
@@ -21364,13 +21800,23 @@ window.nxIntRefresh = function(){
   });
 };
 
+// Conectar nxIntOpen → v45OpenIntModal (el modal real con pasos, webhook, etc.)
+window.nxIntOpen = function(k) {
+  if (typeof window.v45OpenIntModal === 'function') {
+    window.v45OpenIntModal(k);
+  }
+};
+
 /* Init en múltiples momentos */
 function _boot(){
   nxPipelineValuesUpdate();
 }
 document.addEventListener('DOMContentLoaded', function(){
   _boot();
-  setTimeout(function(){ nxIntBind(); }, 800);
+  // Bind con reintentos para garantizar que los botones estén en el DOM
+  setTimeout(function(){ nxIntBind(); }, 400);
+  setTimeout(function(){ nxIntBind(); }, 1500);
+  setTimeout(function(){ nxIntBind(); }, 4000);
 });
 document.addEventListener('nexa:login', function(){
   _boot();

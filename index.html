@@ -3401,6 +3401,43 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
 .nxcalc-iva-badge.con  { background:rgba(200,168,75,.12); color:rgba(200,168,75,.7); }
 .nxcalc-iva-badge.sin  { background:rgba(255,255,255,.06); color:rgba(240,240,248,.3); }
 
+/* ── NEXA POLISH FINAL ─────────────────────────────── */
+
+/* Tabla: filas con más aire */
+#tbody tr { border-bottom: 1px solid rgba(255,255,255,.035); }
+#tbody td { padding: 12px 10px; vertical-align: middle; }
+#leadsTable thead th {
+  font-size: 9px; font-weight: 800; letter-spacing: .09em;
+  text-transform: uppercase; color: rgba(240,240,248,.22);
+  padding: 9px 10px; background: var(--s1);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+/* Empresa name: nunca cortada */
+#tbody td:nth-child(2) {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  max-width: 260px;
+}
+
+/* Ficha: borde derecho más sutil */
+#fichaPanel { border-left: 1px solid rgba(255,255,255,.06) !important; }
+
+/* Panel ficha: header compacto */
+#fichaPanel .panel-hd {
+  padding: 10px 14px !important;
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+}
+
+/* Stats bar: más limpio */
+.sb-val { font-size: 15px !important; line-height: 1 !important; }
+.sb-label { font-size: 8px !important; }
+.sb-item { padding: 7px 12px !important; min-width: 72px !important; }
+
+/* Botones ra: compactos */
+.ra button, .ra a { font-size: 10px !important; }
+
 </style>
 </head>
 <body>
@@ -4014,14 +4051,12 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
             <thead>
               <tr>
                 <th style="width:36px;text-align:center"><input type="checkbox" id="selectAllLeads" title="Seleccionar todos" style="cursor:pointer;accent-color:var(--gold)"></th>
-                <th data-sort="name" style="min-width:210px">Empresa</th>
-                <th data-sort="category" style="min-width:130px">Categoría</th>
-                <th data-sort="state" style="min-width:165px">Estado</th>
+                <th data-sort="name" style="min-width:220px;width:260px">Empresa</th>
+                <th data-sort="state" style="min-width:140px">Estado</th>
                 <th data-sort="score" style="min-width:75px">Score</th>
-                <th style="min-width:140px">Teléfono</th>
-                <th style="min-width:140px">Próx. Acción</th>
-                <th data-sort="next_date" style="min-width:110px">Fecha</th>
-                <th style="min-width:280px">Acciones</th>
+                <th style="min-width:130px">Teléfono</th>
+                <th style="min-width:80px">CIF</th>
+                <th style="min-width:220px">Acciones</th>
               </tr>
             </thead>
             <tbody id="tbody"></tbody>
@@ -4070,14 +4105,311 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
           <div class="empty-desc">Haz clic en "Abrir" en cualquier fila de la tabla para ver y editar la ficha completa.</div>
         </div>
         <div id="fichaFields" style="display:none">
-          <!-- V45 ACTION BAR -->
-          <div id="v45FichaBar" style="display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px 10px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.01)">
-            <button onclick="v45OpenWhatsApp(window.selId||'')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(37,211,102,.4);background:rgba(37,211,102,.1);color:#4ade80;font-family:var(--sans);min-height:38px;transition:.15s">💬 WhatsApp</button>
-            <button onclick="v45OpenInvoice(window.selId||'')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(200,168,75,.4);background:rgba(200,168,75,.1);color:var(--gold2);font-family:var(--sans);min-height:38px;transition:.15s">📄 Factura</button>
-            <button onclick="v45OpenSign(window.selId||'')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.1);color:#c4b5fd;font-family:var(--sans);min-height:38px;transition:.15s">✍️ Firmar</button>
-            <button onclick="v45AddToCalendar(window.selId||'')" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(59,130,246,.4);background:rgba(59,130,246,.1);color:#93c5fd;font-family:var(--sans);min-height:38px;transition:.15s">📅 Calendario</button>
-          </div>
-          <!-- FICHA CSS -->
+<style>
+/* ══ FICHA v2 — clean, visual, scannable ══ */
+
+/* Cabecera empresa */
+.fv2-head{padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.fv2-name{font-size:18px;font-weight:900;color:var(--t1);font-family:var(--display);line-height:1.2;word-break:break-word;margin-bottom:6px}
+.fv2-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.fv2-cat{font-size:10px;font-weight:700;color:rgba(240,240,248,.4);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:5px;font-family:var(--display)}
+.fv2-id{font-size:9px;color:rgba(240,240,248,.2);font-family:var(--mono)}
+
+/* Acciones rápidas — strip horizontal */
+.fv2-actions{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.fv2-state-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:8px;border:1px solid;font-size:9.5px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em;transition:filter .12s,transform .1s}
+.fv2-state-btn:hover{filter:brightness(1.2);transform:translateY(-1px)}
+.fv2-sb-contactado{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.09);color:#f59e0b}
+.fv2-sb-agendado{border-color:rgba(139,92,246,.4);background:rgba(139,92,246,.09);color:#a78bfa}
+.fv2-sb-vendido{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.09);color:#22c55e}
+.fv2-sb-perdido{border-color:rgba(244,63,94,.35);background:rgba(244,63,94,.08);color:#f43f5e}
+
+/* Guardar strip */
+.fv2-save-row{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+
+/* Info cards — contacto rápido */
+.fv2-contact{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.fv2-info-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:10px 11px;display:flex;flex-direction:column;gap:4px}
+.fv2-info-label{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:rgba(240,240,248,.25);font-family:var(--display)}
+.fv2-info-val{font-size:12px;font-weight:700;color:var(--t1);font-family:var(--mono);word-break:break-all;line-height:1.3}
+.fv2-info-val.dim{color:rgba(240,240,248,.3);font-weight:400;font-size:11px}
+.fv2-info-actions{display:flex;gap:5px;margin-top:4px}
+.fv2-ia-btn{padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:3px;transition:.12s;white-space:nowrap;font-family:var(--sans)}
+.fv2-ia-btn:hover{background:rgba(255,255,255,.08);color:var(--t1)}
+.fv2-ia-btn.green{border-color:rgba(37,211,102,.3);background:rgba(37,211,102,.07);color:#4ade80}
+.fv2-ia-btn.green:hover{background:rgba(37,211,102,.14)}
+
+/* Estado+seguimiento */
+.fv2-estado-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+
+/* Secciones plegables */
+.fv2-section{border-bottom:1px solid rgba(255,255,255,.06)}
+.fv2-section-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none;transition:background .12s}
+.fv2-section-hd:hover{background:rgba(255,255,255,.02)}
+.fv2-section-title{font-size:10px;font-weight:800;color:rgba(240,240,248,.4);text-transform:uppercase;letter-spacing:.1em;font-family:var(--display);display:flex;align-items:center;gap:6px}
+.fv2-section-icon{font-size:12px;opacity:.6}
+.fv2-section-badge{font-size:9px;font-family:var(--mono);color:rgba(240,240,248,.3);background:rgba(255,255,255,.06);padding:1px 6px;border-radius:99px}
+.fv2-section-arr{font-size:9px;color:rgba(240,240,248,.2);transition:transform .2s}
+.fv2-section.open .fv2-section-arr{transform:rotate(180deg)}
+.fv2-section-body{display:none;padding:10px 16px 14px}
+.fv2-section.open .fv2-section-body{display:block}
+
+/* Form fields */
+.fv2-section-body label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(240,240,248,.28);display:block;margin-bottom:3px;font-family:var(--display)}
+.fv2-section-body input,.fv2-section-body select,.fv2-section-body textarea{font-size:12px;padding:7px 10px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:var(--t1);width:100%;box-sizing:border-box;font-family:var(--sans);outline:none;transition:border-color .15s}
+.fv2-section-body input:focus,.fv2-section-body select:focus,.fv2-section-body textarea:focus{border-color:rgba(200,168,75,.4);background:rgba(255,255,255,.06)}
+.fv2-g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.fv2-g2-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.fv2-row{margin-top:7px}
+
+/* Investigar */
+.fv2-inv-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);text-decoration:none;transition:.12s;margin-bottom:5px}
+.fv2-inv-row:last-child{margin-bottom:0}
+.fv2-inv-row:hover{background:rgba(200,168,75,.07);border-color:rgba(200,168,75,.25)}
+.fv2-inv-row:hover .fv2-inv-arr{color:var(--gold2)}
+.fv2-inv-ico{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.fv2-inv-ttl{font-size:10px;font-weight:800;color:rgba(240,240,248,.8);font-family:var(--display);display:block}
+.fv2-inv-sub{font-size:8.5px;color:rgba(240,240,248,.28);display:block;margin-top:1px}
+.fv2-inv-arr{font-size:9px;color:rgba(240,240,248,.15);margin-left:auto;flex-shrink:0;transition:.12s}
+.fv2-inv-hint{font-size:8.5px;color:rgba(240,240,248,.2);font-family:var(--mono);margin-bottom:8px}
+
+/* Historial calls */
+.fv2-call-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.fv2-call-row:last-child{border-bottom:none}
+.fv2-call-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.fv2-call-body{flex:1;min-width:0}
+.fv2-call-result{font-size:11px;font-weight:700;color:var(--t1)}
+.fv2-call-meta{font-size:9px;color:rgba(240,240,248,.3);margin-top:1px;font-family:var(--mono)}
+.fv2-call-notes{font-size:10px;color:rgba(240,240,248,.5);margin-top:3px;line-height:1.4}
+</style>
+
+<!-- ① CABECERA — nombre + estado + meta -->
+<div class="fv2-head">
+  <div class="fv2-name" id="fichaName2">—</div>
+  <div class="fv2-badges">
+    <span id="fichaEstadoChip"></span>
+    <span class="fv2-cat" id="fichaCatBadge"></span>
+    <span class="fv2-id" id="fichaTopMeta"></span>
+  </div>
+</div>
+
+<!-- ② CONTACTO RÁPIDO — lo primero que necesitas -->
+<div class="fv2-contact">
+  <div class="fv2-info-card">
+    <span class="fv2-info-label">Teléfono</span>
+    <span class="fv2-info-val" id="fv2_tel_display">—</span>
+    <div class="fv2-info-actions">
+      <a class="fv2-ia-btn" id="btnDial" href="#">📞 Llamar</a>
+      <button class="fv2-ia-btn" id="btnCopyPhone" title="Copiar teléfono">Copiar</button>
+      <a class="fv2-ia-btn" id="btnWA" href="#" target="_blank">WA</a>
+    </div>
+  </div>
+  <div class="fv2-info-card">
+    <span class="fv2-info-label">Ubicación</span>
+    <span class="fv2-info-val" id="fv2_addr_display" style="font-size:10px;font-family:var(--sans)">—</span>
+    <div class="fv2-info-actions">
+      <a class="fv2-ia-btn" id="btnMaps" href="#" target="_blank" rel="noopener">Maps</a>
+      <a class="fv2-ia-btn" id="btnWeb" href="#" target="_blank" rel="noopener">Web</a>
+    </div>
+  </div>
+</div>
+
+<!-- ③ CAMBIAR ESTADO -->
+<div class="fv2-actions">
+  <button id="btnMakeInterested" onclick="makeState('CONTACTADO')" class="fv2-state-btn fv2-sb-contactado">CONTACTADO</button>
+  <button id="btnMakeProposal"   onclick="makeState('AGENDADO')"   class="fv2-state-btn fv2-sb-agendado">AGENDADO</button>
+  <button id="btnMakePaid"       onclick="makeState('VENDIDO')"    class="fv2-state-btn fv2-sb-vendido">VENDIDO ✓</button>
+  <button id="btnMakeNoContact"  onclick="makeState('PERDIDO')"    class="fv2-state-btn fv2-sb-perdido">PERDIDO ✕</button>
+</div>
+
+<!-- ══ SECCIONES ══ -->
+<div>
+
+  <!-- DATOS EMPRESA -->
+  <div class="fv2-section open" id="fcard_id">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Datos de la empresa</span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <div><label>Nombre</label><input id="f_name"/></div>
+      <div class="fv2-g2 fv2-row">
+        <div><label>Categoría</label><input id="f_category" list="catList"/><datalist id="catList"><option>Salud</option><option>Estética</option><option>Automoción</option><option>Hostelería</option><option>Construcción</option><option>Asesoría</option><option>Inmobiliaria</option><option>Educación</option><option>General</option></datalist></div>
+        <div><label>CIF</label><input id="f_cif" placeholder="B12345678"/></div>
+      </div>
+      <div class="fv2-row"><label>Dirección</label><input id="f_address"/></div>
+      <div class="fv2-g2 fv2-row">
+        <div><label>Teléfono</label><input id="f_phone" placeholder="+34..."/></div>
+        <div><label>Web</label><input id="f_web"/></div>
+      </div>
+      <div class="fv2-row"><label>Google Maps URL</label>
+        <div style="display:flex;gap:5px">
+          <input id="f_gmaps" style="flex:1;min-width:0" placeholder="https://maps.google.com/..."/>
+          <a href="#" target="_blank" rel="noopener" title="Abrir en Maps" onclick="(function(e){var v=document.getElementById('f_gmaps').value;if(!v){e.preventDefault();return;}e.currentTarget.href=v.startsWith('http')?v:'https://maps.google.com/maps?q='+encodeURIComponent(v);}).call(this,event)" style="flex-shrink:0;padding:6px 9px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:12px;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap">Maps</a>
+        </div>
+      </div>
+      <div class="fv2-g2 fv2-row">
+        <div><label>Sector</label><input id="f_sector" list="sectorList"/><datalist id="sectorList"><option>Salud &amp; Bienestar</option><option>Estética &amp; Belleza</option><option>Automoción</option><option>Hostelería</option><option>Turismo &amp; Alojamiento</option><option>Construcción &amp; Reformas</option><option>Legal &amp; Asesoría</option><option>Inmobiliaria</option><option>Educación &amp; Formación</option><option>Comercio &amp; Retail</option><option>Logística &amp; Transporte</option><option>Finanzas &amp; Seguros</option><option>Tecnología &amp; Software</option><option>Deporte &amp; Fitness</option><option>Servicios Generales</option></datalist></div>
+        <div><label>Lead ID</label><input id="f_leadId" disabled/></div>
+      </div>
+      <div class="fv2-g2 fv2-row">
+        <div><label>Estado</label>
+          <select id="f_state">
+            <optgroup label="Activos"><option>NO CONTACTADO</option><option>CONTACTADO</option><option>AGENDADO</option><option>VENDIDO</option><option>PERDIDO</option></optgroup>
+            <optgroup label="Legacy"><option>POTENCIAL</option><option>CONTACTADA</option><option>INTERESADA / DEMO</option><option>PROPUESTA ENVIADA</option><option>CLIENTE ACTIVO</option><option>PERDIDO / DESCARTADO</option><option>NO CONTACTAR</option></optgroup>
+          </select>
+        </div>
+        <div><label>Asignado</label>
+          <select id="f_owner"><option value="">— Sin asignar</option><option>Joel</option><option>Hugo</option></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRÓXIMA ACCIÓN -->
+  <div class="fv2-section open" id="fcard_estado">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Próxima acción</span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <div class="fv2-g2">
+        <div><label>Acción</label>
+          <select id="f_nextType"><option value="">—</option><option>Llamar</option><option>WhatsApp</option><option>Email</option><option>Demo</option><option>Propuesta</option><option>Seguimiento</option></select>
+        </div>
+        <div><label>Fecha</label><input id="f_nextDate" type="date"/></div>
+      </div>
+      <div class="fv2-g2 fv2-row">
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:8px 10px">
+          <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(240,240,248,.25);margin-bottom:3px;font-family:var(--display)">Última llamada</div>
+          <div id="f_lastCall" style="font-size:11px;color:var(--t2);font-family:var(--mono)">—</div>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:7px;padding:8px 10px">
+          <div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(240,240,248,.25);margin-bottom:3px;font-family:var(--display)">Cadencia OK</div>
+          <div id="f_cadOk" style="font-size:11px;color:var(--t2)">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="fv2-section open" id="fcard_notas">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Notas</span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <textarea id="f_notes" placeholder="Observaciones, tono de llamada, detalles..." style="min-height:80px;resize:vertical"></textarea>
+    </div>
+  </div>
+
+  <!-- INVESTIGAR — con botón copiar nombre -->
+  <div class="fv2-section" id="fcard_investiga">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Investigar empresa</span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <!-- Copiar nombre para pegar en buscadores -->
+      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;margin-bottom:10px">
+        <span id="inv_nombre_txt" style="font-size:12px;font-weight:700;color:var(--t1);font-family:var(--display);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+        <button id="inv_copy_btn" onclick="(function(){var t=document.getElementById('inv_nombre_txt').textContent;if(!t||t==='—')return;navigator.clipboard.writeText(t).then(function(){var b=document.getElementById('inv_copy_btn');var prev=b.textContent;b.textContent='Copiado';setTimeout(function(){b.textContent=prev;},1800);});})();" style="flex-shrink:0;margin-left:10px;padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--t2);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Copiar nombre</button>
+      </div>
+      <div style="font-size:8.5px;color:rgba(240,240,248,.2);font-family:var(--mono);margin-bottom:8px">Copia el nombre → abre la web → pégalo en su buscador</div>
+      <a id="inv_axesor" href="#" target="_blank" rel="noopener" class="fv2-inv-row">
+        <span class="fv2-inv-ico">📊</span>
+        <div style="flex:1"><span class="fv2-inv-ttl">Axesor</span><span class="fv2-inv-sub">Sector · antigüedad · datos fiscales</span></div>
+        <span class="fv2-inv-arr">↗</span>
+      </a>
+      <a id="inv_empresite" href="#" target="_blank" rel="noopener" class="fv2-inv-row">
+        <span class="fv2-inv-ico">🌐</span>
+        <div style="flex:1"><span class="fv2-inv-ttl">Empresite</span><span class="fv2-inv-sub">Web · dirección · teléfono</span></div>
+        <span class="fv2-inv-arr">↗</span>
+      </a>
+      <a id="inv_empresia" href="#" target="_blank" rel="noopener" class="fv2-inv-row">
+        <span class="fv2-inv-ico">👤</span>
+        <div style="flex:1"><span class="fv2-inv-ttl">Empresia</span><span class="fv2-inv-sub">Dueño · gerentes · facturación</span></div>
+        <span class="fv2-inv-arr">↗</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="fv2-section" id="fcard_historial">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Historial de llamadas <span class="fv2-section-badge" id="fcard_calls_badge">0</span></span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <div id="callsEmpty" style="display:none;padding:8px 0;text-align:center;font-size:11px;color:var(--t3)">Sin llamadas registradas aún</div>
+      <div id="fv2_calls_list"></div>
+      <div style="display:none"><table><thead><tr><th></th><th></th><th></th><th></th></tr></thead><tbody id="tbodyCalls"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- OFERTA -->
+  <div class="fv2-section" id="fcard_oferta">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Oferta comercial</span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <div class="pricing-cards">
+        <div class="pricing-card gold-border"><div class="price-label">💻 Web Profesional</div><div class="price-val">149<span style="font-size:14px">,99</span><span class="price-period">€</span></div><div class="price-desc">Web optimizada + Google Business + WhatsApp</div></div>
+        <div class="pricing-card"><div class="price-label">🔧 Mantenimiento</div><div class="price-val">39<span style="font-size:14px">,99</span><span class="price-period">€/mes</span></div><div class="price-desc">Actualizaciones + soporte + hosting</div></div>
+      </div>
+      <button class="copy-offer-btn" id="btnCopyOffer" style="margin-top:8px;width:100%">Copiar oferta para WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- SCORE -->
+  <div class="fv2-section" id="fcard_score">
+    <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
+      <span class="fv2-section-title">Score <span class="fv2-section-badge" id="fcard_score_badge">—</span></span>
+      <span class="fv2-section-arr">▾</span>
+    </div>
+    <div class="fv2-section-body">
+      <div class="fv2-g2">
+        <div><label>Rating Google</label><input id="f_rating" type="number" step="0.1"/></div>
+        <div><label>Reseñas</label><input id="f_reviews" type="number" step="1"/></div>
+      </div>
+      <div class="fv2-g2 fv2-row">
+        <div><label>Score auto</label><input id="f_scoreAuto" disabled/></div>
+        <div><label>Override</label><input id="f_scoreOverride" type="number" min="0" max="100" placeholder="vacío=auto"/></div>
+      </div>
+      <div class="fv2-g2 fv2-row">
+        <div><label>Score final</label><input id="f_scoreFinal" disabled/></div>
+        <div><label>Prioridad</label><input id="f_priority" disabled/></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones secundarias -->
+  <div style="display:flex;flex-wrap:wrap;gap:5px;padding:10px 16px;border-top:1px solid rgba(255,255,255,.06)" id="v45FichaBar">
+    <button onclick="v45OpenWhatsApp(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">WhatsApp</button>
+    <button onclick="v45OpenInvoice(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">Factura</button>
+    <button onclick="v45OpenSign(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">Firma</button>
+    <button onclick="v45AddToCalendar(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">Agenda</button>
+  </div>
+
+  <!-- GUARDAR — al final, siempre accesible -->
+  <div style="padding:12px 16px 24px;border-top:1px solid rgba(255,255,255,.07)">
+    <div style="display:flex;gap:6px">
+      <button class="btn-gold" id="btnSave" style="flex:1;font-size:13px;padding:10px;font-weight:800">💾 Guardar cambios</button>
+      <button class="btn-delete-lead" id="btnDeleteLead" title="Eliminar lead" style="padding:10px 13px">🗑</button>
+    </div>
+  </div>
+
+</div><!-- fin secciones -->
+
+            <!-- ═══ TIMELINE ═══ -->
+            <div class="divider" style="margin:8px 0"></div>
+            <div class="timeline" id="fichaTimeline" style="padding:0">
+              <div class="timeline-title">
+                <span>◎ Timeline de actividad</span>
+              </div>
+              <div id="timelineItems" style="padding-left:4px">
+
           <style>
           .fcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;margin-bottom:8px;overflow:hidden}
           .fcard-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;user-select:none;transition:background .15s}
@@ -4090,195 +4422,16 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
           .fcard.open .fcard-arrow{transform:rotate(180deg)}
           .fcard-body{display:none;padding:12px 14px 14px;border-top:1px solid rgba(255,255,255,.05)}
           .fcard.open .fcard-body{display:block}
+          .inv-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);text-decoration:none;transition:background .12s,border-color .12s;margin-top:5px}
+          .inv-row:first-child{margin-top:0}
+          .inv-row:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.11)}
+          .inv-ico{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+          .inv-txt{flex:1;min-width:0}
+          .inv-ttl{font-size:11px;font-weight:800;color:rgba(240,240,248,.85);font-family:var(--display);display:block}
+          .inv-sub{font-size:9px;color:rgba(240,240,248,.3);display:block;margin-top:1px}
+          .inv-arr{font-size:10px;color:rgba(240,240,248,.18);flex-shrink:0}
+          .inv-row:hover .inv-arr{color:var(--gold2)}
           </style>
-          <div class="fg">
-            <!-- ── SECCIÓN: ESTADO & ACCIÓN ── -->
-            <!-- estado badge -->
-            <div id="fichaEstadoBadge" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(255,255,255,.025);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
-              <span style="font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,240,248,.3);font-family:var(--display)">Estado actual</span>
-              <span id="fichaEstadoChip" style="margin-left:auto"></span>
-            </div>
-            <!-- acciones rápidas fcard -->
-            <div class="fcard open" id="fcard_acciones">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">⚡</span><span class="fcard-title">Acciones rápidas</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body" style="padding:10px">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
-                  <button id="btnMakeInterested" onclick="makeState('CONTACTADO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(245,158,11,.3);background:rgba(245,158,11,.07);color:#f59e0b;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span>CONTACTADO</button>
-                  <button id="btnMakeProposal" onclick="makeState('AGENDADO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(139,92,246,.3);background:rgba(139,92,246,.07);color:#8b5cf6;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#8b5cf6;flex-shrink:0"></span>AGENDADO</button>
-                  <button id="btnMakePaid" onclick="makeState('VENDIDO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.07);color:#22c55e;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0"></span>VENDIDO ✓</button>
-                  <button id="btnMakeNoContact" onclick="makeState('PERDIDO')" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;border-radius:8px;border:1px solid rgba(244,63,94,.3);background:rgba(244,63,94,.06);color:#f43f5e;font-size:10px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em"><span style="width:6px;height:6px;border-radius:50%;background:#f43f5e;flex-shrink:0"></span>PERDIDO ✕</button>
-                </div>
-                <div style="display:flex;gap:6px">
-                  <button class="btn-gold" id="btnSave" style="flex:1">💾 Guardar</button>
-                  <button class="btn-delete-lead" id="btnDeleteLead" title="Eliminar lead">🗑</button>
-                </div>
-              </div>
-            </div>
-            <!-- estado avanzado fcard (colapsado) -->
-            <div class="fcard" id="fcard_estado">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">◈</span><span class="fcard-title">Estado & Próxima Acción</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <div class="fg fg2">
-                  <div><label>Estado</label>
-                    <select id="f_state">
-                      <optgroup label="── NUEVOS ──">
-                      <option>NO CONTACTADO</option><option>CONTACTADO</option><option>AGENDADO</option><option>VENDIDO</option><option>PERDIDO</option>
-                      </optgroup>
-                      <optgroup label="── Legacy ──">
-                      <option>POTENCIAL</option><option>CONTACTADA</option><option>INTERESADA / DEMO</option><option>PROPUESTA ENVIADA</option><option>CLIENTE ACTIVO</option><option>PERDIDO / DESCARTADO</option><option>NO CONTACTAR</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div><label>Asignado a</label><select id="f_owner"><option value="">— Sin asignar</option><option>Joel</option><option>Hugo</option></select></div>
-                </div>
-                <div class="fg fg2" style="margin-top:8px">
-                  <div><label>Próxima acción</label>
-                    <select id="f_nextType">
-                      <option value="">—</option><option>Llamar</option><option>WhatsApp</option><option>Email</option><option>Demo</option><option>Propuesta</option><option>Seguimiento</option>
-                    </select>
-                  </div>
-                  <div><label>Fecha</label><input id="f_nextDate" type="date"/></div>
-                </div>
-                <div class="fg fg2 mt8">
-                  <div class="pill">Última llamada: <b id="f_lastCall" style="margin-left:4px">—</b></div>
-                  <div class="pill">Cadencia OK: <b id="f_cadOk" style="margin-left:4px">—</b></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ── SECCIÓN: IDENTIFICACIÓN ── -->
-            <div class="fcard open" id="fcard_id">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">◻</span><span class="fcard-title">Identificación</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <div><label>Nombre de la empresa</label><input id="f_name"/></div>
-                <div class="fg fg2" style="margin-top:8px">
-                  <div><label>Categoría</label><input id="f_category" list="catList"/><datalist id="catList"><option>Salud</option><option>Estética</option><option>Automoción</option><option>Hostelería</option><option>Construcción</option><option>Asesoría</option><option>Inmobiliaria</option><option>Educación</option><option>General</option></datalist></div>
-                  <div><label>Sector</label><input id="f_sector" list="sectorList"/><datalist id="sectorList"><option>Salud &amp; Bienestar</option><option>Estética &amp; Belleza</option><option>Automoción</option><option>Hostelería</option><option>Turismo &amp; Alojamiento</option><option>Construcción &amp; Reformas</option><option>Legal &amp; Asesoría</option><option>Inmobiliaria</option><option>Educación &amp; Formación</option><option>Comercio &amp; Retail</option><option>Logística &amp; Transporte</option><option>Marketing &amp; Agencia</option><option>Finanzas &amp; Seguros</option><option>Tecnología &amp; Software</option><option>Veterinaria &amp; Mascotas</option><option>Deporte &amp; Fitness</option><option>Servicios Generales</option></datalist></div>
-                </div>
-                <div style="margin-top:8px"><label>Dirección</label><input id="f_address"/></div>
-                <div class="fg fg2" style="margin-top:8px">
-                  <div><label>Lead ID</label><input id="f_leadId" disabled/></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ── SECCIÓN: CONTACTO ── -->
-            <div class="fcard open" id="fcard_contacto">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">◎</span><span class="fcard-title">Contacto</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <div class="fg fg2">
-                  <div><label>Teléfono</label><input id="f_phone" placeholder="+34..."/></div>
-                  <div><label>Web</label><input id="f_web"/></div>
-                </div>
-                <div style="margin-top:8px"><label>Google Maps URL</label><input id="f_gmaps"/></div>
-                <div style="margin-top:10px">
-                  <div class="ra">
-                    <a class="ra-call btn-info" id="btnDial" href="#">📞 Llamar</a>
-                    <button id="btnCopyPhone">📋 Copiar tel.</button>
-                    <a class="ra-ok" id="btnWA" href="#" target="_blank" style="padding:7px 12px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid rgba(34,197,94,.25);color:#86efac;background:linear-gradient(135deg,rgba(34,197,94,.13),rgba(34,197,94,.06));text-decoration:none;display:inline-flex;align-items:center;gap:5px;box-shadow:0 2px 0 rgba(0,60,20,.6),0 4px 12px rgba(0,0,0,.3);transition:.12s all">💬 WhatsApp</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ── SECCIÓN: OFERTA COMERCIAL ── -->
-            <div class="fcard" id="fcard_oferta">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">💰</span><span class="fcard-title">Oferta Comercial</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <div class="pricing-cards">
-                  <div class="pricing-card gold-border">
-                    <div class="price-label">💻 Web Profesional</div>
-                    <div class="price-val">149<span style="font-size:14px">,99</span><span class="price-period">€</span></div>
-                    <div class="price-desc">Web optimizada + Google Business + WhatsApp</div>
-                  </div>
-                  <div class="pricing-card">
-                    <div class="price-label">🔧 Mantenimiento</div>
-                    <div class="price-val">39<span style="font-size:14px">,99</span><span class="price-period">€/mes</span></div>
-                    <div class="price-desc">Actualizaciones + soporte + hosting incluido</div>
-                  </div>
-                </div>
-                <button class="copy-offer-btn" id="btnCopyOffer" style="margin-top:8px">📋 Copiar oferta para WhatsApp</button>
-              </div>
-            </div>
-
-            <!-- ── SECCIÓN: SCORE ── -->
-            <div class="fcard" id="fcard_score">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">◆</span><span class="fcard-title">Score & Análisis</span><span class="fcard-badge" id="fcard_score_badge">—</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <div class="fg fg2">
-                  <div><label>Rating Google</label><input id="f_rating" type="number" step="0.1"/></div>
-                  <div><label>Reseñas</label><input id="f_reviews" type="number" step="1"/></div>
-                </div>
-                <div class="fg fg2" style="margin-top:8px">
-                  <div><label>Score automático</label><input id="f_scoreAuto" disabled/></div>
-                  <div><label>Score override</label><input id="f_scoreOverride" type="number" min="0" max="100" placeholder="vacío = auto"/></div>
-                </div>
-                <div class="fg fg2" style="margin-top:8px">
-                  <div><label>Score final</label><input id="f_scoreFinal" disabled/></div>
-                  <div><label>Prioridad</label><input id="f_priority" disabled/></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- ── SECCIÓN: NOTAS ── -->
-            <div class="fcard open" id="fcard_notas">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">◇</span><span class="fcard-title">Notas</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <textarea id="f_notes" placeholder="Notas internas, observaciones, tono de la llamada..."></textarea>
-              </div>
-            </div>
-
-            <!-- ── SECCIÓN: HISTORIAL ── -->
-            <div class="fcard" id="fcard_historial">
-              <div class="fcard-hd" onclick="this.closest('.fcard').classList.toggle('open')">
-                <div class="fcard-hd-left"><span class="fcard-icon">◁</span><span class="fcard-title">Historial de Llamadas</span><span class="fcard-badge" id="fcard_calls_badge">0</span></div>
-                <span class="fcard-arrow">▾</span>
-              </div>
-              <div class="fcard-body">
-                <div style="overflow-x:auto">
-                  <table style="min-width:480px">
-                    <thead><tr><th>Fecha</th><th>Resultado</th><th>Duración</th><th>Notas</th></tr></thead>
-                    <tbody id="tbodyCalls"></tbody>
-                  </table>
-                </div>
-                <div id="callsEmpty" style="display:none;padding:14px 0;text-align:center;font-size:12px;color:var(--t3)">Sin llamadas registradas aún</div>
-              </div>
-            </div>
-
-            <!-- ═══ TIMELINE ═══ -->
-            <div class="divider" style="margin:8px 0"></div>
-            <div class="timeline" id="fichaTimeline" style="padding:0">
-              <div class="timeline-title">
-                <span>◎ Timeline de actividad</span>
-              </div>
-              <div id="timelineItems" style="padding-left:4px">
-                <div style="font-size:12px;color:var(--t3);padding:8px 0">Sin actividad registrada</div>
-              </div>
-            </div>
-
-            <!-- ═══ TASKS ═══ -->
-            <div class="divider" style="margin:16px 0"></div>
             <div class="tasks-wrap" style="padding:0">
               <div class="tasks-title">
                 <span>✓ Tareas</span>
@@ -5951,8 +6104,14 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
           <div><label>Rating</label><select id="m_rating"></select></div>
           <div><label>Reseñas</label><select id="m_reviews"></select></div>
           <div><label>Web</label><select id="m_web"></select></div>
+          <div><label>Maps URL</label><select id="m_gmaps"></select></div>
           <div><label>Asignado a</label><select id="m_owner"></select></div>
         </div>
+      </div>
+      <!-- Preview nombre: se muestra al cargar CSV -->
+      <div id="impPreviewBox" style="display:none;margin-top:8px;padding:8px 10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:8px">
+        <div style="font-size:9px;font-weight:700;color:rgba(240,240,248,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">Vista previa · primeras 3 empresas detectadas</div>
+        <div id="impPreviewList" style="font-size:11px;display:flex;flex-direction:column;gap:3px"></div>
       </div>
       <div id="summaryBox" style="display:none;margin-top:14px">
         <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:10px">Resultado de validación</div>
@@ -6403,6 +6562,7 @@ function _startRealtime(){
           renderCCDetail_v13(existing.lead_id);
         if(selId===existing.lead_id) _patchFicha(existing);
         if(cv==='executive') try{renderExecutiveDashboard();}catch(e){}
+        if(cv==='ventas') try{renderVentas();}catch(e){}
         _realtimeToast(row);
       }
     )
@@ -6962,6 +7122,7 @@ function _sbRowToLead(row){
     email:     row.email   || '',
     web:       row.web     || '',
     gmaps:     row.gmaps   || '',
+    cif:       row.cif     || '',
     address:   row.address || '',
     rating:    +row.rating || 0,
     reviews:   +row.reviews|| 0,
@@ -6995,6 +7156,7 @@ function _leadToSbRow(l){
     email:      l.email||'',
     web:        l.web||'',
     gmaps:      l.gmaps||'',
+    cif:        l.cif||'',
     address:    l.address||'',
     rating:     +l.rating||0,
     reviews:    +l.reviews||0,
@@ -7455,7 +7617,7 @@ function applyView(rows,vOvr){
   return sortRows(out);
 }
 function setEstadoFilter(estado){
-  const MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
+  const MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','PROPUESTA ENVIADA':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
   const sec=MAP[estado]||'NO_CONTACTADO';
   navTo('ventas');
   setTimeout(()=>{window._lvSection=sec;document.querySelectorAll('.lv-sec-btn').forEach(b=>b.classList.toggle('active',b.dataset.sec===sec));if(typeof renderVentas==='function')renderVentas();},100);
@@ -7532,23 +7694,20 @@ function renderTable(rows){
     if(l.lead_id===selId)tr.classList.add("row-active");
     if(isHot)tr.classList.add("row-hot");
     tr.innerHTML=`
-      <td><div class="fw9" style="font-size:14px">${esc(l.name||"(sin nombre)")}${atts.length?`<span class="att-badge">${atts.length}</span>`:""}${(!l.name||!l.name.trim())?` <span class="pill bad">INC</span>`:""}</div><div class="mono dim" style="font-size:10px;margin-top:3px;display:flex;align-items:center;gap:5px">
+      <td style="max-width:260px"><div style="font-size:14px;font-weight:800;color:var(--t1);font-family:var(--display);white-space:normal;word-break:break-word;line-height:1.35">${esc(l.name||"(sin nombre)")}${atts.length?`<span class="att-badge">${atts.length}</span>`:""}${(!l.name||!l.name.trim())?` <span class="pill bad">INC</span>`:""}</div><div class="mono" style="font-size:9px;margin-top:3px;color:rgba(240,240,248,.25);display:flex;align-items:center;gap:5px">
         ${esc(l.lead_id)}
         ${l.owner?`<span style="display:inline-flex;align-items:center;justify-content:center;padding:0 5px;height:14px;border-radius:3px;font-size:8px;font-weight:900;background:${l.owner==='Hugo'?'rgba(200,168,75,.18)':l.owner==='Joel'?'rgba(59,130,246,.18)':'rgba(139,92,246,.18)'};color:${l.owner==='Hugo'?'#E4C46A':l.owner==='Joel'?'#93c5fd':'#c4b5fd'};border:1px solid ${l.owner==='Hugo'?'rgba(200,168,75,.35)':l.owner==='Joel'?'rgba(59,130,246,.35)':'rgba(139,92,246,.35)'}">${l.owner==='Hugo'?'HU':l.owner==='Joel'?'JO':(l.owner||'').slice(0,2).toUpperCase()}</span>`:''}
         </div></td>
-      <td style="color:var(--t2)">${esc(l.category||"—")}</td>
       <td>${chipState(l.state)}</td>
       <td><span class="pill ${sc.priority==="A"?"ok":sc.priority==="B"?"warn":"bad"}" style="font-family:var(--mono);font-size:10px">${sc.final}</span></td>
       <td class="mono" style="font-size:13px">${esc(tel)||"<span class='dim'>—</span>"}</td>
-      <td style="font-size:13px;color:var(--t2)">${esc(l.next_type||(bl?"⚠ FALTA DEFINIR":"—"))}</td>
-      <td style="white-space:nowrap;font-size:13px">${esc(l.next_date||"—")}${dateBadge(l.next_date)}</td>
-      <td><div class="ra">
-        <button class="ra-open" data-action="open" data-id="${esc(l.lead_id)}">Abrir</button>
-        <button data-action="log" data-id="${esc(l.lead_id)}">Log</button>
-        ${tel?`<a class="ra-call" href="tel:${tel}">📞</a>`:""}
-        ${tel?`<a class="ra-ok" href="https://wa.me/${waNum}?text=${waMsg}" target="_blank">💬 WA</a>`:""}
-        <button class="ra-ok" data-action="paid" data-id="${esc(l.lead_id)}">✓ Cliente</button>
-        <button class="ra-bad" data-action="nc" data-id="${esc(l.lead_id)}">✕ NC</button>
+      <td class="mono" style="font-size:11px;color:rgba(240,240,248,.4)">${l.cif?esc(l.cif):''}</td>
+      <td style="white-space:nowrap"><div class="ra" style="gap:4px">
+        <button class="ra-open" data-action="open" data-id="${esc(l.lead_id)}" style="font-size:11px;padding:5px 10px">Abrir</button>
+        <button data-action="log" data-id="${esc(l.lead_id)}" style="font-size:11px;padding:5px 8px">Log</button>
+        ${tel?`<a class="ra-call" href="tel:${tel}" style="font-size:11px;padding:5px 8px">📞</a>`:""}
+        <button class="ra-ok" data-action="paid" data-id="${esc(l.lead_id)}" style="font-size:10px;padding:5px 8px">✓</button>
+        <button class="ra-bad" data-action="nc" data-id="${esc(l.lead_id)}" style="font-size:10px;padding:5px 8px">✕</button>
       </div></td>`;
     frag.appendChild(tr);
   }
@@ -7567,6 +7726,23 @@ function renderCalls(){
 }
 
 /* DETAIL */
+function setInvestigaLinks(name){
+  const n=(name||'').trim();
+  const clean=n.replace(/\s+(S\.L\.?U?\.?|S\.A\.?|SL|SA|SLU|CB|SC)\s*$/i,'').trim();
+  const q=encodeURIComponent(clean);
+  // Actualizar caja de copia
+  const nt=document.getElementById('inv_nombre_txt');
+  const cb=document.getElementById('inv_copy_btn');
+  if(nt)nt.textContent=clean||'—';
+  if(cb){cb.textContent='Copiar';cb.style.color='';}
+  const ax=document.getElementById('inv_axesor');
+  const em=document.getElementById('inv_empresite');
+  const ez=document.getElementById('inv_empresia');
+  // URLs directas en cada portal
+  if(ax)ax.href=clean?'https://www.axesor.es/buscador-unificado?term='+q:'#';
+  if(em)em.href=clean?'https://empresite.eleconomista.es/'+encodeURIComponent(clean.toUpperCase().replace(/\s+/g,'-'))+'.html':'#';
+  if(ez)ez.href=clean?'https://www.empresia.es/empresa/?buscar='+q:'#';
+}
 function setDialLink(ph){const tel=normPhone(ph);const a=$("btnDial");if(tel){a.href="tel:"+tel;a.style.opacity="1";a.onclick=null}else{a.href="#";a.style.opacity=".4";a.onclick=e=>{e.preventDefault();toast("Sin teléfono","","⚠")}}}
 function setWALink(l){const tel=normPhone(l?.phone||"");const wa=$("btnWA");if(!tel){wa.style.opacity=".4";wa.href="#";wa.onclick=e=>e.preventDefault();return}const n="34"+tel.replace(/[^\d]/g,"").replace(/^34/,"");const msg=encodeURIComponent(`Hola, soy de NEXA Digital Systems. Te escribo por ${l?.name||"tu negocio"}. Ofrecemos webs desde 149,99€ y mantenimiento desde 39,99€/mes. ¿Cuándo hablamos?`);wa.href=`https://wa.me/${n}?text=${msg}`;wa.style.opacity="1";wa.onclick=null}
 function renderAttempts(id){const atts=calls.filter(c=>c.lead_id===id).sort((a,b)=>b.datetime.localeCompare(a.datetime));const bar=$("fichaAttempts");if(!atts.length){bar.style.display="none";return}bar.style.display="flex";$("attCount").textContent=atts.length;const last=atts[0],res=last.result||"?";const el=$("attLast");el.textContent=res;el.className="att-val "+(res.includes("No")?"nc":res.includes("Pagado")||res.includes("Interesado")?"ok":"warn");const d=Math.floor((Date.now()-new Date(last.datetime).getTime())/86400000);$("attAgo").textContent=d===0?"hoy":d===1?"ayer":`${d} días`}
@@ -7576,12 +7752,35 @@ function renderDetail(){
   $("selectedPill").textContent=l?l.lead_id:"—";
   if(!l){$("fichaSummary").style.display="none";$("fichaEmpty").style.display="flex";$("fichaFields").style.display="none";return}
   $("fichaEmpty").style.display="none";$("fichaSummary").style.display="block";$("fichaFields").style.display="block";
-  $("fichaName").textContent=l.name||"(sin nombre)";$("fichaMeta").textContent=`${l.lead_id} · ${l.category||"—"} · ${l.sector||""} · ${l.owner||"Sin asignar"}`.replace(' ·  ·',' ·');
+  $("fichaName").textContent=l.name||"(sin nombre)";$("fichaMeta").textContent=`${l.lead_id} · ${l.category||"—"} · ${l.sector||""} · ${l.owner||"Sin asignar"}`.replace(" .  ."," ·");
+  const _n2=document.getElementById("fichaName2");if(_n2)_n2.textContent=l.name||"(sin nombre)";
+  const _tm=document.getElementById("fichaTopMeta");if(_tm)_tm.textContent=(l.lead_id||"")+(l.sector?" · "+l.sector:"")+(l.owner?" · "+l.owner:"");
+  const _cif=document.getElementById("f_cif");if(_cif)_cif.value=l.cif||"";
   const _chip=document.getElementById("fichaEstadoChip");if(_chip&&typeof chipState==="function")_chip.innerHTML=chipState(l.state||"NO CONTACTADO");
   renderAttempts(l.lead_id);
   const sc=scoreFinal(l);
   $("f_leadId").value=l.lead_id;$("f_owner").value=l.owner||"";$("f_name").value=l.name||"";$("f_category").value=l.category||"";$("f_sector").value=l.sector||"";$("f_state").value=l.state||"POTENCIAL";$("f_address").value=l.address||"";$("f_phone").value=l.phone||"";$("f_web").value=l.web||"";$("f_gmaps").value=l.gmaps||"";$("f_rating").value=l.rating??"";$("f_reviews").value=l.reviews??"";$("f_scoreAuto").value=sc.auto;$("f_scoreOverride").value=l.score_override??"";$("f_scoreFinal").value=sc.final;$("f_priority").value=sc.priority;$("f_nextType").value=l.next_type||"";$("f_nextDate").value=l.next_date||"";$("f_notes").value=l.notes||"";$("f_lastCall").textContent=l.last_call_at?new Date(l.last_call_at).toLocaleString("es-ES"):"—";$("f_cadOk").textContent=cadOk(l)?"Sí":"No";
-  setDialLink(l.phone||"");setWALink(l);renderCalls();
+  setDialLink(l.phone||"");setWALink(l);setInvestigaLinks(l.name||"");renderCalls();
+  // ── fv2 visual sync ──
+  var _cat=document.getElementById("fichaCatBadge");if(_cat)_cat.textContent=l.category||l.sector||"";
+  var _inv=document.getElementById("inv_nombre_txt");if(_inv)_inv.textContent=l.name||"—";
+  var _td=document.getElementById("fv2_tel_display");if(_td)_td.textContent=l.phone||"—";
+  var _ad=document.getElementById("fv2_addr_display");if(_ad)_ad.textContent=l.address||"—";
+  var _bm=document.getElementById("btnMaps");if(_bm){if(l.gmaps){_bm.href=l.gmaps;_bm.style.opacity="1";_bm.onclick=null;}else if(l.address){_bm.href="https://maps.google.com/maps?q="+encodeURIComponent(l.address);_bm.style.opacity="1";_bm.onclick=null;}else{_bm.href="#";_bm.style.opacity=".35";_bm.onclick=function(e){e.preventDefault();};}}
+  var _bw=document.getElementById("btnWeb");if(_bw){if(l.web){_bw.href=l.web.startsWith("http")?l.web:"https://"+l.web;_bw.style.opacity="1";_bw.onclick=null;}else{_bw.href="#";_bw.style.opacity=".35";_bw.onclick=function(e){e.preventDefault();};}}
+  // fv2 calls visual render
+  (function(){
+    var list=document.getElementById("fv2_calls_list");if(!list)return;
+    var rows=(typeof calls!=="undefined"?calls:[]).filter(function(cc){return cc.lead_id===selId;}).sort(function(a,b){return b.datetime.localeCompare(a.datetime);});
+    var emp=document.getElementById("callsEmpty");if(emp)emp.style.display=rows.length?"none":"block";
+    var dotCol={"CONTESTA":"#22c55e","NO CONTESTA":"#f43f5e","BUZÓN":"#f59e0b","INTERESADO":"#a78bfa","CITA":"#22c55e","DEFAULT":"rgba(240,240,248,.2)"};
+    list.innerHTML=rows.slice(0,12).map(function(cc){
+      var d=new Date(cc.datetime);var ds=d.toLocaleDateString("es-ES",{day:"2-digit",month:"short"})+" "+d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
+      var r=cc.result||"";var col=dotCol[r]||dotCol["DEFAULT"];
+      return '<div class="fv2-call-row"><div class="fv2-call-dot" style="background:'+col+'"></div><div class="fv2-call-body"><div class="fv2-call-result">'+r+'</div><div class="fv2-call-meta">'+ds+(cc.duration_sec?" · "+cc.duration_sec+"s":"")+'</div>'+(cc.notes?'<div class="fv2-call-notes">'+cc.notes+'</div>':"")+'</div></div>';
+    }).join("");
+    var badge=document.getElementById("fcard_calls_badge");if(badge)badge.textContent=rows.length;
+  })();
 }
 
 /* RENDER */
@@ -7668,7 +7867,7 @@ function enrichLeadSector(l){
 }
 
 function newLead(){const l={lead_id:nextId(),owner:currentUser||"",name:"",category:"",sector:"",state:"POTENCIAL",phone:"",web:"",gmaps:"",rating:0,reviews:0,address:"",score_override:"",score_auto:0,score_final:0,priority:"C",next_type:"",next_date:"",last_call_at:"",notes:"",created_at:isoNow(),updated_at:isoNow()};const sc=scoreFinal(l);l.score_auto=sc.auto;l.score_final=sc.final;l.priority=sc.priority;enrichLeadSector(l);leads.unshift(l);saveAll();sbUpsertLeadSafe(l);setView("INCOMPLETOS");selectLead(l.lead_id);toast("Lead creado","Completa el nombre","✓")}
-function saveSelected(){if(!selId){toast("Selecciona un lead","","⚠");return}const l=getLead(selId);if(!l)return;const name=($("f_name").value||"").trim();if(!name&&!confirm("Nombre vacío. ¿Guardar como INCOMPLETO?"))return;l.owner=$("f_owner").value||"";l.name=name;l.category=($("f_category").value||"").trim();l.sector=($("f_sector").value||"").trim()||autoSector(l.name,$("f_category").value||"");l.state=$("f_state").value||"POTENCIAL";l.address=($("f_address").value||"").trim();l.phone=normPhone($("f_phone").value||"");l.web=($("f_web").value||"").trim();l.gmaps=($("f_gmaps").value||"").trim();l.rating=+$("f_rating").value||0;l.reviews=+$("f_reviews").value||0;const ov=($("f_scoreOverride").value||"").trim();l.score_override=ov===""?"":String(clamp(+ov||0,0,100));l.next_type=$("f_nextType").value||"";l.next_date=$("f_nextDate").value||"";l.notes=$("f_notes").value||"";l.updated_at=isoNow();const sc=scoreFinal(l);l.score_auto=sc.auto;l.score_final=sc.final;l.priority=sc.priority;saveAll();sbUpsertLeadSafe(l);render();toast("Guardado",l.lead_id,"💾")}
+function saveSelected(){if(!selId){toast("Selecciona un lead","","⚠");return}const l=getLead(selId);if(!l)return;const name=($("f_name").value||"").trim();if(!name&&!confirm("Nombre vacío. ¿Guardar como INCOMPLETO?"))return;l.owner=$("f_owner").value||"";l.name=name;l.cif=(document.getElementById("f_cif")?.value||"").trim();l.category=($("f_category").value||"").trim();l.sector=($("f_sector").value||"").trim()||autoSector(l.name,$("f_category").value||"");l.state=$("f_state").value||"POTENCIAL";l.address=($("f_address").value||"").trim();l.phone=normPhone($("f_phone").value||"");l.web=($("f_web").value||"").trim();l.gmaps=($("f_gmaps").value||"").trim();l.rating=+$("f_rating").value||0;l.reviews=+$("f_reviews").value||0;const ov=($("f_scoreOverride").value||"").trim();l.score_override=ov===""?"":String(clamp(+ov||0,0,100));l.next_type=$("f_nextType").value||"";l.next_date=$("f_nextDate").value||"";l.notes=$("f_notes").value||"";l.updated_at=isoNow();const sc=scoreFinal(l);l.score_auto=sc.auto;l.score_final=sc.final;l.priority=sc.priority;saveAll();sbUpsertLeadSafe(l);render();toast("Guardado",l.lead_id,"💾")}
 const makeState=s=>{if(!selId)return;const l=getLead(selId);if(!l)return;l.state=s;l.updated_at=isoNow();const sc=scoreFinal(l);l.score_auto=sc.auto;l.score_final=sc.final;l.priority=sc.priority;saveAll();sbUpsertLeadSafe(l);render();toast("Estado: "+s,l.lead_id,"→")};
 function deleteLead(){if(!selId){toast("Selecciona un lead","","⚠");return}const l=getLead(selId);if(!l)return;const name=l.name||"Sin nombre";if(!confirm('¿Eliminar el lead "'+name+'"?\n\nTendrás 6 segundos para deshacer.'))return;
   // Guardar copia para posible undo
@@ -7740,19 +7939,38 @@ function parseCSV(text){text=text.replace(/^\uFEFF/,"");const lines=text.replace
 
 let staging={headers:[],rows:[],map:{},validated:false,report:[]};
 function fillSel(sid,h){const s=$(sid);s.innerHTML="<option value=''>—</option>";h.forEach(x=>{const o=document.createElement("option");o.value=x;o.textContent=x;s.appendChild(o)})}
-function guessMap(h){const H=h.map(x=>({h:x,n:normStr(x)}));const pick=(...ks)=>{for(const k of ks){const f=H.find(x=>x.n.includes(k));if(f)return f.h}return""};return{name:pick("nombre","empresa","negocio","name"),addr:pick("direc","address","ubic"),phone:pick("tel","telefono","phone","movil"),cat:pick("categ","sector","tipo","category"),rating:pick("rating","puntu","estrellas"),reviews:pick("rese","opin","review","valorac"),web:pick("web","website","site","url"),owner:pick("asign","owner","respons")}}
-function setupMap(){const h=staging.headers;["m_name","m_addr","m_phone","m_cat","m_rating","m_reviews","m_web","m_owner"].forEach(id=>fillSel(id,h));const g=guessMap(h);$("m_name").value=g.name;$("m_addr").value=g.addr;$("m_phone").value=g.phone;$("m_cat").value=g.cat;$("m_rating").value=g.rating;$("m_reviews").value=g.reviews;$("m_web").value=g.web;$("m_owner").value=g.owner}
+function guessMap(h){const H=h.map(x=>({h:x,n:normStr(x)}));const pick=(...ks)=>{for(const k of ks){const f=H.find(x=>x.n.includes(k));if(f)return f.h}return""};return{name:pick("title","nombre","empresa","negocio","name","businessname","business","company"),addr:pick("street","direc","address","ubic","location","formatted"),phone:pick("phone","tel","telefono","movil","phonenumber","phones"),cat:pick("categories/0","categoryname","categ","sector","tipo","category"),rating:pick("totalscore","rating","puntu","estrellas"),reviews:pick("reviewscount","rese","opin","review","valorac"),web:pick("website","web","site","webpage","homepage"),gmaps:pick("url","mapsurl","maps_url","googleurl"),owner:pick("asign","owner","respons")}}
+function _impPreview(){
+  const pb=$("impPreviewBox"),pl=$("impPreviewList");if(!pb||!pl)return;
+  const col=$("m_name").value;
+  const rows=staging.rows.slice(0,3);
+  if(!col||!rows.length){pb.style.display="none";return;}
+  const names=rows.map(r=>(r[col]||"").trim()).filter(Boolean);
+  if(!names.length){pb.style.display="none";return;}
+  pb.style.display="block";
+  pl.innerHTML=names.map((n,i)=>`<div style="display:flex;align-items:center;gap:6px"><span style="font-size:9px;color:rgba(240,240,248,.2);font-family:var(--mono);width:12px">${i+1}</span><span style="color:rgba(240,240,248,.8);font-weight:600">${esc(n)}</span></div>`).join("");
+}
+function setupMap(){
+  const h=staging.headers;
+  ["m_name","m_addr","m_phone","m_cat","m_rating","m_reviews","m_web","m_gmaps","m_owner"].forEach(id=>fillSel(id,h));
+  const g=guessMap(h);
+  $("m_name").value=g.name;$("m_addr").value=g.addr;$("m_phone").value=g.phone;
+  $("m_cat").value=g.cat;$("m_rating").value=g.rating;$("m_reviews").value=g.reviews;
+  $("m_web").value=g.web;var _elGm=document.getElementById("m_gmaps");if(_elGm)_elGm.value=g.gmaps||"";$("m_owner").value=g.owner;
+  _impPreview();
+  const mn=$("m_name");if(mn&&!mn._ph){mn._ph=1;mn.addEventListener("change",_impPreview);}
+}
 function openImport(){openModal("importModal");$("impInfo").textContent="Ningún archivo seleccionado";$("impHint").style.display="none";$("mapBox").style.display="none";$("summaryBox").style.display="none";$("btnValidate").disabled=true;$("btnConfirmImport").disabled=true;staging={headers:[],rows:[],map:{},validated:false,report:[]}}
 
 function validateStaging(){
-  const map={name:$("m_name").value,addr:$("m_addr").value,phone:$("m_phone").value,cat:$("m_cat").value,rating:$("m_rating").value,reviews:$("m_reviews").value,web:$("m_web").value,owner:$("m_owner").value};
+  const map={name:$("m_name").value,addr:$("m_addr").value,phone:$("m_phone").value,cat:$("m_cat").value,rating:$("m_rating").value,reviews:$("m_reviews").value,web:$("m_web").value,gmaps:(document.getElementById("m_gmaps")||{}).value||"",owner:$("m_owner").value};
   staging.map=map;staging.report=[];
   const exNA=new Map(),exNP=new Map();
   for(const l of leads){if(l.name&&l.address)exNA.set(normStr(l.name)+"||"+normStr(l.address),l.lead_id);if(l.name&&l.phone)exNP.set(normStr(l.name)+"||"+normPhone(l.phone),l.lead_id)}
   let nN=0,nD=0,nE=0,nS=0;
   for(let idx=0;idx<staging.rows.length;idx++){
     const r=staging.rows[idx];
-    const c={lead_id:"",owner:map.owner?(r[map.owner]||"").trim():"",name:map.name?(r[map.name]||"").trim():"",address:map.addr?(r[map.addr]||"").trim():"",phone:normPhone(map.phone?(r[map.phone]||""):""),category:map.cat?(r[map.cat]||"").trim():"",rating:+String(map.rating?(r[map.rating]||""):"").replace(",",".")||0,reviews:parseInt(String(map.reviews?(r[map.reviews]||""):"").replace(/[^\d]/g,""),10)||0,web:map.web?(r[map.web]||"").trim():"",state:"POTENCIAL",gmaps:"",score_override:"",next_type:"",next_date:"",last_call_at:"",notes:""};
+    const c={lead_id:"",owner:map.owner?(r[map.owner]||"").trim():"",name:map.name?(r[map.name]||"").trim():"",address:map.addr?(r[map.addr]||"").trim():"",phone:normPhone(map.phone?(r[map.phone]||""):""),category:map.cat?(r[map.cat]||"").trim():"",rating:+String(map.rating?(r[map.rating]||""):"").replace(",",".")||0,reviews:parseInt(String(map.reviews?(r[map.reviews]||""):"").replace(/[^\d]/g,""),10)||0,web:map.web?(r[map.web]||"").trim():"",state:"POTENCIAL",gmaps:map.gmaps?(r[map.gmaps]||"").trim():"",cif:"",score_override:"",next_type:"",next_date:"",last_call_at:"",notes:""};
     if(!c.name){staging.report.push({rowIndex:idx+2,status:"ERROR",reason:"Falta nombre",lead:c});nE++;continue}
     let dup=null;if(c.name&&c.address){const k=normStr(c.name)+"||"+normStr(c.address);if(exNA.has(k))dup=exNA.get(k)}if(!dup&&c.name&&c.phone){const k=normStr(c.name)+"||"+normPhone(c.phone);if(exNP.has(k))dup=exNP.get(k)}
     if(dup){staging.report.push({rowIndex:idx+2,status:"DUP",reason:"Dup de "+dup,lead:c});nD++;continue}
@@ -7888,6 +8106,7 @@ const TOUR_STEPS=[
   {view:"leads",target:"sidebarPanel",pos:"right",title:"🎛 Filtros y vistas",desc:"Filtra por agente, estado o búsqueda. Las vistas personalizadas se sincronizan en Supabase: ambos agentes las ven en tiempo real."},
   {view:"leads",target:"tablePanel",pos:"right",title:"📋 Tabla de leads",desc:"Estado · Score 🔥 · Empresa · Teléfono · Acciones. Checkbox para selección masiva. Clic en cualquier fila abre la ficha completa al instante."},
   {view:"leads",target:"fichaPanel",pos:"left",title:"📄 Ficha del lead",desc:"Edita todos los campos: nombre, empresa, teléfono, estado, score, notas y tareas. Cada cambio guarda en Supabase al instante. Historial siempre visible."},
+  {view:"leads",target:"fcard_investiga",pos:"left",title:"🔍 Investigar empresa",desc:"Antes de llamar: 3 fuentes. Axesor=datos generales, Empresite=si tiene web, Empresia=nombre del dueño y facturación. El nombre de la empresa ya aparece buscado automáticamente."},
   {view:"leads",target:"btnNew",pos:"bottom",title:"➕ Crear e importar leads",desc:"Botón '+ Lead' para crear manualmente. Importar CSV carga cientos de leads desde Excel con detección automática de duplicados antes de importar."},
   {view:"leads",target:"btnSave",pos:"bottom",title:"💾 Guardar cambios",desc:"Persiste todos los campos en Supabase. El otro agente ve los cambios al instante. Atajo: tecla S para guardar sin mover la mano del teclado."},
   {view:"callcenter",target:"viewCallCenter",pos:"bottom",title:"📞 Call Center",desc:"Diseñada para 80+ llamadas al día. Cola con 4 pestañas: Pendientes · Llamados · Hoy · Míos. Un lead pasa a Llamados SOLO cuando guardas la llamada."},
@@ -8470,6 +8689,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   $("btnCopyPhone").addEventListener("click",async()=>{const p=($("f_phone").value||"").trim();if(!p){toast("Sin teléfono","","⚠");return}try{await navigator.clipboard.writeText(p);toast("Copiado",p,"📋")}catch{toast("Error","","⚠")}});
   $("btnCopyOffer").addEventListener("click",()=>copyOffer($("f_name").value));
   $("f_phone").addEventListener("input",()=>setDialLink($("f_phone").value||""));
+  $("f_name").addEventListener("input",()=>setInvestigaLinks($("f_name").value||""));
   $("globalSearch").addEventListener("input",render);
   document.querySelectorAll(".view-btn").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
   $("ownAll").addEventListener("click",()=>setOwnerFilter(""));
@@ -9029,7 +9249,7 @@ function ccMakeState(s){
   renderCCDetail_v13(ccSelId);
   render();
   // Sincronizar sección de Leads con el nuevo estado
-  const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
+  const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','PROPUESTA ENVIADA':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
   const sec = SEC_MAP[s];
   if(sec){ window._lvSection=sec; document.querySelectorAll('.lv-sec-btn').forEach(b=>b.classList.toggle('active',b.dataset.sec===sec)); }
   if(typeof renderVentas==='function') setTimeout(()=>{try{renderVentas();}catch(e){}},60);
@@ -13303,7 +13523,7 @@ var LV_SECTIONS = {
   },
   'AGENDADO': {
     label:'Agendados', icon:'📅', color:'#8b5cf6', bg:'rgba(139,92,246,.12)',
-    match: l => l.state==='AGENDADO'||l.state==='INTERESADA / DEMO',
+    match: l => l.state==='AGENDADO'||l.state==='INTERESADA / DEMO'||l.state==='PROPUESTA ENVIADA',
     k1:'Total agendados', k3lbl:'Citas hoy', k3fn: (n,L,today) => L.filter(l=>l.state==='AGENDADO'&&l.next_date===today).length,
     thDate:'Fecha cita', sort: (a,b)=>(a.next_date||'9999').localeCompare(b.next_date||'9999'),
     actions: l => `
@@ -13374,7 +13594,7 @@ function makeStateById(id, newState) {
   toast(TOASTS[newState]||'Estado: '+newState, l.name||id, '→');
   if(typeof render==='function') render();
   // Cambiar sección automáticamente al estado correcto
-  const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
+  const SEC_MAP={'VENDIDO':'VENDIDO','CLIENTE ACTIVO':'VENDIDO','AGENDADO':'AGENDADO','INTERESADA / DEMO':'AGENDADO','PROPUESTA ENVIADA':'AGENDADO','CONTACTADO':'CONTACTADO','CONTACTADA':'CONTACTADO','NO CONTACTADO':'NO_CONTACTADO','POTENCIAL':'NO_CONTACTADO','PERDIDO':'PERDIDO','PERDIDO / DESCARTADO':'PERDIDO','NO CONTACTAR':'PERDIDO'};
   const sec = SEC_MAP[newState] || window._lvSection;
   window._lvSection = sec;
   document.querySelectorAll('.lv-sec-btn').forEach(b => b.classList.toggle('active', b.dataset.sec === sec));
@@ -13383,7 +13603,7 @@ function makeStateById(id, newState) {
 window.makeStateById = makeStateById;
 
 function renderVentas() {
-  const L = (typeof getLeads==='function' ? getLeads() : (window.AppState?.get('leads') || []));
+  const L = window.leads || [];
   const today = todayStr ? todayStr() : new Date().toISOString().slice(0,10);
   const now = new Date();
   const mesActual = now.getMonth(), añoActual = now.getFullYear();
@@ -15997,41 +16217,49 @@ console.log(
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    /* Columna Empresa: mostrar más */
-    tbody td:nth-child(2) { max-width: 180px; }
-    /* Columna Categoría */
-    tbody td:nth-child(3) { max-width: 130px; }
-    /* Columna Estado: no cortar */
-    tbody td:nth-child(4) { white-space: nowrap; max-width: 170px; }
-    /* Score: fijo */
-    tbody td:nth-child(5) { max-width: 70px; text-align: center; }
-    /* Teléfono */
-    tbody td:nth-child(6) { max-width: 140px; }
-    /* Próx acción */
-    tbody td:nth-child(7) { max-width: 130px; }
-    /* Fecha */
-    tbody td:nth-child(8) { max-width: 100px; white-space: nowrap; }
+    /* Columna Empresa (col 2): NOMBRE COMPLETO siempre */
+    tbody td:nth-child(2) {
+      max-width: 260px;
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: unset !important;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+    /* Columna Estado (col 3, ya no hay Categoría) */
+    tbody td:nth-child(3) { white-space: nowrap; max-width: 160px; }
+    /* Score (col 4) */
+    tbody td:nth-child(4) { max-width: 70px; text-align: center; }
+    /* Teléfono (col 5) */
+    tbody td:nth-child(5) { max-width: 140px; }
     /* Acciones: NUNCA cortar */
     tbody td:last-child {
       max-width: none !important;
       white-space: nowrap !important;
       overflow: visible !important;
     }
-    /* .ra siempre en una línea */
     .ra { flex-wrap: nowrap; gap: 4px; }
-    /* Nombre empresa con título tooltip */
-    tbody td:nth-child(2) .fw9 {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 100%;
-    }
-    /* Checkbox col: width fijo */
+    /* Checkbox col */
     tbody td:nth-child(1), thead th:nth-child(1) {
       max-width: 36px !important;
       width: 36px !important;
       overflow: visible !important;
     }
+    /* Row highlight when active — muy visible */
+    tbody tr.row-active td {
+      background: rgba(200,168,75,.12) !important;
+    }
+    tbody tr.row-active td:first-child {
+      border-left: 3px solid var(--gold2) !important;
+    }
+    tbody tr.row-active td:nth-child(2) div:first-child {
+      color: var(--gold2) !important;
+    }
+    @keyframes rowFlash {
+      0% { background: rgba(200,168,75,.35) !important; }
+      100% { background: rgba(200,168,75,.12) !important; }
+    }
+    tbody tr.row-active td { animation: rowFlash .5s cubic-bezier(.22,1,.36,1) both; }
 
     /* ── Ficha notas: siempre editable y visible ── */
     #fichaBody { position: relative; }

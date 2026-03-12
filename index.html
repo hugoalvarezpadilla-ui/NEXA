@@ -4106,84 +4106,54 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
         </div>
         <div id="fichaFields" style="display:none">
 <style>
-/* ══ FICHA v2 — clean, visual, scannable ══ */
-
-/* Cabecera empresa */
-.fv2-head{padding:14px 16px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
-.fv2-name{font-size:18px;font-weight:900;color:var(--t1);font-family:var(--display);line-height:1.2;word-break:break-word;margin-bottom:6px}
-.fv2-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.fv2-cat{font-size:10px;font-weight:700;color:rgba(240,240,248,.4);background:rgba(255,255,255,.06);padding:3px 8px;border-radius:5px;font-family:var(--display)}
+/* ══ FICHA v3 ══ */
+.fv2-head{padding:13px 15px 11px;border-bottom:1px solid rgba(255,255,255,.07)}
+.fv2-name{font-size:17px;font-weight:900;color:var(--t1);font-family:var(--display);line-height:1.2;word-break:break-word;margin-bottom:5px}
+.fv2-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.fv2-cat{font-size:10px;font-weight:700;color:rgba(240,240,248,.4);background:rgba(255,255,255,.05);padding:2px 7px;border-radius:4px;font-family:var(--display)}
 .fv2-id{font-size:9px;color:rgba(240,240,248,.2);font-family:var(--mono)}
-
-/* Acciones rápidas — strip horizontal */
-.fv2-actions{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
-.fv2-state-btn{display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:8px;border:1px solid;font-size:9.5px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em;transition:filter .12s,transform .1s}
-.fv2-state-btn:hover{filter:brightness(1.2);transform:translateY(-1px)}
-.fv2-sb-contactado{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.09);color:#f59e0b}
-.fv2-sb-agendado{border-color:rgba(139,92,246,.4);background:rgba(139,92,246,.09);color:#a78bfa}
-.fv2-sb-vendido{border-color:rgba(34,197,94,.45);background:rgba(34,197,94,.09);color:#22c55e}
-.fv2-sb-perdido{border-color:rgba(244,63,94,.35);background:rgba(244,63,94,.08);color:#f43f5e}
-
-/* Guardar strip */
-.fv2-save-row{display:flex;gap:6px;padding:8px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
-
-/* Info cards — contacto rápido */
-.fv2-contact{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
-.fv2-info-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:10px 11px;display:flex;flex-direction:column;gap:4px}
-.fv2-info-label{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:rgba(240,240,248,.25);font-family:var(--display)}
-.fv2-info-val{font-size:12px;font-weight:700;color:var(--t1);font-family:var(--mono);word-break:break-all;line-height:1.3}
-.fv2-info-val.dim{color:rgba(240,240,248,.3);font-weight:400;font-size:11px}
-.fv2-info-actions{display:flex;gap:5px;margin-top:4px}
-.fv2-ia-btn{padding:4px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:3px;transition:.12s;white-space:nowrap;font-family:var(--sans)}
-.fv2-ia-btn:hover{background:rgba(255,255,255,.08);color:var(--t1)}
-.fv2-ia-btn.green{border-color:rgba(37,211,102,.3);background:rgba(37,211,102,.07);color:#4ade80}
-.fv2-ia-btn.green:hover{background:rgba(37,211,102,.14)}
-
-/* Estado+seguimiento */
-.fv2-estado-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
-
-/* Secciones plegables */
+.fv2-contact{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:11px 15px;border-bottom:1px solid rgba(255,255,255,.07)}
+.fv2-info-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:9px 10px}
+.fv2-info-label{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:rgba(240,240,248,.25);display:block;margin-bottom:3px;font-family:var(--display)}
+.fv2-info-val{font-size:12px;font-weight:700;color:var(--t1);font-family:var(--mono);word-break:break-all;line-height:1.3;display:block;margin-bottom:6px}
+.fv2-info-actions{display:flex;gap:4px;flex-wrap:wrap}
+.fv2-ia-btn{padding:4px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:10px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;transition:.12s;font-family:var(--sans);white-space:nowrap}
+.fv2-ia-btn:hover{background:rgba(255,255,255,.08);color:var(--t1);border-color:rgba(255,255,255,.18)}
+.fv2-actions{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:10px 15px;border-bottom:1px solid rgba(255,255,255,.07)}
+.fv2-state-btn{display:flex;align-items:center;justify-content:center;padding:8px 4px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:9.5px;font-weight:800;cursor:pointer;font-family:var(--display);letter-spacing:.05em;transition:.12s}
+.fv2-state-btn:hover{background:rgba(255,255,255,.08);color:var(--t1);border-color:rgba(255,255,255,.2)}
 .fv2-section{border-bottom:1px solid rgba(255,255,255,.06)}
-.fv2-section-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;cursor:pointer;user-select:none;transition:background .12s}
+.fv2-section-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;cursor:pointer;user-select:none;transition:background .12s}
 .fv2-section-hd:hover{background:rgba(255,255,255,.02)}
-.fv2-section-title{font-size:10px;font-weight:800;color:rgba(240,240,248,.4);text-transform:uppercase;letter-spacing:.1em;font-family:var(--display);display:flex;align-items:center;gap:6px}
-.fv2-section-icon{font-size:12px;opacity:.6}
-.fv2-section-badge{font-size:9px;font-family:var(--mono);color:rgba(240,240,248,.3);background:rgba(255,255,255,.06);padding:1px 6px;border-radius:99px}
+.fv2-section-title{font-size:10px;font-weight:800;color:rgba(240,240,248,.45);text-transform:uppercase;letter-spacing:.09em;font-family:var(--display);display:flex;align-items:center;gap:6px}
+.fv2-section-badge{font-size:9px;font-family:var(--mono);color:rgba(240,240,248,.3);background:rgba(255,255,255,.06);padding:1px 6px;border-radius:99px;font-weight:400}
 .fv2-section-arr{font-size:9px;color:rgba(240,240,248,.2);transition:transform .2s}
 .fv2-section.open .fv2-section-arr{transform:rotate(180deg)}
-.fv2-section-body{display:none;padding:10px 16px 14px}
+.fv2-section-body{display:none;padding:10px 15px 14px}
 .fv2-section.open .fv2-section-body{display:block}
-
-/* Form fields */
 .fv2-section-body label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(240,240,248,.28);display:block;margin-bottom:3px;font-family:var(--display)}
 .fv2-section-body input,.fv2-section-body select,.fv2-section-body textarea{font-size:12px;padding:7px 10px;border-radius:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);color:var(--t1);width:100%;box-sizing:border-box;font-family:var(--sans);outline:none;transition:border-color .15s}
 .fv2-section-body input:focus,.fv2-section-body select:focus,.fv2-section-body textarea:focus{border-color:rgba(200,168,75,.4);background:rgba(255,255,255,.06)}
 .fv2-g2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.fv2-g2-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .fv2-row{margin-top:7px}
-
-/* Investigar */
-.fv2-inv-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);text-decoration:none;transition:.12s;margin-bottom:5px}
+.fv2-inv-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);text-decoration:none;transition:.12s;margin-bottom:5px}
 .fv2-inv-row:last-child{margin-bottom:0}
-.fv2-inv-row:hover{background:rgba(200,168,75,.07);border-color:rgba(200,168,75,.25)}
-.fv2-inv-row:hover .fv2-inv-arr{color:var(--gold2)}
-.fv2-inv-ico{font-size:13px;width:18px;text-align:center;flex-shrink:0}
-.fv2-inv-ttl{font-size:10px;font-weight:800;color:rgba(240,240,248,.8);font-family:var(--display);display:block}
+.fv2-inv-row:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.13)}
+.fv2-inv-ico{font-size:13px;width:18px;text-align:center;flex-shrink:0;opacity:.7}
+.fv2-inv-ttl{font-size:10px;font-weight:800;color:rgba(240,240,248,.75);font-family:var(--display);display:block}
 .fv2-inv-sub{font-size:8.5px;color:rgba(240,240,248,.28);display:block;margin-top:1px}
-.fv2-inv-arr{font-size:9px;color:rgba(240,240,248,.15);margin-left:auto;flex-shrink:0;transition:.12s}
-.fv2-inv-hint{font-size:8.5px;color:rgba(240,240,248,.2);font-family:var(--mono);margin-bottom:8px}
-
-/* Historial calls */
-.fv2-call-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.fv2-inv-arr{font-size:9px;color:rgba(240,240,248,.15);margin-left:auto;flex-shrink:0}
+.fv2-call-row{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .fv2-call-row:last-child{border-bottom:none}
-.fv2-call-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.fv2-call-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;background:rgba(240,240,248,.25)}
 .fv2-call-body{flex:1;min-width:0}
 .fv2-call-result{font-size:11px;font-weight:700;color:var(--t1)}
 .fv2-call-meta{font-size:9px;color:rgba(240,240,248,.3);margin-top:1px;font-family:var(--mono)}
-.fv2-call-notes{font-size:10px;color:rgba(240,240,248,.5);margin-top:3px;line-height:1.4}
+.fv2-call-notes{font-size:10px;color:rgba(240,240,248,.45);margin-top:3px;line-height:1.4}
+.fv2-save-bar{padding:12px 15px 20px;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:6px}
 </style>
 
-<!-- ① CABECERA — nombre + estado + meta -->
+<!-- CABECERA -->
 <div class="fv2-head">
   <div class="fv2-name" id="fichaName2">—</div>
   <div class="fv2-badges">
@@ -4193,15 +4163,15 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   </div>
 </div>
 
-<!-- ② CONTACTO RÁPIDO — lo primero que necesitas -->
+<!-- CONTACTO RÁPIDO -->
 <div class="fv2-contact">
   <div class="fv2-info-card">
     <span class="fv2-info-label">Teléfono</span>
     <span class="fv2-info-val" id="fv2_tel_display">—</span>
     <div class="fv2-info-actions">
-      <a class="fv2-ia-btn" id="btnDial" href="#">📞 Llamar</a>
-      <button class="fv2-ia-btn" id="btnCopyPhone" title="Copiar teléfono">Copiar</button>
-      <a class="fv2-ia-btn" id="btnWA" href="#" target="_blank">WA</a>
+      <a class="fv2-ia-btn" id="btnDial" href="#">Llamar</a>
+      <button class="fv2-ia-btn" id="btnCopyPhone">Copiar</button>
+      <a class="fv2-ia-btn" id="btnWA" href="#" target="_blank">WhatsApp</a>
     </div>
   </div>
   <div class="fv2-info-card">
@@ -4214,22 +4184,21 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   </div>
 </div>
 
-<!-- ③ CAMBIAR ESTADO -->
+<!-- CAMBIAR ESTADO -->
 <div class="fv2-actions">
-  <button id="btnMakeInterested" onclick="makeState('CONTACTADO')" class="fv2-state-btn fv2-sb-contactado">CONTACTADO</button>
-  <button id="btnMakeProposal"   onclick="makeState('AGENDADO')"   class="fv2-state-btn fv2-sb-agendado">AGENDADO</button>
-  <button id="btnMakePaid"       onclick="makeState('VENDIDO')"    class="fv2-state-btn fv2-sb-vendido">VENDIDO ✓</button>
-  <button id="btnMakeNoContact"  onclick="makeState('PERDIDO')"    class="fv2-state-btn fv2-sb-perdido">PERDIDO ✕</button>
+  <button id="btnMakeInterested" onclick="makeState('CONTACTADO')" class="fv2-state-btn">CONTACTADO</button>
+  <button id="btnMakeProposal"   onclick="makeState('AGENDADO')"   class="fv2-state-btn">AGENDADO</button>
+  <button id="btnMakePaid"       onclick="makeState('VENDIDO')"    class="fv2-state-btn">VENDIDO ✓</button>
+  <button id="btnMakeNoContact"  onclick="makeState('PERDIDO')"    class="fv2-state-btn">PERDIDO ✕</button>
 </div>
 
-<!-- ══ SECCIONES ══ -->
+<!-- SECCIONES -->
 <div>
 
   <!-- DATOS EMPRESA -->
   <div class="fv2-section open" id="fcard_id">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Datos de la empresa</span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Datos de la empresa</span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
       <div><label>Nombre</label><input id="f_name"/></div>
@@ -4245,7 +4214,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
       <div class="fv2-row"><label>Google Maps URL</label>
         <div style="display:flex;gap:5px">
           <input id="f_gmaps" style="flex:1;min-width:0" placeholder="https://maps.google.com/..."/>
-          <a href="#" target="_blank" rel="noopener" title="Abrir en Maps" onclick="(function(e){var v=document.getElementById('f_gmaps').value;if(!v){e.preventDefault();return;}e.currentTarget.href=v.startsWith('http')?v:'https://maps.google.com/maps?q='+encodeURIComponent(v);}).call(this,event)" style="flex-shrink:0;padding:6px 9px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:12px;text-decoration:none;display:inline-flex;align-items:center;white-space:nowrap">Maps</a>
+          <a href="#" target="_blank" rel="noopener" onclick="(function(e){var v=document.getElementById('f_gmaps').value;if(!v){e.preventDefault();return;}e.currentTarget.href=v.startsWith('http')?v:'https://maps.google.com/maps?q='+encodeURIComponent(v);}).call(this,event)" style="flex-shrink:0;padding:6px 9px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-size:11px;text-decoration:none;display:inline-flex;align-items:center">Maps</a>
         </div>
       </div>
       <div class="fv2-g2 fv2-row">
@@ -4269,8 +4238,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   <!-- PRÓXIMA ACCIÓN -->
   <div class="fv2-section open" id="fcard_estado">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Próxima acción</span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Próxima acción</span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
       <div class="fv2-g2">
@@ -4295,25 +4263,22 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   <!-- NOTAS -->
   <div class="fv2-section open" id="fcard_notas">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Notas</span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Notas</span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
       <textarea id="f_notes" placeholder="Observaciones, tono de llamada, detalles..." style="min-height:80px;resize:vertical"></textarea>
     </div>
   </div>
 
-  <!-- INVESTIGAR — con botón copiar nombre -->
+  <!-- INVESTIGAR -->
   <div class="fv2-section" id="fcard_investiga">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Investigar empresa</span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Investigar empresa</span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
-      <!-- Copiar nombre para pegar en buscadores -->
-      <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:9px 12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:8px 11px;margin-bottom:9px">
         <span id="inv_nombre_txt" style="font-size:12px;font-weight:700;color:var(--t1);font-family:var(--display);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
-        <button id="inv_copy_btn" onclick="(function(){var t=document.getElementById('inv_nombre_txt').textContent;if(!t||t==='—')return;navigator.clipboard.writeText(t).then(function(){var b=document.getElementById('inv_copy_btn');var prev=b.textContent;b.textContent='Copiado';setTimeout(function(){b.textContent=prev;},1800);});})();" style="flex-shrink:0;margin-left:10px;padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:var(--t2);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Copiar nombre</button>
+        <button id="inv_copy_btn" onclick="(function(){var t=document.getElementById('inv_nombre_txt').textContent;if(!t||t==='—')return;navigator.clipboard.writeText(t).then(function(){var b=document.getElementById('inv_copy_btn');b.textContent='Copiado ✓';setTimeout(function(){b.textContent='Copiar nombre';},1800);});})();" style="flex-shrink:0;padding:4px 10px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--t2);font-size:10px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap">Copiar nombre</button>
       </div>
       <div style="font-size:8.5px;color:rgba(240,240,248,.2);font-family:var(--mono);margin-bottom:8px">Copia el nombre → abre la web → pégalo en su buscador</div>
       <a id="inv_axesor" href="#" target="_blank" rel="noopener" class="fv2-inv-row">
@@ -4337,8 +4302,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   <!-- HISTORIAL -->
   <div class="fv2-section" id="fcard_historial">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Historial de llamadas <span class="fv2-section-badge" id="fcard_calls_badge">0</span></span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Historial de llamadas <span class="fv2-section-badge" id="fcard_calls_badge">0</span></span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
       <div id="callsEmpty" style="display:none;padding:8px 0;text-align:center;font-size:11px;color:var(--t3)">Sin llamadas registradas aún</div>
@@ -4350,8 +4314,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   <!-- OFERTA -->
   <div class="fv2-section" id="fcard_oferta">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Oferta comercial</span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Oferta comercial</span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
       <div class="pricing-cards">
@@ -4365,8 +4328,7 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
   <!-- SCORE -->
   <div class="fv2-section" id="fcard_score">
     <div class="fv2-section-hd" onclick="this.closest('.fv2-section').classList.toggle('open')">
-      <span class="fv2-section-title">Score <span class="fv2-section-badge" id="fcard_score_badge">—</span></span>
-      <span class="fv2-section-arr">▾</span>
+      <span class="fv2-section-title">Score <span class="fv2-section-badge" id="fcard_score_badge">—</span></span><span class="fv2-section-arr">▾</span>
     </div>
     <div class="fv2-section-body">
       <div class="fv2-g2">
@@ -4384,24 +4346,21 @@ body.perf-mode *{animation:none!important;transition-duration:0ms!important}
     </div>
   </div>
 
-  <!-- Acciones secundarias -->
-  <div style="display:flex;flex-wrap:wrap;gap:5px;padding:10px 16px;border-top:1px solid rgba(255,255,255,.06)" id="v45FichaBar">
-    <button onclick="v45OpenWhatsApp(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">WhatsApp</button>
-    <button onclick="v45OpenInvoice(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">Factura</button>
-    <button onclick="v45OpenSign(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">Firma</button>
-    <button onclick="v45AddToCalendar(window.selId||'')" style="display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans);transition:.12s">Agenda</button>
+  <!-- EXTRAS -->
+  <div style="display:flex;flex-wrap:wrap;gap:5px;padding:10px 15px;border-top:1px solid rgba(255,255,255,.06)" id="v45FichaBar">
+    <button onclick="v45OpenWhatsApp(window.selId||'')" style="padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans)">WhatsApp</button>
+    <button onclick="v45OpenInvoice(window.selId||'')" style="padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans)">Factura</button>
+    <button onclick="v45OpenSign(window.selId||'')" style="padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans)">Firma</button>
+    <button onclick="v45AddToCalendar(window.selId||'')" style="padding:6px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:var(--t2);font-family:var(--sans)">Agenda</button>
   </div>
 
-  <!-- GUARDAR — al final, siempre accesible -->
-  <div style="padding:12px 16px 24px;border-top:1px solid rgba(255,255,255,.07)">
-    <div style="display:flex;gap:6px">
-      <button class="btn-gold" id="btnSave" style="flex:1;font-size:13px;padding:10px;font-weight:800">💾 Guardar cambios</button>
-      <button class="btn-delete-lead" id="btnDeleteLead" title="Eliminar lead" style="padding:10px 13px">🗑</button>
-    </div>
+  <!-- GUARDAR AL FINAL -->
+  <div class="fv2-save-bar">
+    <button class="btn-gold" id="btnSave" style="flex:1;font-size:13px;padding:10px;font-weight:800">💾 Guardar cambios</button>
+    <button class="btn-delete-lead" id="btnDeleteLead" title="Eliminar lead" style="padding:10px 13px">🗑</button>
   </div>
 
-</div><!-- fin secciones -->
-
+</div>
             <!-- ═══ TIMELINE ═══ -->
             <div class="divider" style="margin:8px 0"></div>
             <div class="timeline" id="fichaTimeline" style="padding:0">
@@ -6463,7 +6422,7 @@ async function doLogin(n){
     try{renderSavedViews();}catch(e){}
   },200);
   document.dispatchEvent(new CustomEvent("nexa:login",{detail:{user:n}}));
-  toast("Bienvenido, "+n,"Sesión iniciada · "+leads.length+" leads cargados","✓");
+  toast("Bienvenido, "+n,"Sesión iniciada · "+leads.length+" leads en Supabase","✓");if(leads.length===0){setTimeout(()=>toast("Sin leads en Supabase","Si tienes datos, importa el CSV y guarda — se sincronizarán","⚠",6000),1500);}
   // v43: auto-seleccionar filtro del agente que acaba de entrar
   setTimeout(()=>{
     if(typeof setOwnerFilter==='function'){
@@ -7061,10 +7020,20 @@ async function sbUpsertLead(l){
   const row=_leadToSbRow(l);
   const uuid=_leadUUID[l.lead_id];
   if(uuid){
-    await _sb.from('leads').update(row).eq('id',uuid);
+    const {error}=await _sb.from('leads').update(row).eq('id',uuid);
+    if(error&&error.message&&error.message.includes('cif')){
+      const r2={...row};delete r2.cif;
+      await _sb.from('leads').update(r2).eq('id',uuid);
+    }
   } else {
     const {data,error}=await _sb.from('leads').insert({...row,org_id:_orgId}).select('id').single();
-    if(!error&&data){_leadUUID[l.lead_id]=data.id;}
+    if(error){
+      if(error.message&&error.message.includes('cif')){
+        const r2={...row};delete r2.cif;
+        const {data:d2,error:e2}=await _sb.from('leads').insert({...r2,org_id:_orgId}).select('id').single();
+        if(!e2&&d2){_leadUUID[l.lead_id]=d2.id;}
+      }
+    } else if(data){_leadUUID[l.lead_id]=data.id;}
   }
 }
 
@@ -7156,7 +7125,6 @@ function _leadToSbRow(l){
     email:      l.email||'',
     web:        l.web||'',
     gmaps:      l.gmaps||'',
-    cif:        l.cif||'',
     address:    l.address||'',
     rating:     +l.rating||0,
     reviews:    +l.reviews||0,
@@ -7172,7 +7140,8 @@ function _leadToSbRow(l){
     attempts:   +l.attempts||0,
     call_count: +l.call_count||0,
     call_disposition_last: l.call_disposition_last||'',
-    updated_at: l.updated_at || new Date().toISOString()
+    updated_at: l.updated_at || new Date().toISOString(),
+    cif:        l.cif||''
   };
 }
 
@@ -7761,26 +7730,15 @@ function renderDetail(){
   const sc=scoreFinal(l);
   $("f_leadId").value=l.lead_id;$("f_owner").value=l.owner||"";$("f_name").value=l.name||"";$("f_category").value=l.category||"";$("f_sector").value=l.sector||"";$("f_state").value=l.state||"POTENCIAL";$("f_address").value=l.address||"";$("f_phone").value=l.phone||"";$("f_web").value=l.web||"";$("f_gmaps").value=l.gmaps||"";$("f_rating").value=l.rating??"";$("f_reviews").value=l.reviews??"";$("f_scoreAuto").value=sc.auto;$("f_scoreOverride").value=l.score_override??"";$("f_scoreFinal").value=sc.final;$("f_priority").value=sc.priority;$("f_nextType").value=l.next_type||"";$("f_nextDate").value=l.next_date||"";$("f_notes").value=l.notes||"";$("f_lastCall").textContent=l.last_call_at?new Date(l.last_call_at).toLocaleString("es-ES"):"—";$("f_cadOk").textContent=cadOk(l)?"Sí":"No";
   setDialLink(l.phone||"");setWALink(l);setInvestigaLinks(l.name||"");renderCalls();
-  // ── fv2 visual sync ──
-  var _cat=document.getElementById("fichaCatBadge");if(_cat)_cat.textContent=l.category||l.sector||"";
-  var _inv=document.getElementById("inv_nombre_txt");if(_inv)_inv.textContent=l.name||"—";
-  var _td=document.getElementById("fv2_tel_display");if(_td)_td.textContent=l.phone||"—";
-  var _ad=document.getElementById("fv2_addr_display");if(_ad)_ad.textContent=l.address||"—";
-  var _bm=document.getElementById("btnMaps");if(_bm){if(l.gmaps){_bm.href=l.gmaps;_bm.style.opacity="1";_bm.onclick=null;}else if(l.address){_bm.href="https://maps.google.com/maps?q="+encodeURIComponent(l.address);_bm.style.opacity="1";_bm.onclick=null;}else{_bm.href="#";_bm.style.opacity=".35";_bm.onclick=function(e){e.preventDefault();};}}
-  var _bw=document.getElementById("btnWeb");if(_bw){if(l.web){_bw.href=l.web.startsWith("http")?l.web:"https://"+l.web;_bw.style.opacity="1";_bw.onclick=null;}else{_bw.href="#";_bw.style.opacity=".35";_bw.onclick=function(e){e.preventDefault();};}}
-  // fv2 calls visual render
-  (function(){
-    var list=document.getElementById("fv2_calls_list");if(!list)return;
-    var rows=(typeof calls!=="undefined"?calls:[]).filter(function(cc){return cc.lead_id===selId;}).sort(function(a,b){return b.datetime.localeCompare(a.datetime);});
-    var emp=document.getElementById("callsEmpty");if(emp)emp.style.display=rows.length?"none":"block";
-    var dotCol={"CONTESTA":"#22c55e","NO CONTESTA":"#f43f5e","BUZÓN":"#f59e0b","INTERESADO":"#a78bfa","CITA":"#22c55e","DEFAULT":"rgba(240,240,248,.2)"};
-    list.innerHTML=rows.slice(0,12).map(function(cc){
-      var d=new Date(cc.datetime);var ds=d.toLocaleDateString("es-ES",{day:"2-digit",month:"short"})+" "+d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
-      var r=cc.result||"";var col=dotCol[r]||dotCol["DEFAULT"];
-      return '<div class="fv2-call-row"><div class="fv2-call-dot" style="background:'+col+'"></div><div class="fv2-call-body"><div class="fv2-call-result">'+r+'</div><div class="fv2-call-meta">'+ds+(cc.duration_sec?" · "+cc.duration_sec+"s":"")+'</div>'+(cc.notes?'<div class="fv2-call-notes">'+cc.notes+'</div>':"")+'</div></div>';
-    }).join("");
-    var badge=document.getElementById("fcard_calls_badge");if(badge)badge.textContent=rows.length;
-  })();
+  // fv2 sync
+  var _ec=document.getElementById("fichaCatBadge");if(_ec)_ec.textContent=l.category||l.sector||"";
+  var _et=document.getElementById("fv2_tel_display");if(_et)_et.textContent=l.phone||"—";
+  var _ea=document.getElementById("fv2_addr_display");if(_ea)_ea.textContent=l.address||"—";
+  var _em=document.getElementById("btnMaps");if(_em){if(l.gmaps){_em.href=l.gmaps;_em.style.opacity="1";_em.onclick=null;}else if(l.address){_em.href="https://maps.google.com/maps?q="+encodeURIComponent(l.address);_em.style.opacity="1";_em.onclick=null;}else{_em.href="#";_em.style.opacity=".35";_em.onclick=function(e){e.preventDefault();};}}
+  var _ew=document.getElementById("btnWeb");if(_ew){if(l.web){_ew.href=l.web.startsWith("http")?l.web:"https://"+l.web;_ew.style.opacity="1";_ew.onclick=null;}else{_ew.href="#";_ew.style.opacity=".35";_ew.onclick=function(e){e.preventDefault();};}}
+  var _ei=document.getElementById("inv_nombre_txt");if(_ei)_ei.textContent=l.name||"—";
+  // fv2 calls
+  (function(){var list=document.getElementById("fv2_calls_list");if(!list)return;var rows=(typeof calls!=="undefined"?calls:[]).filter(function(cc){return cc.lead_id===selId;}).sort(function(a,b){return b.datetime.localeCompare(a.datetime);});var emp=document.getElementById("callsEmpty");if(emp)emp.style.display=rows.length?"none":"block";list.innerHTML=rows.slice(0,15).map(function(cc){var d=new Date(cc.datetime);var ds=d.toLocaleDateString("es-ES",{day:"2-digit",month:"short"})+" "+d.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});return'<div class="fv2-call-row"><div class="fv2-call-dot"></div><div class="fv2-call-body"><div class="fv2-call-result">'+(cc.result||"—")+'</div><div class="fv2-call-meta">'+ds+(cc.duration_sec?" · "+cc.duration_sec+"s":"")+'</div>'+(cc.notes?'<div class="fv2-call-notes">'+cc.notes+'</div>':"")+'</div></div>';}).join("");var badge=document.getElementById("fcard_calls_badge");if(badge)badge.textContent=rows.length;})();
 }
 
 /* RENDER */
@@ -7956,7 +7914,7 @@ function setupMap(){
   const g=guessMap(h);
   $("m_name").value=g.name;$("m_addr").value=g.addr;$("m_phone").value=g.phone;
   $("m_cat").value=g.cat;$("m_rating").value=g.rating;$("m_reviews").value=g.reviews;
-  $("m_web").value=g.web;var _elGm=document.getElementById("m_gmaps");if(_elGm)_elGm.value=g.gmaps||"";$("m_owner").value=g.owner;
+  $("m_web").value=g.web;(document.getElementById("m_gmaps")||{value:""}).value=g.gmaps||"";$("m_owner").value=g.owner;
   _impPreview();
   const mn=$("m_name");if(mn&&!mn._ph){mn._ph=1;mn.addEventListener("change",_impPreview);}
 }
@@ -7985,7 +7943,7 @@ function validateStaging(){
   setTimeout(()=>{if($("btnConfirmImport"))$("btnConfirmImport").style.animation="";},600);
 }
 
-function confirmImport(){if(!staging.validated){toast("Valida primero","","⚠");return}const rep=staging.report||[];const nNEW=rep.filter(x=>x.status==="NEW").length;if(nNEW===0){toast("0 leads nuevos","","⚠");return}let ins=0;const toUpsert=[];for(const it of rep){if(it.status!=="NEW")continue;const l=it.lead;l.lead_id=nextId();const sc=scoreFinal(l);l.score_auto=sc.auto;l.score_final=sc.final;l.priority=sc.priority;l.created_at=isoNow();l.updated_at=isoNow();leads.unshift(l);toUpsert.push(l);ins++}saveAll();Promise.all(toUpsert.map(sbUpsertLeadSafe));closeModal("importModal");setView("TODOS");render();toast("Importación completada",`${ins} leads insertados`,"✓")}
+function confirmImport(){if(!staging.validated){toast("Valida primero","","⚠");return}if(!window._orgId){toast("⛔ Sin sesión activa","Inicia sesión antes de importar — los datos no se guardarán","⛔",6000);return;}const rep=staging.report||[];const nNEW=rep.filter(x=>x.status==="NEW").length;if(nNEW===0){toast("0 leads nuevos","","⚠");return}let ins=0;const toUpsert=[];for(const it of rep){if(it.status!=="NEW")continue;const l=it.lead;l.lead_id=nextId();const sc=scoreFinal(l);l.score_auto=sc.auto;l.score_final=sc.final;l.priority=sc.priority;l.created_at=isoNow();l.updated_at=isoNow();leads.unshift(l);toUpsert.push(l);ins++}saveAll();Promise.all(toUpsert.map(sbUpsertLeadSafe));closeModal("importModal");setView("TODOS");render();toast("Importación completada",`${ins} leads insertados`,"✓")}
 
 function toCSV(rows,headers){const e=v=>{const s=(v??"").toString().replace(/\r?\n/g," ").trim();if(/[",;]/.test(s))return`"${s.replace(/"/g,'""')}"`; return s};return[headers.join(","),...rows.map(r=>headers.map(h=>e(r[h]??"")).join(","))].join("\n")}
 function dl(name,text,type="text/csv;charset=utf-8"){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},0)}
